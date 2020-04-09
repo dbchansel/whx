@@ -1,0 +1,109 @@
+﻿<!DOCTYPE html>
+<!--HTML5 doctype-->
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+<title>收货地址 - {site.name}</title>
+<meta name="keywords" content="{site.seo_keyword}" />
+<meta name="description" content="{site.seo_description}" />
+<link rel="stylesheet" type="text/css" href="<%templateskin%>/css/style.css" />
+<script type="text/javascript" charset="utf-8" src="<%templateskin%>/js/zepto.min.js"></script>
+<script type="text/javascript" charset="utf-8" src="<%templateskin%>/js/weui.min.js"></script>
+<script type="text/javascript" charset="utf-8" src="<%templateskin%>/js/common.js"></script>
+<script type="text/javascript">
+	function ExecPostBack(checkValue) {
+		if (arguments.length == 1) {
+			ExecDelete('{config.webpath}tools/submit_ajax.ashx?action=user_address_delete', checkValue, '#turl');
+		}else{
+			var valueArr = '';
+			$("input[name='checkId']:checked").each(function(i){
+				valueArr += $(this).val();
+				if(i < $("input[name='checkId']:checked").length - 1){
+					valueArr += ","
+				}
+			});
+			ExecDelete('{config.webpath}tools/submit_ajax.ashx?action=user_address_delete', valueArr, '#turl');
+		}
+    }
+</script>
+</head>
+
+<body ontouchstart>
+<div class="page">
+    <!--页面头部-->
+    <div class="header">
+        <a class="back" href="javascript:history.back();">
+            <i class="iconfont icon-arrow-left"></i>
+        </a>
+        <h3>收货地址簿</h3>
+        <div class="right"> 
+            <a class="weui-cell_access weui-cell_link" href="<%linkurl("useraddress_edit","add")%>">
+                <i class="iconfont icon-edit"></i>
+            </a>
+        </div>
+    </div>
+    <!--/页面头部-->
+    
+    <div class="page__bd">
+        <!--收货地址列表-->
+        <div class="detail-list">
+            <ul>
+                <!--取得一个DataTable-->
+                <%set DataTable list=get_user_addr_book_list(15, page, "user_id="+userModel.id, out totalcount)%>
+                <!--取得分页页码列表-->
+                <%set string pagelist=get_page_link(15, page, totalcount, "useraddress", "__id__")%>
+                <%foreach(DataRow dr in list.Rows)%>
+                <li>
+                    <div class="detail-bd">
+                        <div class="list-box">
+                            <div class="txt-box">
+                                <h2>{dr[accept_name]} {dr[mobile]}</h2>
+                                <p>{dr[email]}</p>
+                                <p>{dr[area]}{dr[address]}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="detail-ft">
+                        <div class="ft-btn">
+                            <div class="btn-box">
+                                <a href="<%linkurl("useraddress_edit","edit",{dr[id]})%>">
+                                    <i class="iconfont icon-edit"></i>编辑
+                                </a>
+                                <%if({dr[is_default]}=="0")%>
+                                <a onclick="clickSubmit('{config.webpath}tools/submit_ajax.ashx?action=user_address_default&id={dr[id]}')" href="javascript:;">设为默认</a>
+                                <%/if%>
+                                <a href="javascript:;" onclick="ExecPostBack('{dr[id]}');">
+                                    <i class="iconfont icon-delete"></i>删除
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                <%/foreach%>
+                <%if(list.Rows.Count==0)%>
+                <div class="nodata">暂无记录...</div>
+                <%/if%>
+            </ul>
+        </div>
+        
+        <!--分页页码-->
+        <div class="page-list">
+            {pagelist}
+        </div>
+        <!--/分页页码-->
+        
+        <input id="turl" type="hidden" value="<%linkurl("useraddress")%>" /><!--存在跳转的URL值-->
+        <!--/收货地址列表-->
+    </div>
+    
+    <!--版权信息-->
+    <%template src="_copyright.html"%>
+    <!--/版权信息-->
+
+    <!--底部导航-->
+    <%template src="_footer.html"%>
+    <!--/底部导航-->
+</div>
+</body>
+</html>

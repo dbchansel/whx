@@ -1,0 +1,101 @@
+﻿<!DOCTYPE html>
+<!--HTML5 doctype-->
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+    <title>投票啦,奖品说明 - {model.Activity_Title}</title>
+    <meta name="keywords" content="{site.seo_keyword}" />
+    <meta name="description" content="{site.seo_description}" />
+    <link rel="stylesheet" type="text/css" href="<%templateskin%>/css/idangerous.swiper.css" />
+    <link rel="stylesheet" type="text/css" href="<%templateskin%>/css/style.css" />
+    <script type="text/javascript" charset="utf-8" src="<%templateskin%>/js/zepto.min.js"></script>
+    <script type="text/javascript" charset="utf-8" src="<%templateskin%>/js/weui.min.js"></script>
+    <script type="text/javascript" charset="utf-8" src="<%templateskin%>/js/common.js"></script>
+    <script type="text/javascript" charset="utf-8" src="<%templateskin%>/js/idangerous.swiper-2.1.min.js"></script>
+    <style>
+        #contentCss img {
+            width: 100%;    height: 100%;
+        }
+    </style>
+    <script type="text/javascript">
+	$(document).ready(function(){
+		var mySwiper = new Swiper('.swiper-container',{
+			calculateHeight:true,
+			resizeReInit:true,
+			pagination:".pagination",
+			autoplay:5000,
+			paginationClickable:true
+		});
+	});
+    </script>
+</head>
+
+<body style="background-color:#ffffff" id="news" ontouchstart>
+    <div class="page">
+        <!--页面头部-->
+        <div class="header">
+            <marquee direction="left" behavior="scroll" scrollamount="5" scrolldelay="10" loop="99" height="30" bgcolor="#0a0a0a6e">
+                <font face="隶书" color="white" size="3">{model.Activity_Title} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {model.JRZXName}</font>
+            </marquee>
+        </div>
+        <!--/页面头部-->
+        <!--页面内容-->
+        <div class="page__bd">
+            <!--首页幻灯片-->
+            <div id="slider" class="swiper-container">
+                <div class="swiper-wrapper">
+                    <%set DataTable focusList=get_VoteInfo()%>
+                    <%foreach(DataRow dr in focusList.Rows)%>
+                    <div class="swiper-slide">
+                        <a>
+                            <img src="{dr[img_url]}" />
+                        </a>
+                    </div>
+                    <%/foreach%>
+                </div>
+                <div class="pagination"></div>
+            </div>
+            <!--/首页幻灯片-->
+            <!--活动信息-->
+            <div class="weui-panel weui-panel_access" style="margin-top:0;">
+                <div class="weui-panel__hd" style="background-color: #1E90FF;font-size: 17px;color: white;border-radius: 10px 10px 0 0;">奖品介绍：</div>
+                <center>
+                    <div id="contentCss" style="box-shadow: 2px 2px 2px #cccccc;width: 95%;">{model.Vote_PrizeContent}</div>
+                </center>
+
+            </div>
+            <!--活动信息-->
+            <!--版权信息-->
+            <%template src="_copyright_Vote.html"%>
+            <!--/版权信息-->
+            <!--底部导航-->
+            <div class="weui-tab foot-nav">
+                <div class="weui-tab__panel">
+
+                </div>
+                <div class="weui-tabbar">
+                    <a href="goVote.aspx?id={model.id}" class="weui-tabbar__item">
+                        <i class="iconfont icon-home weui-tabbar__icon"></i>
+                        <p class="weui-tabbar__label">首页</p>
+                    </a>
+                    <a href="VoteRank.aspx?VoteId={model.id}" class="weui-tabbar__item">
+                        <i class="iconfont icon-view weui-tabbar__icon"></i>
+                        <p class="weui-tabbar__label">排名</p>
+                    </a>
+                    <a href="VoteGift.aspx?VoteId={model.id}" class="weui-tabbar__item">
+                        <i class="iconfont icon-order weui-tabbar__icon"></i>
+                        <p class="weui-tabbar__label">奖品</p>
+                    </a>
+                    <a href="VoteJoin.aspx?VoteId={model.id}" class="weui-tabbar__item">
+                        <i class="iconfont icon-user weui-tabbar__icon"></i>
+                        <p class="weui-tabbar__label">报名</p>
+                    </a>
+                </div>
+            </div>
+            <!--/底部导航-->
+        </div>
+        <!--/页面内容-->
+    </div>
+</body>
+</html>

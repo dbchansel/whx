@@ -1,0 +1,226 @@
+﻿<!DOCTYPE html>
+<!--HTML5 doctype-->
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+<%set string category_title=get_category_title(model.category_id,"购物商城")%>
+<title>{model.title} - {category_title} - {site.name}</title>
+<meta name="keywords" content="{model.seo_keywords}" />
+<meta name="description" content="{model.seo_description}" />
+<link rel="stylesheet" type="text/css" href="<%templateskin%>/css/idangerous.swiper.css" />
+<link rel="stylesheet" type="text/css" href="<%templateskin%>/css/style.css" />
+<script type="text/javascript" charset="utf-8" src="<%templateskin%>/js/zepto.min.js"></script>
+<script type="text/javascript" charset="utf-8" src="<%templateskin%>/js/weui.min.js"></script>
+<script type="text/javascript" charset="utf-8" src="<%templateskin%>/js/idangerous.swiper-2.1.min.js"></script>
+<script type="text/javascript" charset="utf-8" src="<%templateskin%>/js/common.js"></script>
+<script type="text/javascript" charset="utf-8" src="<%templateskin%>/js/cart.js"></script>
+<script type="text/javascript">
+	$(document).ready(function(){
+		var mySwiper = new Swiper('.swiper-container',{
+			calculateHeight:true,
+			resizeReInit:true,
+			pagination:".pagination",
+			autoplay:5000,
+			paginationClickable:true
+		});
+        //初始化规格事件
+		initGoodsSpec('{config.webpath}tools/submit_ajax.ashx?action=get_article_goods_info&channel_id={model.channel_id}');
+
+	});
+	function saveData()
+	{    
+	    var prices = $("#prices").val();
+	    var trannsform_type = $("#trannsform_type").val();
+	    var remarks = $("#remarks").val(); 
+	    var transform_num = $("#transform_num").val();
+	    var aj = $.ajax({
+	        url: '{config.webpath}tools/submit_ajax.ashx?action=save_goods_record',// 投票
+	        type: 'post',
+	        data: {
+	            'action': 'save_goods_record',
+	            'id': getUrlParam("id"),
+	            'prices': prices,
+	            'trannsform_type': trannsform_type,
+	            'transform_num': transform_num,
+	            'remarks': remarks
+	        },
+	        cache: false,
+	        dataType: 'json',
+	        success: function (data) {
+	            if (data.status == "1") {
+	                alert("保存成功");
+	                var t = setTimeout("reloadVotemember()", 1000);
+	            } else {
+	                debugger;
+	                alert("异常！");
+	            }
+	        },
+	        error: function () {
+	            // view("异常！");    
+	            alert("异常！");
+	        }
+	    });
+	}
+	function getUrlParam(name) {
+	    // 取得url中?后面的字符
+	    var query = window.location.search.substring(1);
+	    // 把参数按&拆分成数组
+	    var param_arr = query.split("&");
+	    for (var i = 0; i < param_arr.length; i++) {
+	        var pair = param_arr[i].split("=");
+	        if (pair[0] == name) {
+	            return pair[1];
+	        }
+	    }
+	    return (false);
+	}
+
+	function reloadVotemember() {
+	    window.location.href = "goods_show_record.aspx?id={model.id}";
+	}
+</script>
+</head>
+
+<body ontouchstart>
+<div class="page">
+    <!--页面头部-->
+    <div class="header">
+        <a class="back" href="javascript:history.back();">
+            <i class="iconfont icon-arrow-left"></i>
+        </a>
+        <h3>记录详情</h3>
+        <div class="right"> 
+            <a class="weui-cell_access weui-cell_link" onclick="showDialogBox('#category-box');">
+                <i class="iconfont icon-nav"></i>
+            </a>
+        </div>
+    </div>
+    <!--/页面头部-->
+  
+    <!--页面内容-->
+    <div class="page__bd">
+        <!--商品幻灯片-->
+        <div id="slider" class="swiper-container">
+            <div class="swiper-wrapper">
+                <%if(model.albums!=null)%>
+                <%foreach(DTcms.Model.article_albums modelt in model.albums)%>
+                <div class="swiper-slide">
+                    <img src="{modelt.thumb_path}"/>
+                </div>
+                <%/foreach%>
+                <%/if%>
+            </div>
+            <div class="pagination"></div>
+        </div>
+        <!--/商品幻灯片-->
+        
+        <!--商品名称-->
+        <div class="weui-panel weui-panel_access" style="margin-top:0;">
+            <div class="weui-panel__bd">
+                <div class="goods-head">
+                    <h2>{model.title}</h2>
+                    <p id="add_event" onclick="showDialogBox('#record-box');"><i class="icon iconfont icon-edit" style="float: right;height: 30px;">新增</i></p>
+                </div>
+            </div>
+            
+        </div>
+        <!--/商品名称-->
+       
+        <%set DataTable goodsList=getRecord()%>
+        <%foreach(DataRow dr in goodsList.Rows)%>
+        <!--商品参数-->
+        <div class="weui-panel weui-panel_access item-list">
+            <div class="weui-panel__hd">说明:{dr[remarks]}</div>
+            <div class="weui-panel__bd">
+                <div class="weui-cell weui-cell_access">
+                    <div class="weui-cell__bd">
+                        <p>进/出：<%=getRecordType({dr[trannsform_type]})%>
+                        </p>
+                    </div>
+                </div>
+                <div class="weui-cell weui-cell_access">
+                    <div class="weui-cell__bd">
+                        <span>价格：<%=getRecordMoney({dr[trannsform_type]},{dr[sale_prices]},{dr[real_prices]})%></span>
+                    </div>
+                </div>
+                <div class="weui-cell weui-cell_access">
+                    <div class="weui-cell__bd">
+                        <p>等级时间：{dr[CreateDate]}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--/商品参数-->
+        <%/foreach%>
+        
+    
+        <!--版权信息-->
+        <%template src="_copyright_Vote.html"%>
+        <!--/版权信息-->
+        
+       
+    </div>
+    <!--/页面内容-->
+</div>
+
+<!--类别容器-->
+<div id="category-box" class="dialog-wrap">
+    <div class="dialog-box">
+        <div class="header">
+            <a class="back" href="javascript:;" onclick="closeDialogBox('#category-box');">
+                <i class="iconfont icon-arrow-left"></i>
+            </a>
+            <h3>栏目类别</h3>
+        </div>
+        <ul class="navbar">
+            <%set DataTable categoryList1=get_category_child_list(channel, 0)%>
+            <%foreach(DataRow cdr1 in categoryList1.Rows)%>
+            <li>
+                <h3><a href="<%linkurl("news_list",{cdr1[id]})%>">{cdr1[title]}</a></h3> 
+                <p>
+                <%set DataTable categoryList2=get_category_child_list(channel, {strtoint({cdr1[id]})})%>
+                <%foreach(DataRow cdr2 in categoryList2.Rows)%>
+                    <%if({strtoint({cdr2[id]})}=={model.category_id})%>
+                    <a href="<%linkurl("news_list",{cdr2[id]})%>" class="selected">{cdr2[title]}</a>
+                    <%else%>
+                    <a href="<%linkurl("news_list",{cdr2[id]})%>">{cdr2[title]}</a>
+                    <%/if%>
+                <%/foreach%>
+                </p>
+            </li>
+            <%/foreach%>
+        </ul>
+    </div>
+</div>
+<!--类别容器-->
+
+<!--记录-->
+<div id="record-box" class="dialog-wrap">
+    <div class="dialog-box">
+        <div class="header">
+            <a class="back" href="javascript:;" onclick="closeDialogBox('#record-box');">
+                <i class="iconfont icon-arrow-left"></i>
+            </a>
+            <h3>登记</h3>
+        </div>
+        <ul class="navbar" style="font-size:24px">
+            <li><span style="padding-left: 30px;">说明</span>:<spa style="padding-left: 30px;"n><input style="height: 28px;" type="text" id="remarks" /></span></li>
+            <li><span style="padding-left: 30px;">进/出</span>:
+            <span style="padding-left: 12px;">
+                <select id="trannsform_type" style="width: 70px;height: 30px;">
+                    <option value="1">进</option>
+                    <option value="0">出</option>
+                </select>
+            </span>
+            </li>
+            <li><span style="padding-left: 30px;">数量</span>:<span style="padding-left: 30px;"><input style="height: 28px;"  type="text" id="transform_num" /></span></li>
+            <li><span style="padding-left: 30px;">费用</span>:<span style="padding-left: 30px;"><input style="height: 28px;"  type="text" id="prices" /></span></li>
+            <li><center><input style="width: 100px;height: 40px;" type="submit" id="remarks" onclick="saveData();" /></center></li>
+        </ul>
+    </div>
+</div>
+<!--类别容器-->
+
+</body>
+</html>

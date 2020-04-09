@@ -1,0 +1,65 @@
+﻿<!DOCTYPE html>
+<!--HTML5 doctype-->
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+<%set string category_title=get_category_title(model.category_id,"公司介绍")%>
+<title>{model.title} - {site.name}</title>
+<meta name="keywords" content="{model.seo_keywords}" />
+<meta name="description" content="{model.seo_description}" />
+<link rel="stylesheet" type="text/css" href="<%templateskin%>/css/style.css" />
+<script type="text/javascript" charset="utf-8" src="<%templateskin%>/js/zepto.min.js"></script>
+<script type="text/javascript" charset="utf-8" src="<%templateskin%>/js/weui.min.js"></script>
+<script type="text/javascript" charset="utf-8" src="<%templateskin%>/js/common.js"></script>
+</head>
+
+<body ontouchstart>
+<div class="page">
+    <!--页面头部-->
+    <div class="header">
+        <a class="back" href="javascript:history.back();">
+            <i class="iconfont icon-arrow-left"></i>
+        </a>
+        <h3>{category_title}</h3>
+        <div class="right"> 
+            <a class="weui-cell_access weui-cell_link" href="<%linkurl("index")%>">
+                <i class="iconfont icon-home"></i>
+            </a>
+        </div>
+    </div>
+    <!--/页面头部-->
+  
+    <!--页面内容-->
+    <div class="page__bd">
+        <!--内容介绍-->
+        <div class="weui-panel weui-panel_access" style="margin-top:10px;">
+            <div class="weui-panel__bd">
+                <div class="meta">
+                    <h1 class="meta-tit">{model.title}</h1>
+                    <p class="meta-info">
+                        <span><i class="iconfont icon-date"></i>{model.add_time}</span>
+                        <span><i class="iconfont icon-view"></i><script type="text/javascript" src="{config.webpath}tools/submit_ajax.ashx?action=view_article_click&channel_id={model.channel_id}&id={model.id}&click=1"></script>次浏览</span>
+                    </p>
+                </div>
+                <div class="entry">
+                    {model.content}
+                </div>
+            </div>
+        </div>
+        <!--/内容介绍-->
+    
+        <!--版权信息-->
+        <%template src="_copyright.html"%>
+        <!--/版权信息-->
+
+        <!--底部导航-->
+        <%template src="_footer.html"%>
+        <!--/底部导航-->
+    
+  </div>
+  <!--/页面内容-->
+
+</div>
+</body>
+</html>

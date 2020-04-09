@@ -1,0 +1,322 @@
+﻿<!DOCTYPE html>
+<!--HTML5 doctype-->
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+<title>确认订单 - {site.name}</title>
+<meta name="keywords" content="{site.seo_keyword}" />
+<meta name="description" content="{site.seo_description}" />
+<link rel="stylesheet" type="text/css" href="<%templateskin%>/css/validate.css" />
+<link rel="stylesheet" type="text/css" href="<%templateskin%>/css/style.css" />
+<script type="text/javascript" charset="utf-8" src="{config.webpath}scripts/jquery/PCASClass.js"></script>
+<script type="text/javascript" charset="utf-8" src="<%templateskin%>/js/zepto.min.js"></script>
+<script type="text/javascript" charset="utf-8" src="<%templateskin%>/js/weui.min.js"></script>
+<script type="text/javascript" charset="utf-8" src="<%templateskin%>/js/mvalidate.js"></script>
+<script type="text/javascript" charset="utf-8" src="<%templateskin%>/js/mvalidate-extend.js"></script>
+<script type="text/javascript" charset="utf-8" src="<%templateskin%>/js/common.js"></script>
+<script type="text/javascript" charset="utf-8" src="<%templateskin%>/js/cart.js"></script>
+<script type="text/javascript">
+$(function(){
+	//初始化收货地址
+	initUserAddress("#userAddress");
+	//初始化表单
+	AjaxInitForm('#orderForm', '#btnSubmit', 0);
+});
+</script>
+</head>
+
+<body ontouchstart>
+<div class="page">
+    <!--页面头部-->
+    <div class="header">
+        <a class="back" href="javascript:history.back();">
+            <i class="iconfont icon-arrow-left"></i>
+        </a>
+        <h3>订单确认</h3>
+        <div class="right"> 
+            <a class="weui-cell_access weui-cell_link" href="<%linkurl("index")%>">
+                <i class="iconfont icon-home"></i>
+            </a>
+        </div>
+    </div>
+    <!--/页面头部-->
+  
+    <!--页面内容-->
+    <div class="page__bd">
+
+        <%if(userModel!=null)%>
+        <!--地址簿-->
+        <div class="weui-panel weui-panel_access" style="margin-top:10px;">
+            <div class="weui-panel__hd">我的地址簿</div>
+            <div class="weui-panel__bd">
+                <div id="userAddress" class="weui-cells_radio form-box">
+                    <%set DataTable addrList=get_user_addr_book_list(0, "user_id="+userModel.id)%>
+                    <%foreach(DataRow dr in addrList.Rows)%>
+                    <label class="weui-cell weui-check__label" for="x-{dr[id]}">
+                        <div class="weui-cell__bd">
+                            <p>{dr[accept_name]}<i>{dr[mobile]}</i></p>
+                            <p>{dr[area]}{dr[address]}</p>
+                        </div>
+                        <div class="weui-cell__ft">
+                            <%if({dr[is_default]}=="1")%>
+                            <input id="x-{dr[id]}" name="user_book_id" type="radio" class="weui-check" checked="checked" />
+                            <%else%>
+                            <input id="x-{dr[id]}" name="user_book_id" type="radio" class="weui-check" />
+                            <%/if%>
+                            <span class="weui-icon-checked"></span>
+                        </div>
+                        <input name="user_accept_name" type="hidden" value="{dr[accept_name]}" />
+                        <input name="user_area" type="hidden" value="{dr[area]}" />
+                        <input name="user_address" type="hidden" value="{dr[address]}" />
+                        <input name="user_mobile" type="hidden" value="{dr[mobile]}" />
+                        <input name="user_telphone" type="hidden" value="{dr[telphone]}" />
+                        <input name="user_email" type="hidden" value="{dr[email]}" />
+                        <input name="user_post_code" type="hidden" value="{dr[post_code]}" />
+                    </label>
+                    <%/foreach%>
+                </div>
+                
+            </div>
+        </div>
+        <!--/地址簿-->
+        <%/if%>
+        
+        <form id="orderForm" name="orderForm" url="{config.webpath}tools/submit_ajax.ashx?action=order_save&site_id={site.id}">
+        <!--收货地址-->
+        <div class="weui-panel weui-panel_access" style="margin-top:10px;">
+            <div class="weui-panel__hd">收货地址</div>
+            <div class="weui-panel__bd">
+                <div class="weui-cells_form form-box">
+                    <input name="book_id" id="book_id" type="hidden" value="0" />
+                    <div class="weui-cell">
+                        <div class="weui-cell__hd">
+                            <label class="weui-label">收件人</label>
+                        </div>
+                        <div class="weui-cell__bd">
+                            <input id="accept_name" name="accept_name" class="weui-input" type="text" placeholder="收件人名称" data-validate="s" />
+                        </div>
+                    </div>
+                    
+                    <div class="weui-cell">
+                        <div class="weui-cell__hd">
+                            <label class="weui-label">所属地区</label>
+                        </div>
+                        <div class="weui-cell__bd">
+                            <select id="province" name="province" class="select"></select>
+                            <select id="city" name="city" class="select"></select>
+                            <select id="area" name="area" class="select"></select>
+                        </div>
+                    </div>
+                    
+                    <div class="weui-cell">
+                        <div class="weui-cell__hd">
+                            <label class="weui-label">详细地址</label>
+                        </div>
+                        <div class="weui-cell__bd">
+                            <input id="address" name="address" class="weui-input" type="text" placeholder="详细地址" data-validate="s" />
+                        </div>
+                    </div>
+                    
+                    <div class="weui-cell">
+                        <div class="weui-cell__hd">
+                            <label class="weui-label">手机号</label>
+                        </div>
+                        <div class="weui-cell__bd">
+                            <input id="mobile" name="mobile" class="weui-input" type="tel" placeholder="请输入手机号" data-validate="m" />
+                        </div>
+                    </div>
+                    
+                    <div class="weui-cell">
+                        <div class="weui-cell__hd">
+                            <label class="weui-label">电话</label>
+                        </div>
+                        <div class="weui-cell__bd">
+                            <input id="telphone" name="telphone" class="weui-input" type="text" placeholder="电话号码，非必填" />
+                        </div>
+                    </div>
+                    
+                    <div class="weui-cell">
+                        <div class="weui-cell__hd">
+                            <label class="weui-label">邮箱</label>
+                        </div>
+                        <div class="weui-cell__bd">
+                            <input id="email" name="email" class="weui-input" type="text" placeholder="方便通知，非必填"/>
+                        </div>
+                    </div>
+                    
+                    <div class="weui-cell">
+                        <div class="weui-cell__hd">
+                            <label class="weui-label">邮政编码</label>
+                        </div>
+                        <div class="weui-cell__bd">
+                            <input id="post_code" name="post_code" class="weui-input" type="text" placeholder="邮政编码，非必填"/>
+                        </div>
+                    </div>
+                    
+                </div>
+                
+            </div>
+        </div>
+        <!--/收货地址-->
+        
+        <!--支付方式-->
+        <div class="weui-panel weui-panel_access">
+            <div class="weui-panel__hd">支付方式</div>
+            <div class="weui-panel__bd">
+                <div class="weui-cells_radio form-box">
+                    <%set DataTable paymentList=get_payment_list(0, "site_id="+site.id)%>
+                    <%foreach(DataRow dr in paymentList.Rows)%>
+                    <%set (decimal){poundage_amount}=get_payment_poundage_amount({strtoint({dr[id]})},goodsTotal.real_amount)%>
+                    <label class="weui-cell weui-check__label" for="p-{dr[id]}">
+                        <div class="weui-cell__bd">
+                            <p>{dr[title]}<i>手续费 {poundage_amount} 元</i></p>
+                        </div>
+                        <div class="weui-cell__ft">
+                            <input id="p-{dr[id]}" name="payment_id" type="radio" class="weui-check" onclick="paymentAmountTotal(this);" price="{poundage_amount}" value="{dr[id]}" data-validate="select" />
+                            <span class="weui-icon-checked"></span>
+                        </div>
+                    </label>
+                    <%/foreach%>
+                </div>
+                
+            </div>
+        </div>
+        <!--/支付方式-->
+        
+        <!--配送方式-->
+        <div class="weui-panel weui-panel_access">
+            <div class="weui-panel__hd">配送方式</div>
+            <div class="weui-panel__bd">
+                <div class="weui-cells_radio form-box">
+                    <%set DataTable expressList=get_express_list(0, "")%>
+                    <%foreach(DataRow dr in expressList.Rows)%>
+                    <label class="weui-cell weui-check__label" for="e-{dr[id]}">
+                        <div class="weui-cell__bd">
+                            <p>{dr[title]}<i>运费 {dr[express_fee]} 元</i></p>
+                        </div>
+                        <div class="weui-cell__ft">
+                            <input id="e-{dr[id]}" name="express_id" type="radio" class="weui-check" onclick="freightAmountTotal(this);" price="{dr[express_fee]}" value="{dr[id]}" data-validate="select" />
+                            <span class="weui-icon-checked"></span>
+                        </div>
+                    </label>
+                    <%/foreach%>
+                </div>
+                
+            </div>
+        </div>
+        <!--/配送方式-->
+        
+        <!--商品清单-->
+        <div class="weui-panel weui-panel_access">
+            <div class="weui-panel__hd">商品列表</div>
+            <div class="weui-panel__bd">
+                <div class="cart-list inset">
+                    <ul>
+                        <%foreach(DTcms.Model.cart_items modelt in goodsList)%>
+                        <li>
+                            <a href="<%linkurl("goods_show",{modelt.article_id})%>" class="img-box">
+                              <img src="{modelt.img_url}" />
+                            </a>
+                            <h2>{modelt.title}</h2>
+                            <p class="stxt">{modelt.spec_text}</p>
+                            <div class="note">
+                                <span class="right">
+                                  ×{modelt.quantity}
+                                </span>
+                                <i class="price">¥{modelt.user_price}</i>
+                            </div>
+                        </li>
+                        <%/foreach%>
+                    </ul>
+                </div>
+                
+            </div>
+        </div>
+        <!--/商品清单-->
+        
+        <!--结算信息-->
+        <div class="weui-panel weui-panel_access">
+            <div class="weui-panel__hd">结算信息</div>
+            <div class="weui-panel__bd">
+                <div class="weui-cells_form form-box">
+                    <div class="weui-cell weui-cell_switch">
+                        <div class="weui-cell__bd">是否开具发票</div>
+                        <div class="weui-cell__ft">
+                            <input id="is_invoice" name="is_invoice" class="weui-switch" type="checkbox" price="<%=get_order_taxamount(goodsTotal.real_amount)%>" onclick="taxAmoutTotal(this);" />
+                        </div>
+                    </div>
+                    
+                    <div id="invoiceBox" class="weui-cell" style="display:none;">
+                        <div class="weui-cell__hd">
+                            <label class="weui-label">发票抬头</label>
+                        </div>
+                        <div class="weui-cell__bd">
+                            <input id="invoice_title" name="invoice_title" class="weui-input" type="text" placeholder="开具发票的抬头" />
+                        </div>
+                    </div>
+                    
+                    <div class="weui-cell">
+                        <div class="weui-cell__bd">
+                            <textarea name="message" class="weui-textarea" placeholder="订单备注(100字以内)" rows="3"></textarea>
+                        </div>
+                    </div>
+                    
+                </div>
+                
+                <div class="weui-form-preview form-preview">
+                    <div class="weui-form-preview__hd">
+                        <label class="weui-form-preview__label">应付总金额</label>
+                        <em class="weui-form-preview__value">¥<label id="totalAmount">{goodsTotal.real_amount}</label></em>
+                    </div>
+                    <div class="weui-form-preview__bd">
+                        <div class="weui-form-preview__item">
+                            <label class="weui-form-preview__label">商品金额</label>
+                            <span class="weui-form-preview__value">¥<label id="goodsAmount">{goodsTotal.real_amount}</label>元</span>
+                        </div>
+                        <div class="weui-form-preview__item">
+                            <label class="weui-form-preview__label">税费</label>
+                            <span class="weui-form-preview__value">¥<label id="taxesFee">0.00</label>元</span>
+                        </div>
+                        <div class="weui-form-preview__item">
+                            <label class="weui-form-preview__label">运费</label>
+                            <span class="weui-form-preview__value">¥<label id="expressFee">0.00</label>元</span>
+                        </div>
+                        <div class="weui-form-preview__item">
+                            <label class="weui-form-preview__label">支付手续费</label>
+                            <span class="weui-form-preview__value">¥<label id="paymentFee">0.00</label>元</span>
+                        </div>
+                        <div class="weui-form-preview__item">
+                            <label class="weui-form-preview__label">总积分</label>
+                            <span class="weui-form-preview__value">{goodsTotal.total_point}分</span>
+                        </div>
+                    </div>
+                    <div class="weui-form-preview__ft">
+                        <a class="weui-form-preview__btn weui-form-preview__btn_default" href="<%linkurl("cart")%>">返回购物车</a>
+                        <%if(goodsTotal.total_quantity>0)%>
+                        <button id="btnSubmit" type="submit" class="weui-form-preview__btn weui-form-preview__btn_primary">确认提交</button>
+                        <%else%>
+                        <button id="btnSubmit" type="submit" class="weui-form-preview__btn weui-form-preview__btn_primary" disabled="disabled">确认提交</button>
+                        <%/if%>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+        </form>
+        <!--/结算信息-->
+    
+        <!--版权信息-->
+        <%template src="_copyright.html"%>
+        <!--/版权信息-->
+
+        <!--底部导航-->
+        <%template src="_footer.html"%>
+        <!--/底部导航-->
+    
+  </div>
+  <!--/页面内容-->
+
+</div>
+</body>
+</html>

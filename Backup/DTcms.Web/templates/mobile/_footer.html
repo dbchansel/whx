@@ -1,0 +1,26 @@
+﻿        <div class="weui-tab foot-nav">
+            <div class="weui-tab__panel">
+
+            </div>
+            <div class="weui-tabbar">
+                <a href="<%linkurl("index")%>" class="weui-tabbar__item">
+                    <i class="iconfont icon-home weui-tabbar__icon"></i>
+                    <p class="weui-tabbar__label">首页</p>
+                </a>
+                <a href="<%linkurl("cart")%>" class="weui-tabbar__item">
+                    <span class="item-box">
+                        <i class="iconfont icon-cart weui-tabbar__icon"></i>
+                        <span class="weui-badge"><span id="shoppingCartCount"><script type="text/javascript" src="{config.webpath}tools/submit_ajax.ashx?action=view_cart_count"></script></span></span>
+                    </span>
+                    <p class="weui-tabbar__label">购物车</p>
+                </a>
+                <a href="<%linkurl("search")%>" class="weui-tabbar__item">
+                    <i class="iconfont icon-search weui-tabbar__icon"></i>
+                    <p class="weui-tabbar__label">搜索</p>
+                </a>
+                <a href="<%linkurl("usercenter","index")%>" class="weui-tabbar__item">
+                    <i class="iconfont icon-user weui-tabbar__icon"></i>
+                    <p class="weui-tabbar__label">会员</p>
+                </a>
+            </div>
+        </div>

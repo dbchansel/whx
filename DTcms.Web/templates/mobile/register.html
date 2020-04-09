@@ -1,0 +1,284 @@
+﻿<!DOCTYPE html>
+<!--HTML5 doctype-->
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+<title>会员注册 - {site.name}</title>
+<link rel="stylesheet" type="text/css" href="<%templateskin%>/css/validate.css" />
+<link rel="stylesheet" type="text/css" href="<%templateskin%>/css/style.css" />
+<script type="text/javascript" charset="utf-8" src="<%templateskin%>/js/zepto.min.js"></script>
+<script type="text/javascript" charset="utf-8" src="<%templateskin%>/js/weui.min.js"></script>
+<script type="text/javascript" charset="utf-8" src="<%templateskin%>/js/common.js"></script>
+<script type="text/javascript" charset="utf-8" src="<%templateskin%>/js/mvalidate.js"></script>
+<script type="text/javascript" charset="utf-8" src="<%templateskin%>/js/mvalidate-extend.js"></script>
+<script type="text/javascript" charset="utf-8" src="<%templateskin%>/js/register-validate.js"></script>
+</head>
+
+<body ontouchstart>
+<div class="page">
+    <!--页面头部-->
+    <div class="header">
+        <a class="back" href="javascript:history.back();">
+            <i class="iconfont icon-arrow-left"></i>
+        </a>
+        <h3>会员注册</h3>
+        <div class="right"> 
+            <a class="weui-cell_access weui-cell_link" href="<%linkurl("index")%>">
+                <i class="iconfont icon-home"></i>
+            </a>
+        </div>
+    </div>
+    <!--/页面头部-->
+
+    <!--页面内容-->
+    <div class="page__bd">
+        
+        <%if(action=="")%>
+        <!--会员注册-->
+        <form id="regForm" name="regForm" class="form-box" url="{config.webpath}tools/submit_ajax.ashx?action=user_register&site_id={site.id}">
+            <div class="weui-cells weui-cells_form">
+                <div class="weui-cell">
+                    <div class="weui-cell__hd">
+                        <label class="weui-label">账户名</label>
+                    </div>
+                    <div class="weui-cell__bd">
+                        <input id="txtUserName" name="txtUserName" type="text" class="weui-input" placeholder="输入登录用户名" data-validate="username" />
+                    </div>
+                </div>
+                <div class="weui-cell">
+                    <div class="weui-cell__hd">
+                        <label class="weui-label">密码</label>
+                    </div>
+                    <div class="weui-cell__bd">
+                        <input id="txtPassword" name="txtPassword" type="password" class="weui-input" placeholder="请输入密码" data-validate="password" />
+                    </div>
+                </div>
+                <div class="weui-cell">
+                    <div class="weui-cell__hd">
+                        <label class="weui-label">确认密码</label>
+                    </div>
+                    <div class="weui-cell__bd">
+                        <input id="txtPassword1" name="txtPassword1" type="password" class="weui-input" placeholder="请再次输入密码" data-required="true" data-descriptions="confirmpassword" data-conditional="confirmpwd" />
+                    </div>
+                </div>
+                
+                <%if(uconfig.regstatus==1||uconfig.regstatus==3||uconfig.regstatus==4)%>
+                <!--开放注册及邮箱邀请注册-->
+                <div class="weui-cell">
+                    <div class="weui-cell__hd">
+                        <label class="weui-label">邮箱</label>
+                    </div>
+                    <div class="weui-cell__bd">
+                        <input id="txtEmail" name="txtEmail" type="text" class="weui-input" placeholder="输入邮箱账号" data-validate="e" />
+                    </div>
+                </div>
+                <!--/开放注册及邮箱邀请注册-->
+                <%/if%>
+                
+                <%if(uconfig.regstatus==1||uconfig.regstatus==2)%>
+                <!--开放注册及手机注册-->
+                <div class="weui-cell vcode">
+                    <div class="weui-cell__hd">
+                        <label class="weui-label">手机号</label>
+                    </div>
+                    <div class="weui-cell__bd">
+                        <input id="txtMobile" name="txtMobile" class="weui-input" type="tel" placeholder="请输入手机号" data-validate="m" />
+                    </div>
+                    <%if(uconfig.regstatus==2)%>
+                    <!--开启手机注册-->
+                    <div class="weui-cell__ft">
+                        <a class="weui-vcode-btn" href="javascript:;" onclick="sendSMS(this,'#txtMobile','{config.webpath}tools/submit_ajax.ashx?action=user_verify_smscode&site={site.build_path}');">获取验证码</a>
+                    </div>
+                    <!--/开启手机注册-->
+                    <%/if%>
+                </div>
+                <!--/开放注册及手机注册-->
+                <%/if%>
+
+                <%if(uconfig.regstatus==2)%>
+                <!--开启手机注册-->
+                <div class="weui-cell">
+                    <div class="weui-cell__hd">
+                        <label class="weui-label">验证码</label>
+                    </div>
+                    <div class="weui-cell__bd">
+                        <input id="txtCode" name="txtCode" class="weui-input" type="text" placeholder="请输入手机收到验证码" data-validate="code" />
+                    </div>
+                </div>
+                <!--/开启手机注册-->
+                <%/if%>
+
+                <%if(uconfig.regstatus==4)%>
+                <!--开启邀请注册-->
+                <div class="weui-cell">
+                    <div class="weui-cell__hd">
+                        <label class="weui-label">邀请码</label>
+                    </div>
+                    <div class="weui-cell__bd">
+                        <input id="txtCode" name="txtCode" class="weui-input" type="text" placeholder="请输入注册邀请码" data-validate="code" />
+                    </div>
+                </div>
+                <!--/开启邀请注册-->
+                <%/if%>
+
+                <%if(uconfig.regstatus==1)%>
+                <!--开放注册-->
+                <div class="weui-cell">
+                    <div class="weui-cell__hd">
+                        <label class="weui-label">验证码</label>
+                    </div>
+                    <div class="weui-cell__bd">
+                        <input id="txtCode" name="txtCode" class="weui-input" type="text" placeholder="请输入验证码" data-validate="code" />
+                    </div>
+                    <div class="weui-cell__ft">
+                        <a href="javascript:;" onclick="ToggleCode(this, '{config.webpath}tools/verify_code.ashx');return false;">
+                        <img class="weui-vcode-img" src="{config.webpath}tools/verify_code.ashx" style="width:82px;height:24px;" />
+                        </a>
+                    </div>
+                </div>
+                <!--/开放注册-->
+                <%/if%>
+                
+            </div>
+            
+            <%if(uconfig.regrules==1)%>
+            <!--开启注册协议-->
+            <label for="chkAgree" class="weui-agree">
+                <input id="chkAgree" name="chkAgree" type="checkbox" class="weui-agree__checkbox" />
+                <span class="weui-agree__text">
+                    我已阅读并接受<a href="javascript:;" onclick="showWindow('#regrules');">《注册许可协议》</a>
+                    <div id="regrules" title="注册许可协议" style="display:none;">{uconfig.regrulestxt}</div>
+                </span>
+            </label>
+            <!--/开启注册协议-->
+            <%/if%>
+            
+            <div class="weui-btn-area">
+                <input id="btnSubmit" name="btnSubmit" type="submit" class="weui-btn weui-btn_primary" value="立即注册" />
+            </div>
+        </form>
+        <!--/会员注册-->
+        <%/if%>
+        
+        <%if(action=="close")%>
+        <!--关闭会员注册-->
+        <div class="weui-msg msg-box">
+            <div class="weui-msg__icon-area">
+                <i class="weui-icon-warn weui-icon_msg-primary"></i>
+            </div>
+            <div class="weui-msg__text-area">
+                <h2 class="weui-msg__title">系统暂停会员注册</h2>
+                <p class="weui-msg__desc">
+                    系统暂停注册会员，如对您造成不便，我们深感遗憾！
+                </p>
+            </div>
+            <div class="weui-msg__opr-area">
+                <p class="weui-btn-area">
+                    <a class="weui-btn weui-btn_primary" href="<%linkurl("index")%>">返回首页</a>
+                </p>
+            </div>
+        </div>
+        <!--/关闭会员注册-->
+        <%/if%>
+        
+        <%if(action=="sendmail")%>
+        <!--发送邮箱验证-->
+        <div class="weui-msg msg-box">
+            <div class="weui-msg__icon-area">
+                <i class="weui-icon-info weui-icon_msg"></i>
+            </div>
+            <div class="weui-msg__text-area">
+                <h2 class="weui-msg__title">需验证邮箱激活账户</h2>
+                <p class="weui-msg__desc">
+                    目前处于未验证状态，系统已经自动为您发送了一封验证邮件，如果您长时间未收到邮件，请点击下方的重新发送邮件按钮。
+                </p>
+            </div>
+            <div class="weui-msg__opr-area">
+                <p class="weui-btn-area">
+                    <a class="weui-btn weui-btn_primary" href="javascript:;" onclick="sendEmail('{username}', '{config.webpath}tools/submit_ajax.ashx?action=user_verify_email&site={site.build_path}');">重新发送邮件</a>
+                    <a class="weui-btn weui-btn_default" href="<%linkurl("index")%>">返回首页</a>
+                </p>
+            </div>
+        </div>
+        <!--/发送邮箱验证-->
+        <%/if%>
+        
+        <%if(action=="checkmail")%>
+        <!--邮箱验证成功-->
+        <div class="weui-msg msg-box">
+            <div class="weui-msg__icon-area">
+                <i class="weui-icon-success weui-icon_msg"></i>
+            </div>
+            <div class="weui-msg__text-area">
+                <h2 class="weui-msg__title">邮箱验证成功</h2>
+                <p class="weui-msg__desc">
+                    恭喜您{username}，已通过邮件激活会员账户，赶快享受更多的会员服务吧。
+                </p>
+            </div>
+            <div class="weui-msg__opr-area">
+                <p class="weui-btn-area">
+                    <a class="weui-btn weui-btn_primary" href="<%linkurl("usercenter","index")%>">会员中心</a>
+                    <a class="weui-btn weui-btn_default" href="<%linkurl("index")%>">返回首页</a>
+                </p>
+            </div>
+        </div>
+        <!--/邮箱验证成功-->
+        <%/if%>
+        
+        <%if(action=="checkerror")%>
+        <!--注册验证失败-->
+        <div class="weui-msg msg-box">
+            <div class="weui-msg__icon-area">
+                <i class="weui-icon-warn weui-icon_msg"></i>
+            </div>
+            <div class="weui-msg__text-area">
+                <h2 class="weui-msg__title">注册验证失败</h2>
+                <p class="weui-msg__desc">
+                    无法验证你的账户，可能是你的用户名不存在或者验证码已经过期！
+                </p>
+            </div>
+            <div class="weui-msg__opr-area">
+                <p class="weui-btn-area">
+                    <a class="weui-btn weui-btn_primary" href="<%linkurl("index")%>">返回首页</a>
+                </p>
+            </div>
+        </div>
+        <!--/注册验证失败-->
+        <%/if%>
+        
+        <%if(action=="verify")%>
+        <!--人工审核-->
+        <div class="weui-msg msg-box">
+            <div class="weui-msg__icon-area">
+                <i class="weui-icon-info weui-icon_msg"></i>
+            </div>
+            <div class="weui-msg__text-area">
+                <h2 class="weui-msg__title">等待人工审核通过</h2>
+                <p class="weui-msg__desc">
+                    本站已开启人工审核，请等待人工审核通过。
+                </p>
+            </div>
+            <div class="weui-msg__opr-area">
+                <p class="weui-btn-area">
+                    <a class="weui-btn weui-btn_primary" href="<%linkurl("index")%>">返回首页</a>
+                </p>
+            </div>
+        </div>
+        <!--/人工审核-->
+        <%/if%>
+    
+        <!--版权信息-->
+        <%template src="_copyright.html"%>
+        <!--/版权信息-->
+
+        <!--底部导航-->
+        <%template src="_footer.html"%>
+        <!--/底部导航-->
+    
+  </div>
+  <!--/页面内容-->
+
+</div>
+</body>
+</html>

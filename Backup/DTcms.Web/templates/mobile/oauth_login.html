@@ -1,0 +1,158 @@
+﻿<!DOCTYPE html>
+<!--HTML5 doctype-->
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+<title>第三方账号登录 - {site.name}</title>
+<meta name="keywords" content="{site.seo_keyword}" />
+<meta name="description" content="{site.seo_description}" />
+<link rel="stylesheet" type="text/css" href="<%templateskin%>/css/validate.css" />
+<link rel="stylesheet" type="text/css" href="<%templateskin%>/css/style.css" />
+<script type="text/javascript" charset="utf-8" src="<%templateskin%>/js/zepto.min.js"></script>
+<script type="text/javascript" charset="utf-8" src="<%templateskin%>/js/weui.min.js"></script>
+<script type="text/javascript" charset="utf-8" src="<%templateskin%>/js/mvalidate.js"></script>
+<script type="text/javascript" charset="utf-8" src="<%templateskin%>/js/mvalidate-extend.js"></script>
+<script type="text/javascript">
+    $(function(){
+        //初始化TAB选项卡
+        weui.tab('#tab',{
+            defaultIndex: 0,
+            onChange:function(index){
+                //console.log(index);
+            }
+        });
+        //初始化表单1
+        AjaxInitForm('#bindForm', '#btnSubmit1', 0, '#turl');
+        //初始化表单2
+        AjaxInitForm('#oauthForm', '#btnSubmit2', 0, '#turl');
+    });
+</script>
+</head>
+
+<body ontouchstart>
+<div class="page">
+    <!--页面头部-->
+    <div class="header">
+        <a class="back" href="<%linkurl("register")%>">
+            <i class="iconfont icon-arrow-left"></i>
+        </a>
+        <h3>第三方账号登录</h3>
+        <div class="right"> 
+            <a class="weui-cell_access weui-cell_link" href="<%linkurl("index")%>">
+                <i class="iconfont icon-home"></i>
+            </a>
+        </div>
+    </div>
+    <!--/页面头部-->
+    
+    <div class="page__bd">
+        <!--跳转的地址-->
+        <input id="turl" name="turl" type="hidden" value="{turl}" />
+        
+        <!--Tab选项-->
+        <div id="tab" class="weui-tab">
+            <div class="weui-navbar">
+                <div class="weui-navbar__item weui-bar__item_on">绑定已有的账号</div>
+                <div class="weui-navbar__item">创建新的账号</div>
+            </div>
+            
+            <div class="weui-tab__panel">
+                <!--绑定已有的账号-->
+                <div class="weui-tab__content">
+                    <form id="bindForm" name="bindForm" class="form-box" url="{config.webpath}tools/submit_ajax.ashx?action=user_oauth_bind">
+                        <div class="weui-panel weui-panel_access">
+                            <div class="weui-panel__hd">绑定已有的账号</div>
+                            <div class="weui-panel__bd">
+                                <div class="weui-cells_form">
+                                    
+                                    <div class="weui-cell">
+                                        <div class="weui-cell__hd">
+                                            <label class="weui-label">用户名</label>
+                                        </div>
+                                        <div class="weui-cell__bd">
+                                            <input id="txtUserName" name="txtUserName" type="text" class="weui-input" placeholder="请输入用户名" data-validate="username" />
+                                        </div>
+                                    </div>
+                                    <div class="weui-cell">
+                                        <div class="weui-cell__hd">
+                                            <label class="weui-label">密码</label>
+                                        </div>
+                                        <div class="weui-cell__bd">
+                                            <input id="txtPassword" name="txtPassword" type="password" class="weui-input" placeholder="请输入密码" data-validate="password" />
+                                        </div>
+                                    </div>
+                                    
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="weui-btn-area">
+                            <input id="btnSubmit1" name="btnSubmit1" type="submit" class="weui-btn weui-btn_primary" value="立即绑定" />
+                        </div>
+                    </form>
+                </div>
+                <!--/绑定已有的账号-->
+                
+                <!--创建新的账号-->
+                <div class="weui-tab__content">
+                    <form id="oauthForm" name="oauthForm" class="form-box" url="{config.webpath}tools/submit_ajax.ashx?action=user_oauth_register&site_id={site.id}">
+                        <div class="weui-panel weui-panel_access">
+                            <div class="weui-panel__hd">创建新的账号</div>
+                            <div class="weui-panel__bd">
+                                <div class="weui-cells_form">
+                                    
+                                    <div class="weui-cell">
+                                        <div class="weui-cell__hd">
+                                            <label class="weui-label">电子邮箱</label>
+                                        </div>
+                                        <div class="weui-cell__bd">
+                                            <input id="txtEmail" name="txtEmail" type="text" class="weui-input" placeholder="请输入邮箱账号" />
+                                        </div>
+                                    </div>
+                                    <div class="weui-cell">
+                                        <div class="weui-cell__hd">
+                                            <label class="weui-label">手机号码</label>
+                                        </div>
+                                        <div class="weui-cell__bd">
+                                            <input id="txtMobile" name="txtMobile" class="weui-input" type="tel" placeholder="请输入手机号" data-validate="m" />
+                                        </div>
+                                    </div>
+                                    <div class="weui-cell">
+                                        <div class="weui-cell__hd">
+                                            <label class="weui-label">登录密码</label>
+                                        </div>
+                                        <div class="weui-cell__bd">
+                                            <input id="txtPassword" name="txtPassword" type="password" class="weui-input" placeholder="请设置密码" data-validate="password" />
+                                        </div>
+                                    </div>
+                                    
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="weui-btn-area">
+                            <input id="btnSubmit2" name="btnSubmit2" type="submit" class="weui-btn weui-btn_primary" value="创建新账户" />
+                        </div>
+                    </form>
+                </div>
+                <!--创建新的账号-->
+            </div>
+        </div>
+        <!--/Tab选项-->
+        
+    </div>
+    
+    <div class="page__ft">
+        <!--版权信息-->
+        <%template src="_copyright.html"%>
+        <!--/版权信息-->
+
+        <!--底部导航-->
+        <%template src="_footer.html"%>
+        <!--/底部导航-->
+    </div>
+    
+</div>  
+</body>
+</html>

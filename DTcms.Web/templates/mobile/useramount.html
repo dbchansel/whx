@@ -1,0 +1,353 @@
+﻿<!DOCTYPE html>
+<!--HTML5 doctype-->
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+<title>账户余额 - {site.name}</title>
+<meta name="keywords" content="{site.seo_keyword}" />
+<meta name="description" content="{site.seo_description}" />
+<link rel="stylesheet" type="text/css" href="<%templateskin%>/css/style.css" />
+<script type="text/javascript" charset="utf-8" src="<%templateskin%>/js/zepto.min.js"></script>
+<script type="text/javascript" charset="utf-8" src="<%templateskin%>/js/weui.min.js"></script>
+<script type="text/javascript" charset="utf-8" src="<%templateskin%>/js/common.js"></script>
+</head>
+
+<body ontouchstart>
+<div class="page">
+    <!--页面头部-->
+    <div class="header">
+        <a class="back" href="javascript:history.back();">
+            <i class="iconfont icon-arrow-left"></i>
+        </a>
+        <h3>账户余额</h3>
+        <div class="right"> 
+            <a class="weui-cell_access weui-cell_link" href="<%linkurl("usercenter","index")%>">
+                <i class="iconfont icon-user"></i>
+            </a>
+        </div>
+    </div>
+    <!--/页面头部-->
+    
+    <div class="page__bd">
+
+        <%if(action=="recharge")%>
+        <!--账户充值-->
+        <link rel="stylesheet" type="text/css" href="<%templateskin%>/css/validate.css" />
+        <script type="text/javascript" charset="utf-8" src="<%templateskin%>/js/mvalidate.js"></script>
+        <script type="text/javascript" charset="utf-8" src="<%templateskin%>/js/mvalidate-extend.js"></script>
+        <script type="text/javascript">
+            $(function(){
+                //初始化表单
+                AjaxInitForm('#rechargeForm', '#btnSubmit', 0);
+                //选中TAB样式
+                $(".weui-tabbar a").eq(1).addClass("weui-bar__item_on");
+            });
+        </script>
+        <form id="rechargeForm" name="rechargeForm" class="form-box" url="{config.webpath}tools/submit_ajax.ashx?action=user_amount_recharge&site_id={site.id}">
+        <div class="weui-form-preview" style="margin-top:10px;">
+            <div class="weui-form-preview__hd">
+                <div class="weui-form-preview__item">
+                    <label class="weui-form-preview__label">当前余额</label>
+                    <em class="weui-form-preview__value">¥{userModel.amount}</em>
+                </div>
+            </div>
+        </div>
+        
+        <div class="weui-panel weui-panel_access">
+            <div class="weui-panel__hd">账户充值</div>
+            <div class="weui-panel__bd">
+                <div class="weui-cells_form form-box">
+                    <div class="weui-cell">
+                        <div class="weui-cell__hd">
+                            <label class="weui-label">充值金额</label>
+                        </div>
+                        <div class="weui-cell__bd">
+                            <input id="order_amount" name="order_amount" type="text" class="weui-input" placeholder="请输入金额" data-validate="n" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="weui-panel weui-panel_access">
+            <div class="weui-panel__hd">支付方式</div>
+            <div class="weui-panel__bd">
+                <div class="weui-cells_radio form-box">
+                    <!--取得一个DataTable-->
+                    <%set DataTable payList=get_payment_list(0, "type=1 and payment_id>2 and site_id="+site.id)%>
+                    <%foreach(DataRow dr in payList.Rows)%>
+                    <label class="weui-cell weui-check__label" for="p-{dr[id]}">
+                        <div class="weui-cell__bd">
+                            <p>{dr[title]}</p>
+                        </div>
+                        <div class="weui-cell__ft">
+                            <input id="p-{dr[id]}" name="payment_id" type="radio" class="weui-check" value="{dr[id]}" data-validate="select" />
+                            <span class="weui-icon-checked"></span>
+                        </div>
+                    </label>
+                    <%/foreach%>
+                </div>
+            </div>
+        </div>
+        
+        <div class="weui-btn-area">
+            <input id="btnSubmit" name="btnSubmit" type="submit" class="weui-btn weui-btn_primary" value="确认充值" />
+        </div>
+        </form>
+        <!--账户充值-->
+
+        <%else if(action=="log")%>
+        <!--充值记录-->
+        <script type="text/javascript">
+            $(function(){
+                //选中TAB样式
+                $(".weui-tabbar a").eq(2).addClass("weui-bar__item_on");
+            });
+            //删除方法
+            function ExecPostBack(checkValue) {
+                if (arguments.length == 1) {
+                    ExecDelete('{config.webpath}tools/submit_ajax.ashx?action=user_recharge_delete', checkValue, '#turl');
+                }else{
+                    var valueArr = '';
+                    $("input[name='checkId']:checked").each(function(i){
+                        valueArr += $(this).val();
+                        if(i < $("input[name='checkId']:checked").length - 1){
+                            valueArr += ","
+                        }
+                    });
+                    ExecDelete('{config.webpath}tools/submit_ajax.ashx?action=user_recharge_delete', valueArr, '#turl');
+                }
+            }
+        </script>
+        
+        <div class="detail-list">
+            <ul>
+                <!--取得一个DataTable-->
+                <%set DataTable rechargeList=get_user_recharge_list(10, page, "user_id="+userModel.id, out totalcount)%>
+                <!--取得分页页码列表-->
+                <%set string pagelist=get_page_link(10, page, totalcount, "useramount", action, "__id__")%>
+                <%foreach(DataRow dr in rechargeList.Rows)%>
+                <li>
+                    <div class="detail-hd">
+                        <span class="fr">
+                            <%if({strtoint({dr[status]})}>0)%>
+                                已完成
+                            <%else%>
+                                未完成
+                            <%/if%>
+                        </span>
+                        <span>{dr[add_time]}</span>
+                    </div>
+                    <div class="detail-bd">
+                        <div class="list-box">
+                            <div class="txt-box">
+                                <h2>订单号 {dr[recharge_no]}</h2>
+                                <p class="note">
+                                    <span class="fr">
+                                        ￥{dr[amount]}
+                                    </span>
+                                    <span><%=get_payment_title({strtoint({dr[payment_id]})})%></span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="detail-ft">
+                        <div class="ft-btn">
+                            <div class="btn-box">
+                                <a href="javascript:;" onclick="ExecPostBack('{dr[id]}');">
+                                    <i class="iconfont icon-delete"></i>
+                                    删除
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                <%/foreach%>
+                <%if(rechargeList.Rows.Count==0)%>
+                <div class="nodata">暂无记录...</div>
+                <%/if%>
+            </ul>
+        </div>
+        
+        <!--分页页码-->
+        <div class="page-list">
+            {pagelist}
+        </div>
+        <!--/分页页码-->
+        
+        <!--div class="detail-list">
+            <ul>
+                <li>
+                    <div class="detail-hd">
+                        <span class="fr">已完成</span>
+                        <span>2017-07-08 22:30:12</span>
+                    </div>
+                    <div class="detail-bd">
+                        <div class="list-box">
+                            <div class="img-box">
+                                <img src="#" />
+                            </div>
+                            <div class="txt-box">
+                                <h2>这是标题文字</h2>
+                                <p>这是描述信息</p>
+                                <p class="note">
+                                    <span class="fr">X1</span>
+                                    <span>文字</span>
+                                </p>
+                            </div>
+                        </div>
+                        
+                        <div class="list-box">
+                            <div class="img-box">
+                                <img src="#" />
+                            </div>
+                            <div class="txt-box">
+                                <h2>这是标题文字</h2>
+                                <p>这是描述信息</p>
+                                <p class="note">
+                                    <span class="fr">X1</span>
+                                    <span>文字</span>
+                                </p>
+                            </div>
+                        </div>
+                        
+                    </div>
+                    <div class="detail-ft">
+                        <p class="fr">共1件商品 合计：325元</p>
+                        <p>再来一句说明</p>
+                        <div class="ft-btn">
+                            <label class="check-box">
+                                <input type="checkbox" name="checkall" class="checkall" />全选
+                            </label>
+                            <div class="btn-box">
+                                <a href="javascript:;">
+                                    <i class="iconfont icon-all"></i>
+                                    选择
+                                </a>
+                                <a href="javascript:;">
+                                    <i class="iconfont icon-delete"></i>
+                                    删除
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                
+            </ul>
+        </div-->
+        
+        <input id="turl" type="hidden" value="<%linkurl("useramount","log")%>" /><!--存在跳转的URL值-->
+        <!--/充值记录-->
+        
+        <%else if(action=="list")%>
+        <!--收支明细-->
+        <script type="text/javascript">
+            $(function(){
+                //选中TAB样式
+                $(".weui-tabbar a").eq(3).addClass("weui-bar__item_on");
+            });
+            //删除方法
+            function ExecPostBack(checkValue) {
+                if (arguments.length == 1) {
+                    ExecDelete('{config.webpath}tools/submit_ajax.ashx?action=user_amount_delete', checkValue, '#turl');
+                }else{
+                    var valueArr = '';
+                    $("input[name='checkId']:checked").each(function(i){
+                        valueArr += $(this).val();
+                        if(i < $("input[name='checkId']:checked").length - 1){
+                            valueArr += ","
+                        }
+                    });
+                    ExecDelete('{config.webpath}tools/submit_ajax.ashx?action=user_amount_delete', valueArr, '#turl');
+                }
+            }
+        </script>
+        
+        <div class="detail-list">
+            <ul>
+                <!--取得一个DataTable-->
+                <%set DataTable amountList=get_user_amount_list(10, page, "user_id="+userModel.id, out totalcount)%>
+                <!--取得分页页码列表-->
+                <%set string pagelist=get_page_link(10, page, totalcount, "useramount", action, "__id__")%>
+                <%foreach(DataRow dr in amountList.Rows)%>
+                <li>
+                    <div class="detail-bd">
+                        <div class="list-box">
+                            <div class="txt-box">
+                                <h2>{dr[remark]}</h2>
+                                <p class="note">
+                                    <span class="fr">
+                                        <%if({strtoint({dr[value]})}>0)%>
+                                        +{dr[value]}
+                                        <%else%>
+                                        {dr[value]}
+                                        <%/if%>
+                                    </span>
+                                    <span>{dr[add_time]}</span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="detail-ft">
+                        <div class="ft-btn">
+                            <div class="btn-box">
+                                <a href="javascript:;" onclick="ExecPostBack('{dr[id]}');">
+                                    <i class="iconfont icon-delete"></i>
+                                    删除
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                <%/foreach%>
+                <%if(amountList.Rows.Count==0)%>
+                <div class="nodata">暂无记录...</div>
+                <%/if%>
+            </ul>
+        </div>
+        
+        <!--分页页码-->
+        <div class="page-list">
+            {pagelist}
+        </div>
+        <!--/分页页码-->
+        
+        <input id="turl" type="hidden" value="<%linkurl("useramount","list")%>" /><!--存在跳转的URL值-->
+        <!--/收支明细-->
+        <%/if%>
+        
+    </div>
+    
+    <!--版权信息-->
+    <%template src="_copyright.html"%>
+    <!--/版权信息-->
+
+    <!--底部导航-->
+    <div class="weui-tab foot-nav">
+        <div class="weui-tab__panel">
+
+        </div>
+        <div class="weui-tabbar">
+            <a href="<%linkurl("index")%>" class="weui-tabbar__item">
+                <i class="iconfont icon-home weui-tabbar__icon"></i>
+                <p class="weui-tabbar__label">首页</p>
+            </a>
+            <a href="<%linkurl("useramount","recharge")%>" class="weui-tabbar__item">
+                <i class="iconfont icon-money weui-tabbar__icon"></i>
+                <p class="weui-tabbar__label">账户充值</p>
+            </a>
+            <a href="<%linkurl("useramount","log")%>" class="weui-tabbar__item">
+                <i class="iconfont icon-amount weui-tabbar__icon"></i>
+                <p class="weui-tabbar__label">充值记录</p>
+            </a>
+            <a href="<%linkurl("useramount","list")%>" class="weui-tabbar__item">
+                <i class="iconfont icon-log weui-tabbar__icon"></i>
+                <p class="weui-tabbar__label">收支明细</p>
+            </a>
+        </div>
+    </div>
+    <!--/底部导航-->
+</div>
+</body>
+</html>

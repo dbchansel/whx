@@ -1,0 +1,68 @@
+﻿<div class="header">
+    <div class="head-top">
+        <div class="section">
+            <div class="left-box">
+                <span>网站链接：</span>
+                <a target="_blank" href="/">东营创新创业服务平台</a>                
+            </div>
+            <script type="text/javascript">
+                $.ajax({
+                    type: "POST",
+                    url: "{config.webpath}tools/submit_ajax.ashx?action=user_check_login",
+                    dataType: "json",
+                    timeout: 20000,
+                    success: function (data, textStatus) {
+                        if (data.status == 1) {
+                            $("#hbbd_menu").prepend('<a href="<%linkurl("usercenter","index")%>">我的账户</a>');
+                            $("#hbbd_menu").prepend('<a href="<%linkurl("usercenter","exit")%>">退出</a>');                            
+                        } else {
+                            $("#hbbd_menu").prepend('<a href="<%linkurl("login")%>">登录</a>');
+                            $("#hbbd_menu").prepend('<a href="<%linkurl("register")%>">注册</a>');                            
+                        }
+                    }
+                });
+            </script>
+            <div id="menu" class="right-box">
+                <a href="<%linkurl("content","contact")%>"><i class="iconfont icon-phone"></i>联系我们</a>                
+            </div>
+        </div>
+    </div>
+    <div class="head-body">
+        <div class="head-body-div">
+            <div class="head-body-div-div1">
+            </div>
+            <div class="head-body-div-div2">
+                <div class="hbbd_search">
+                    <div class="hbbd_search_txt">
+                        <input id="keywords" name="keywords" type="text" onkeydown="if(event.keyCode==13){SiteSearch('<%linkurl("search")%>', '#keywords');return false};" placeholder="输入关健字" x-webkit-speech="" />
+                    </div>
+                    <div class="hbbd_search_bt">
+                        <a href="javascript:;" onclick="SiteSearch('<%linkurl("search")%>', '#keywords');">                            
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="head-body-div-div3">
+                <div class="hbbd_menu" id="hbbd_menu">
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="head-nav-div">
+        <div class="nav-box2">
+            <ul>
+                <li class="top_a"><a href="<%linkurl("index")%>">网站首页</a></li>
+                <li class="top_a"><a href="<%linkurl("news")%>">创业资讯</a></li>
+                <li class="top_a"><a href="#">创想邦</a></li>
+                <li class="top_a"><a href="#">公共服务</a></li>
+                <li class="top_a"><a href="#">创新地图</a></li>
+                <li class="top_a"><a href="#">创客驿站</a></li>
+                <li class="top_a"><a href="#">双创政策</a></li>
+                <li class="top_a"><a href="#">项目申报</a></li>
+                <li class="top_a"><a href="#">创新学院</a></li>
+                <li class="top_a"><a href="#">动态展示</a></li>                
+            </ul>
+        </div>
+    </div>    
+</div>

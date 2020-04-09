@@ -1,0 +1,280 @@
+﻿<!DOCTYPE html>
+<!--HTML5 doctype-->
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+<title>{site.seo_title}</title>
+<meta name="keywords" content="{site.seo_keyword}" />
+<meta name="description" content="{site.seo_description}" />
+<link rel="stylesheet" type="text/css" href="<%templateskin%>/css/idangerous.swiper.css" />
+<link rel="stylesheet" type="text/css" href="<%templateskin%>/css/style.css" />
+<script type="text/javascript" charset="utf-8" src="<%templateskin%>/js/zepto.min.js"></script>
+<script type="text/javascript" charset="utf-8" src="<%templateskin%>/js/weui.min.js"></script>
+<script type="text/javascript" charset="utf-8" src="<%templateskin%>/js/common.js"></script>
+<script type="text/javascript" charset="utf-8" src="<%templateskin%>/js/idangerous.swiper-2.1.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function(){
+        //初始化幻灯片
+        var mySwiper = new Swiper('.swiper-container',{
+            calculateHeight:true,
+            resizeReInit:true,
+            pagination:".pagination",
+            autoplay:5000,
+            paginationClickable:true
+        });
+        //选中Tab
+        $(".weui-tabbar a").eq(0).addClass("weui-bar__item_on");
+    });
+</script>
+</head>
+
+<body ontouchstart>
+<div class="page">
+    <!--页面头部-->
+    <%template src="_header.html"%>
+    <!--/页面头部-->
+  
+    <!--页面内容-->
+    <div class="page__bd">
+        <!--首页幻灯片-->
+        <div id="slider" class="swiper-container">
+            <div class="swiper-wrapper">
+                <div class="swiper-slide"><img src="<%templateskin%>/images/banner1.jpg"/></div>
+                <div class="swiper-slide"><img src="<%templateskin%>/images/banner2.jpg"/></div>
+                <div class="swiper-slide"><img src="<%templateskin%>/images/banner3.jpg"/></div>
+            </div>
+            <div class="pagination"></div>
+        </div>
+        <!--/首页幻灯片-->
+    
+        <!--首页图标导航-->
+        <div class="weui-grids nav-list">
+            <a href="<%linkurl("news")%>" class="weui-grid">
+                <div class="weui-grid__icon">
+                    <i class="iconfont icon-news"></i>
+                </div>
+                <p class="weui-grid__label">新闻资讯</p>
+            </a>
+            <a href="<%linkurl("goods")%>" class="weui-grid">
+                <div class="weui-grid__icon">
+                    <i class="iconfont icon-shopping"></i>
+                </div>
+                <p class="weui-grid__label">购物商城</p>
+            </a>
+            <a href="<%linkurl("video")%>" class="weui-grid">
+                <div class="weui-grid__icon">
+                    <i class="iconfont icon-video"></i>
+                </div>
+                <p class="weui-grid__label">视频专区</p>
+            </a>
+            <a href="<%linkurl("photo")%>" class="weui-grid">
+                <div class="weui-grid__icon">
+                    <i class="iconfont icon-pic"></i>
+                </div>
+                <p class="weui-grid__label">图片分享</p>
+            </a>
+            <a href="<%linkurl("down")%>" class="weui-grid">
+                <div class="weui-grid__icon">
+                    <i class="iconfont icon-folder"></i>
+                </div>
+                <p class="weui-grid__label">资源下载</p>
+            </a>
+            <a href="<%linkurl("usercenter","index")%>" class="weui-grid">
+                <div class="weui-grid__icon">
+                    <i class="iconfont icon-user"></i>
+                </div>
+                <p class="weui-grid__label">会员中心</p>
+            </a>
+            <a href="<%linkurl("content","about")%>" class="weui-grid">
+                <div class="weui-grid__icon">
+                    <i class="iconfont icon-book"></i>
+                </div>
+                <p class="weui-grid__label">关于我们</p>
+            </a>
+            <a href="<%linkurl("feedback")%>" class="weui-grid">
+                <div class="weui-grid__icon">
+                    <i class="iconfont icon-msg"></i>
+                </div>
+                <p class="weui-grid__label">留言反馈</p>
+            </a>
+            <a href="<%linkurl("content","contact")%>" class="weui-grid">
+                <div class="weui-grid__icon">
+                    <i class="iconfont icon-tel"></i>
+                </div>
+                <p class="weui-grid__label">联系我们</p>
+            </a>
+        </div>
+        <!--/首页图标导航-->
+    
+        <!--新闻资讯-->
+        <div class="weui-panel weui-panel_access">
+            <div class="weui-panel__hd">新闻资讯</div>
+            <div class="weui-panel__bd">
+                <div class="txt-list">
+                    <ul>
+                        <%set DataTable newsList=get_article_list("news", 0, 8, "status=0 and img_url<>''")%>
+                        <%loop newdr newsList%>
+                        <%if(newdr__loop__id==1)%>
+                        <li>
+                            <a href="<%linkurl("news_show",{newdr[id]})%>">
+                                <img src="{newdr[img_url]}" />
+                                <h2>{newdr[title]}</h2>
+                                <p class="intro">{newdr[zhaiyao]}</p>
+                            </a>
+                        </li>
+                        <%else%>
+                        <li>
+                            <a href="<%linkurl("news_show",{newdr[id]})%>">
+                                <i class="date"><%datetostr({newdr[add_time]},MM-dd)%></i>
+                                <span class="text">{newdr[title]}</span>
+                            </a>
+                        </li>
+                        <%/if%>
+                        <%/loop%>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="weui-panel__ft">
+                <a class="weui-cell weui-cell_access weui-cell_link" href="<%linkurl("news")%>">
+                    <div class="weui-cell__bd">查看更多</div>
+                    <span class="weui-cell__ft"></span>
+                </a>    
+            </div>
+        </div>
+        <!--新闻资讯-->
+    
+        <!--购物商城-->
+        <div class="weui-panel weui-panel_access">
+            <div class="weui-panel__hd">购物商城</div>
+            <div class="weui-panel__bd">
+                <div class="txt-list">
+                    <ul>
+                        <%set DataTable redGoods=get_article_list("goods", 0, 4, "status=0 and is_red=1")%>
+                        <%foreach(DataRow dr in redGoods.Rows)%>
+                        <li>
+                            <a href="<%linkurl("goods_show",{dr[id]})%>">
+                                <img src="{dr[img_url]}" />
+                                <h2>{dr[title]}</h2>
+                                <div class="note">
+                                    <p>{dr[zhaiyao]}</p>
+                                    <p><i class="hot">{dr[click]}人</i><i class="price">¥{dr[sell_price]}</i>元</p>
+                                </div>
+                            </a>
+                        </li>
+                        <%/foreach%>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="weui-panel__ft">
+                <a class="weui-cell weui-cell_access weui-cell_link" href="<%linkurl("goods")%>">
+                    <div class="weui-cell__bd">查看更多</div>
+                    <span class="weui-cell__ft"></span>
+                </a>    
+            </div>
+        </div>
+        <!--/购物商城-->
+
+        <!--视频专区-->
+        <div class="weui-panel weui-panel_access">
+            <div class="weui-panel__hd">视频专区</div>
+            <div class="weui-panel__bd">
+                <div class="photo-list">
+                    <ul>
+                        <%set DataTable redVideo=get_article_list("video", 0, 6, "status=0 and is_red=1")%>
+                        <%foreach(DataRow dr in redVideo.Rows)%>
+                        <li>
+                            <a href="<%linkurl("video_show",{dr[id]})%>" title="{dr[title]}">
+                                <img src="{dr[img_url]}" />
+                                <h2>{dr[title]}</h2>
+                            </a>
+                        </li>
+                        <%/foreach%>
+                    </ul>
+                </div>
+            </div>
+            <div class="weui-panel__ft">
+                <a class="weui-cell weui-cell_access weui-cell_link" href="<%linkurl("video")%>">
+                    <div class="weui-cell__bd">查看更多</div>
+                    <span class="weui-cell__ft"></span>
+                </a>    
+            </div>
+        </div>
+        <!--/视频专区-->
+
+        <!--图片分享-->
+        <div class="weui-panel weui-panel_access">
+            <div class="weui-panel__hd">图片分享</div>
+            <div class="weui-panel__bd">
+                <div class="photo-list">
+                    <ul>
+                        <%set DataTable redPhoto=get_article_list("photo", 0, 6, "status=0 and is_red=1")%>
+                        <%foreach(DataRow dr in redPhoto.Rows)%>
+                        <li>
+                            <a href="<%linkurl("photo_show",{dr[id]})%>" title="{dr[title]}">
+                                <img src="{dr[img_url]}" />
+                                <h2>{dr[title]}</h2>
+                            </a>
+                        </li>
+                        <%/foreach%>
+                    </ul>
+                </div>
+            </div>
+            <div class="weui-panel__ft">
+                <a class="weui-cell weui-cell_access weui-cell_link" href="<%linkurl("photo")%>">
+                    <div class="weui-cell__bd">查看更多</div>
+                    <span class="weui-cell__ft"></span>
+                </a>    
+            </div>
+        </div>
+        <!--/图片分享-->
+    
+        <!--资源下载-->
+        <div class="weui-panel weui-panel_access">
+            <div class="weui-panel__hd">资源下载</div>
+            <div class="weui-panel__bd">
+                <div class="txt-list">
+                    <ul>
+                        <%set DataTable redDown=get_article_list("down", 0, 5, "status=0 and is_red=1")%>
+                        <%foreach(DataRow dr in redDown.Rows)%>
+                        <li>
+                            <a href="<%linkurl("down_show",{dr[id]})%>" title="{dr[title]}">
+                                <img src="{dr[img_url]}" />
+                                <h2>{dr[title]}</h2>
+                                <div class="note">
+                                    <p>{dr[zhaiyao]}</p>
+                                    <p>
+                                        <i class="hot"><script type="text/javascript" src="{config.webpath}tools/submit_ajax.ashx?action=view_attach_count&channel_id={dr[channel_id]}&id={dr[id]}&view=count"></script>次</i>
+                                        <i class="date">时间：<%datetostr({dr[add_time]},yyyy-MM-dd)%></i>
+                                    </p>
+                                </div>
+                            </a>
+                        </li>
+                        <%/foreach%>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="weui-panel__ft">
+                <a class="weui-cell weui-cell_access weui-cell_link" href="<%linkurl("down")%>">
+                    <div class="weui-cell__bd">查看更多</div>
+                    <span class="weui-cell__ft"></span>
+                </a>    
+            </div>
+        </div>
+        <!--/资源下载-->
+        
+        <!--版权信息-->
+        <%template src="_copyright.html"%>
+        <!--/版权信息-->
+
+        <!--底部导航-->
+        <%template src="_footer.html"%>
+        <!--/底部导航-->
+    </div>
+    <!--/页面内容-->
+</div>
+</body>
+</html>

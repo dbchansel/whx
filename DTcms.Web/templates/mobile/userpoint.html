@@ -1,0 +1,219 @@
+﻿<!DOCTYPE html>
+<!--HTML5 doctype-->
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+<title>我的积分 - {site.name}</title>
+<meta name="keywords" content="{site.seo_keyword}" />
+<meta name="description" content="{site.seo_description}" />
+<link rel="stylesheet" type="text/css" href="<%templateskin%>/css/style.css" />
+<script type="text/javascript" charset="utf-8" src="<%templateskin%>/js/zepto.min.js"></script>
+<script type="text/javascript" charset="utf-8" src="<%templateskin%>/js/weui.min.js"></script>
+<script type="text/javascript" charset="utf-8" src="<%templateskin%>/js/common.js"></script>
+</head>
+
+<body ontouchstart>
+<div class="page">
+    <!--页面头部-->
+    <div class="header">
+        <a class="back" href="javascript:history.back();">
+            <i class="iconfont icon-arrow-left"></i>
+        </a>
+        <h3>我的税分</h3>
+        <div class="right"> 
+            <a class="weui-cell_access weui-cell_link" href="<%linkurl("usercenter","index")%>">
+                <i class="iconfont icon-user"></i>
+            </a>
+        </div>
+    </div>
+    <!--/页面头部-->
+    
+    <div class="page__bd">
+
+        <%if(action=="convert")%>
+        <!--积分兑换-->
+        <link rel="stylesheet" type="text/css" href="<%templateskin%>/css/validate.css" />
+        <script type="text/javascript" charset="utf-8" src="<%templateskin%>/js/mvalidate.js"></script>
+        <script type="text/javascript" charset="utf-8" src="<%templateskin%>/js/mvalidate-extend.js"></script>
+        <script type="text/javascript">
+            $(function(){
+                //初始化表单
+                AjaxInitForm('#pointForm', '#btnSubmit', 1, '#turl');
+                //选中TAB样式
+                $(".weui-tabbar a").eq(1).addClass("weui-bar__item_on");
+            });
+        </script>
+        
+        <input id="hideAmount" name="hideAmount" type="hidden" value="{userModel.amount}" />
+        <input id="hideCashrate" name="hideCashrate" type="hidden" value="{uconfig.pointcashrate}" />
+        <form id="pointForm" name="pointform" class="form-box" url="{config.webpath}tools/submit_ajax.ashx?action=user_point_convert">
+        <div class="weui-form-preview" style="margin-top:10px;">
+            <div class="weui-form-preview__hd">
+                <div class="weui-form-preview__item">
+                    <label class="weui-form-preview__label">账户余额</label>
+                    <em class="weui-form-preview__value">¥{userModel.amount}</em>
+                </div>
+            </div>
+            <div class="weui-form-preview__bd">
+                <div class="weui-form-preview__item">
+                    <label class="weui-form-preview__label">账户积分</label>
+                    <span class="weui-form-preview__value">{userModel.point} 分</span>
+                </div>
+                <div class="weui-form-preview__item">
+                    <label class="weui-form-preview__label">兑换说明</label>
+                    <span class="weui-form-preview__value">兑换最少金额为1元，兑换比例：1元等于{uconfig.pointcashrate}积分</span>
+                </div>
+                <%if(uconfig.pointcashrate==0)%>
+                <div class="weui-form-preview__item">
+                    <label class="weui-form-preview__label">温馨提示</label>
+                    <span class="weui-form-preview__value">目前的积分兑换功能已被关闭！</span>
+                </div>
+                <%else if(userModel.amount<1)%>
+                <div class="weui-form-preview__item">
+                    <label class="weui-form-preview__label">温馨提示</label>
+                    <span class="weui-form-preview__value">目前您的余额不足，不能使用积分兑换！</span>
+                </div>
+                <%/if%>
+            </div>
+        </div>
+        
+        <%if(uconfig.pointcashrate>0&&userModel.amount>1)%>
+        <div class="weui-panel weui-panel_access">
+            <div class="weui-panel__hd">积分兑换</div>
+            <div class="weui-panel__bd">
+                <div class="weui-cells_form form-box">
+                    <div class="weui-cell">
+                        <div class="weui-cell__hd">
+                            <label class="weui-label">兑换金额</label>
+                        </div>
+                        <div class="weui-cell__bd">
+                            <input id="txtAmount" name="txtAmount" type="text" class="weui-input" placeholder="请输入兑换金额" data-validate="n" />
+                        </div>
+                    </div>
+                    
+                    <div class="weui-cell">
+                        <div class="weui-cell__hd">
+                            <label class="weui-label">登录密码</label>
+                        </div>
+                        <div class="weui-cell__bd">
+                            <input id="txtPassword" name="txtPassword" type="password" class="weui-input" placeholder="请输入登录密码" data-validate="password" />
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+        <div class="weui-btn-area">
+            <input id="btnSubmit" name="btnSubmit" type="submit" class="weui-btn weui-btn_primary" value="确认兑换" />
+        </div>
+        <%/if%>
+        </form>
+        <!--/积分兑换-->
+
+        <%else if(action=="list")%>
+        <!--积分明细-->
+        <script type="text/javascript">
+            $(function(){
+                //选中TAB样式
+                $(".weui-tabbar a").eq(2).addClass("weui-bar__item_on");
+            });
+            //删除方法
+            function ExecPostBack(checkValue) {
+                if (arguments.length == 1) {
+                    ExecDelete('{config.webpath}tools/submit_ajax.ashx?action=user_point_delete', checkValue, '#turl');
+                }else{
+                    var valueArr = '';
+                    $("input[name='checkId']:checked").each(function(i){
+                        valueArr += $(this).val();
+                        if(i < $("input[name='checkId']:checked").length - 1){
+                            valueArr += ","
+                        }
+                    });
+                    ExecDelete('{config.webpath}tools/submit_ajax.ashx?action=user_point_delete', valueArr, '#turl');
+                }
+            }
+        </script>
+        
+        <div class="detail-list">
+            <ul>
+                <!--取得一个DataTable-->
+                <%set DataTable pointList=get_user_point_list(20, page, "user_id="+userModel.id, out totalcount)%>
+                <!--取得分页页码列表-->
+                <%set string pagelist=get_page_link(20, page, totalcount, "userpoint", action, "__id__")%>
+                <%foreach(DataRow dr in pointList.Rows)%>
+                <li>
+                    <div class="detail-bd">
+                        <div class="list-box">
+                            <div class="txt-box">
+                                <h2>{dr[remark]}</h2>
+                                <p class="note">
+                                    <span class="fr">
+                                        <%if({strtoint({dr[value]})}>0)%>
+                                        +{dr[value]}
+                                        <%else%>
+                                        {dr[value]}
+                                        <%/if%>
+                                    </span>
+                                    <span>{dr[add_time]}</span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="detail-ft">
+                        <div class="ft-btn">
+                            <div class="btn-box">
+                                <a href="javascript:;" onclick="ExecPostBack('{dr[id]}');">
+                                    <i class="iconfont icon-delete"></i>
+                                    删除
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                <%/foreach%>
+                <%if(pointList.Rows.Count==0)%>
+                <div class="nodata">暂无记录...</div>
+                <%/if%>
+            </ul>
+        </div>
+        
+        <!--分页页码-->
+        <div class="page-list">
+            {pagelist}
+        </div>
+        <!--/分页页码-->
+        
+        <input id="turl" type="hidden" value="<%linkurl("userpoint","list")%>" /><!--存在跳转的URL值-->
+        <!--/积分明细-->
+        <%/if%>
+    </div>
+    
+    <!--版权信息-->
+    <%template src="_copyright.html"%>
+    <!--/版权信息-->
+
+    <!--底部导航-->
+    <div class="weui-tab foot-nav">
+        <div class="weui-tab__panel">
+
+        </div>
+        <div class="weui-tabbar">
+            <a href="<%linkurl("index")%>" class="weui-tabbar__item">
+                <i class="iconfont icon-home weui-tabbar__icon"></i>
+                <p class="weui-tabbar__label">首页</p>
+            </a>
+            <a href="<%linkurl("userpoint","convert")%>" class="weui-tabbar__item">
+                <i class="iconfont icon-point weui-tabbar__icon"></i>
+                <p class="weui-tabbar__label">税分兑换</p>
+            </a>
+            <a href="<%linkurl("userpoint","list")%>" class="weui-tabbar__item">
+                <i class="iconfont icon-log weui-tabbar__icon"></i>
+                <p class="weui-tabbar__label">积分明细</p>
+            </a>
+        </div>
+    </div>
+    <!--/底部导航-->
+</div>
+</body>
+</html>

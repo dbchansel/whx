@@ -1,0 +1,324 @@
+﻿<!DOCTYPE html>
+<!--HTML5 doctype-->
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+    <title>投票啦 - {model.Activity_Title}</title>
+    <meta name="keywords" content="{site.seo_keyword}" />
+    <meta name="description" content="{site.seo_description}" />
+    <link rel="stylesheet" type="text/css" href="<%templateskin%>/css/idangerous.swiper.css" />
+    <link rel="stylesheet" type="text/css" href="<%templateskin%>/css/style.css" />
+    <script type="text/javascript" charset="utf-8" src="<%templateskin%>/js/zepto.min.js"></script>
+    <script type="text/javascript" charset="utf-8" src="<%templateskin%>/js/weui.min.js"></script>
+    <script type="text/javascript" charset="utf-8" src="<%templateskin%>/js/common.js"></script>
+    <script type="text/javascript" charset="utf-8" src="<%templateskin%>/js/idangerous.swiper-2.1.min.js"></script>
+
+    <link rel="stylesheet" href="https://cdn.bootcss.com/weui/1.1.3/style/weui.min.css">
+    <link rel="stylesheet" href="https://cdn.bootcss.com/jquery-weui/1.2.1/css/jquery-weui.min.css">
+
+    <script src="https://cdn.bootcss.com/jquery/1.11.0/jquery.min.js"></script>
+    <script src="https://cdn.bootcss.com/jquery-weui/1.2.1/js/jquery-weui.min.js"></script>
+
+    <!-- 如果使用了某些拓展插件还需要额外的JS -->
+    <script src="https://cdn.bootcss.com/jquery-weui/1.2.1/js/swiper.min.js"></script>
+    <script src="https://cdn.bootcss.com/jquery-weui/1.2.1/js/city-picker.min.js"></script>
+    <link rel="stylesheet" href="https://res.wx.qq.com/open/libs/weui/0.3.0/weui.css" />
+    <script type="text/javascript">
+        var JoinImg1 = "";
+        var JoinImg2 = "";
+        var JoinImg3 = "";
+        var JoinImg4 = "";
+        var JoinImg5 = "";
+        var JoinImg6 = "";
+        var JoinImg7 = "";
+        var JoinImg8 = "";
+        var JoinImg9 = "";
+        var JoinImg10 = "";
+        var openid;
+        function getCookie(c_name) {
+            if (document.cookie.length > 0) {
+                c_start = document.cookie.indexOf(c_name + "=")
+                if (c_start != -1) {
+                    c_start = c_start + c_name.length + 1
+                    c_end = document.cookie.indexOf(";", c_start)
+                    if (c_end == -1) c_end = document.cookie.length
+                    return unescape(document.cookie.substring(c_start, c_end))
+                }
+            }
+            return ""
+        }
+        $(function () {
+            openid = getCookie("openid");
+            if (openid == null && openid == "")
+            {
+    //            alert("goVote.aspx?id={model.id}");
+                window.location.href = "goVote.aspx?id={model.id}";
+            }
+            // 允许上传的图片类型
+            var allowTypes = ['image/jpg', 'image/jpeg', 'image/png', 'image/gif'];
+            // 1024KB，也就是 1MB
+            var maxSize = 4024 * 4024;
+            // 图片最大宽度
+            var maxWidth = 300;
+            // 最大上传图片数量
+            var maxCount = 10;
+            $('.js_file').on('change', function (event) {
+                var files = event.target.files;
+
+                // 如果没有选中文件，直接返回
+                if (files.length === 0) {
+                    return;
+                }
+
+                for (var i = 0, len = files.length; i < len; i++) {
+                    var file = files[i];
+                    var reader = new FileReader();
+
+                    // 如果类型不在允许的类型范围内
+                    if (allowTypes.indexOf(file.type) === -1) {
+                        $.weui.alert({ text: '该类型不允许上传' });
+                        continue;
+                    }
+
+                    if (file.size > maxSize) {
+                        $.weui.alert({ text: '图片太大，不允许上传' });
+                        continue;
+                    }
+
+                    if ($('.weui_uploader_file').length >= maxCount) {
+                        $.weui.alert({ text: '最多只能上传' + maxCount + '张图片' });
+                        return;
+                    }
+
+                    reader.onload = function (e) {
+                        var img = new Image();
+                        img.onload = function () {
+                            // 不要超出最大宽度
+                            var w = Math.min(maxWidth, img.width);
+                            // 高度按比例计算
+                            var h = img.height * (w / img.width);
+                            var canvas = document.createElement('canvas');
+                            var ctx = canvas.getContext('2d');
+                            // 设置 canvas 的宽度和高度
+                            canvas.width = w;
+                            canvas.height = h;
+                            ctx.drawImage(img, 0, 0, w, h);
+                            var base64 = canvas.toDataURL();
+
+                            // 插入到预览区
+                            var $preview = $('<li class="weui_uploader_file weui_uploader_status" style="background-image:url(' + base64 + ')"><div class="weui_uploader_status_content">0%</div></li>');
+                            $('.weui_uploader_files').append($preview);
+                            var num = $('.weui_uploader_file').length;
+                            if (num == 1)
+                                JoinImg1 = base64.split(';')[1].split(',')[1];
+                            if (num == 2)
+                                JoinImg2 = base64.split(';')[1].split(',')[1];
+                            if (num == 3)
+                                JoinImg3 = base64.split(';')[1].split(',')[1];
+                            if (num == 4)
+                                JoinImg4 = base64.split(';')[1].split(',')[1];
+                            if (num == 5)
+                                JoinImg5 = base64.split(';')[1].split(',')[1];
+                            if (num == 6)
+                                JoinImg6 = base64.split(';')[1].split(',')[1];
+                            if (num == 7)
+                                JoinImg7 = base64.split(';')[1].split(',')[1];
+                            if (num == 8)
+                                JoinImg8 = base64.split(';')[1].split(',')[1];
+                            if (num == 9)
+                                JoinImg9 = base64.split(';')[1].split(',')[1];
+                            if (num == 10)
+                                JoinImg10 = base64.split(';')[1].split(',')[1];
+
+                            $('.js_counter').text(num + '/' + maxCount);
+
+                            // 然后假装在上传，可以post base64格式，也可以构造blob对象上传，也可以用微信JSSDK上传
+
+                            var progress = 0;
+                            function uploading() {
+                                $preview.find('.weui_uploader_status_content').text(++progress + '%');
+                                if (progress < 100) {
+                                    setTimeout(uploading, 30);
+                                }
+                                else {
+                                    // 如果是失败，塞一个失败图标
+                                    //$preview.find('.weui_uploader_status_content').html('<i class="weui_icon_warn"></i>');
+                                    $preview.removeClass('weui_uploader_status').find('.weui_uploader_status_content').remove();
+                                }
+                            }
+                            setTimeout(uploading, 30);
+                        };
+
+                        img.src = e.target.result;        
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+        });
+
+	$(document).ready(function(){
+		var mySwiper = new Swiper('.swiper-container',{
+			calculateHeight:true,
+			resizeReInit:true,
+			pagination:".pagination",
+			autoplay:5000,
+			paginationClickable:true
+		});
+	});
+	function JoinFun()
+	{
+	    var JoinContent = $("#JoinContent").val();
+	    var JoinAddress = $("#JoinAddress").val();
+	    var JoinTel = $("#JoinTel").val();
+	    var JoinName = $("#JoinName").val();
+	    var aj = $.ajax({
+	        url: '{config.webpath}tools/submit_ajax.ashx?action=VoteJoin&id={model.id}',// 投票
+	        type: 'post',
+	        data: {
+	            'action': 'VoteJoin',
+	            'id': '{model.id}',
+	            'JoinContent': JoinContent,
+	            'JoinAddress': JoinAddress,
+	            'JoinTel': JoinTel,
+	            'JoinName': JoinName,
+	            'JoinImg1': JoinImg1,
+	            'JoinImg2': JoinImg2,
+	            'JoinImg3': JoinImg3,
+	            'JoinImg4': JoinImg4,
+	            'JoinImg5': JoinImg5,
+	            'JoinImg6': JoinImg6,
+	            'JoinImg7': JoinImg7,
+	            'JoinImg8': JoinImg8,
+	            'JoinImg9': JoinImg9,
+	            'JoinImg10': JoinImg10,
+	            'openid': openid
+	        },
+	        cache: false,
+	        dataType: 'json',
+	        success: function (data) {
+	            if (data.status == "1") {
+	                alert("报名成功，等待管理员审核！");
+	                var t = setTimeout("reloadVotemember()", 1000);
+	         //       openSucced();
+	                //  window.location.href = "{config.webpath}api/payment/wxapipay/index_vote.aspx?pay_order_no=" + data.order_no + "&pay_order_amount=" + data.order_amount;
+	            } else {
+	                debugger;
+	                alert("异常！");
+	            }
+	        },
+	        error: function () {
+	            // view("异常！");    
+	            alert("异常！");
+	        }
+	    });
+	//    alert('{config.webpath}tools/submit_ajax.ashx?action=VoteJoin&id={id}&JoinContent=' + JoinContent + '&JoinImg1=' + JoinImg1 + '&JoinAddress=' + JoinAddress + '&JoinTel=' + JoinTel + '&JoinName=' + JoinName + '&VoteId={id}');
+	//    clickSubmit('{config.webpath}tools/submit_ajax.ashx?action=VoteJoin&id={id}&JoinContent=' + JoinContent + '&JoinImg1=' + JoinImg1 + '&JoinAddress=' + JoinAddress + '&JoinTel=' + JoinTel + '&JoinName=' + JoinName + '&VoteId={id}');
+	}
+	function reloadVotemember() {
+	    window.location.href = "goVote.aspx?id={model.id}";
+	}
+        //图片上传，参考文档https://blog.csdn.net/sinat_36558867/article/details/79492843
+    </script>
+</head>
+
+<body style="background-color:#ffffff" id="news" ontouchstart>
+    <div class="page">
+        <!--页面头部-->
+        <div class="header">
+            <h3>填写报名信息</h3>
+        </div>
+        <!--/页面头部-->
+        <!--页面内容-->
+        <div class="page__bd">
+            <!--注册信息-->
+            <div class="weui-cells__title">选手姓名：</div>
+            <div class="weui-cells">
+                <div class="weui-cell">
+                    <div class="weui-cell__bd">
+                        <input class="weui-input" id="JoinName" type="text" placeholder="请输入选手姓名">
+                    </div>
+                </div>
+            </div>
+            <div class="weui-cells__title">联络方式</div>
+            <div class="weui-cells">
+                <div class="weui-cell">
+                    <div class="weui-cell__bd">
+                        <input class="weui-input" id="JoinTel" type="text" placeholder="请输入联络方式">
+                    </div>
+                </div>
+            </div>
+            <div class="weui-cells__title">选手地址</div>
+            <div class="weui-cells">
+                <div class="weui-cell">
+                    <div class="weui-cell__bd">
+                        <input class="weui-input" id="JoinAddress" type="text" placeholder="请输入选手地址">
+                    </div>
+                </div>
+            </div>
+            <div class="weui-cells__title">选手介绍：</div>
+            <div class="weui-cells weui-cells_form">
+                <div class="weui-cell">
+                    <div class="weui-cell__bd">
+                        <textarea class="weui-textarea" id="JoinContent" placeholder="请输入选手介绍" rows="3"></textarea>
+                        <div class="weui-textarea-counter"><span>0</span>/500</div>
+                    </div>
+                </div>
+            </div>
+            <div class="weui-panel_access">
+                <div class="weui_uploader">
+                    <div class="weui_uploader_hd weui_cell">
+                        <div class="weui_cell_bd weui_cell_primary">图片上传</div>
+                        <div class="weui_cell_ft js_counter">0/10</div>
+                    </div>
+                    <div class="weui_uploader_bd">
+                        <ul class="weui_uploader_files" id="imgli">
+                            <!-- 预览图插入到这 -->
+                        </ul>
+                        <div class="weui_uploader_input_wrp">
+                            <input class="weui_uploader_input js_file" type="file" accept="image/jpg,image/jpeg,image/png,image/gif" multiple="">
+                        </div>
+                    </div>
+                </div>
+
+
+                <center>
+                    <div style="width:250px;height:35px;background-color:limegreen;text-align:center;color:white;font-size:20px;border-radius: 6px;" onclick="JoinFun()">
+                        确认参加
+                    </div>
+                </center>
+            </div>
+            <!--注册信息-->
+            <!--版权信息-->
+            <%template src="_copyright_Vote.html"%>
+            <!--/版权信息-->
+            <!--底部导航-->
+            <div class="weui-tab foot-nav">
+                <div class="weui-tab__panel">
+
+                </div>
+                <div class="weui-tabbar">
+                    <a href="goVote.aspx?id={model.id}" class="weui-tabbar__item">
+                        <i class="iconfont icon-home weui-tabbar__icon"></i>
+                        <p class="weui-tabbar__label">首页</p>
+                    </a>
+                    <a href="VoteRank.aspx?VoteId={model.id}" class="weui-tabbar__item">
+                        <i class="iconfont icon-view weui-tabbar__icon"></i>
+                        <p class="weui-tabbar__label">排名</p>
+                    </a>
+                    <a href="VoteGift.aspx?VoteId={model.id}" class="weui-tabbar__item">
+                        <i class="iconfont icon-order weui-tabbar__icon"></i>
+                        <p class="weui-tabbar__label">奖品</p>
+                    </a>
+                    <a href="VoteJoin.aspx?VoteId={model.id}" class="weui-tabbar__item">
+                        <i class="iconfont icon-user weui-tabbar__icon"></i>
+                        <p class="weui-tabbar__label">报名</p>
+                    </a>
+                </div>
+            </div>
+            <!--/底部导航-->
+        </div>
+        <!--/页面内容-->
+    </div>
+</body>
+</html>

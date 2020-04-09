@@ -1,0 +1,115 @@
+﻿<!DOCTYPE html>
+<!--HTML5 doctype-->
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+<title>{model.title} - {site.name}</title>
+<meta name="keywords" content="{model.seo_keywords}" />
+<meta name="description" content="{model.seo_description}" />
+<link rel="stylesheet" type="text/css" href="{config.webpath}css/pagination.css" />
+<link rel="stylesheet" type="text/css" href="<%templateskin%>/css/style.css" />
+<script type="text/javascript" charset="utf-8" src="<%templateskin%>/js/zepto.min.js"></script>
+<script type="text/javascript" charset="utf-8" src="<%templateskin%>/js/weui.min.js"></script>
+<script type="text/javascript" charset="utf-8" src="<%templateskin%>/js/common.js"></script>
+</head>
+
+<body ontouchstart>
+<div class="page">
+    <!--页面头部-->
+    <div class="header">
+        <a class="back" href="javascript:history.back();">
+            <i class="iconfont icon-arrow-left"></i>
+        </a>
+        <h3>资源下载</h3>
+        <div class="right"> 
+            <a class="weui-cell_access weui-cell_link" onclick="showDialogBox('#category-box');">
+                <i class="iconfont icon-nav"></i>
+            </a>
+        </div>
+    </div>
+    <!--/页面头部-->
+  
+    <!--页面内容-->
+    <div class="page__bd">
+        <!--资讯列表-->
+        <div class="weui-panel weui-panel_access" style="margin-top:10px;">
+            <div class="weui-panel__hd">{model.title}</div>
+            <div class="weui-panel__bd">
+                <div class="txt-list">
+                    <ul>
+                        <!--取得一个分页DataTable-->
+                        <%set DataTable downList=get_article_list(channel, category_id, pagesize, page, "status=0", out totalcount, out pagelist, "down_list", category_id, "__id__")%>
+                        <%foreach(DataRow dr in downList.Rows)%>
+                        <li>
+                            <a href="<%linkurl("down_show",{dr[id]})%>">
+                                <%if({dr[img_url]}!="")%>
+                                    <img src="{dr[img_url]}" />
+                                <%/if%>
+                                <h2>{dr[title]}</h2>
+                                <div class="note">
+                                    <p>{dr[zhaiyao]}</p>
+                                    <p>
+                                        <i class="hot"><script type="text/javascript" src="{config.webpath}tools/submit_ajax.ashx?action=view_article_click&channel_id={dr[channel_id]}&id={dr[id]}"></script>次</i>
+                                        <i class="date">时间：<%datetostr({dr[add_time]},yyyy-MM-dd)%></i>
+                                    </p>
+                                </div>
+                            </a>
+                        </li>
+                        <%/foreach%>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <!--/资讯列表-->
+        
+        <!--分页页码-->
+        <div class="page-list">
+            {pagelist}
+        </div>
+        <!--/分页页码-->
+    
+        <!--版权信息-->
+        <%template src="_copyright.html"%>
+        <!--/版权信息-->
+
+        <!--底部导航-->
+        <%template src="_footer.html"%>
+        <!--/底部导航-->
+    </div>
+    <!--/页面内容-->
+</div>
+
+<!--类别容器-->
+<div id="category-box" class="dialog-wrap">
+    <div class="dialog-box">
+        <div class="header">
+            <a class="back" href="javascript:;" onclick="closeDialogBox('#category-box');">
+                <i class="iconfont icon-arrow-left"></i>
+            </a>
+            <h3>栏目类别</h3>
+        </div>
+        <ul class="navbar">
+            <%set DataTable categoryList1=get_category_child_list(channel, 0)%>
+            <%foreach(DataRow cdr1 in categoryList1.Rows)%>
+            <li>
+                <h3><a href="<%linkurl("down_list",{cdr1[id]})%>">{cdr1[title]}</a></h3> 
+                <p>
+                <%set DataTable categoryList2=get_category_child_list(channel, {strtoint({cdr1[id]})})%>
+                <%foreach(DataRow cdr2 in categoryList2.Rows)%>
+                    <%if({strtoint({cdr2[id]})}=={category_id})%>
+                    <a href="<%linkurl("down_list",{cdr2[id]})%>" class="selected">{cdr2[title]}</a>
+                    <%else%>
+                    <a href="<%linkurl("down_list",{cdr2[id]})%>">{cdr2[title]}</a>
+                    <%/if%>
+                <%/foreach%>
+                </p>
+            </li>
+            <%/foreach%>
+        </ul>
+    </div>
+</div>
+<!--类别容器-->
+
+</body>
+</html>

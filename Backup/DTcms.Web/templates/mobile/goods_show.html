@@ -1,0 +1,276 @@
+﻿<!DOCTYPE html>
+<!--HTML5 doctype-->
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+<%set string category_title=get_category_title(model.category_id,"购物商城")%>
+<title>{model.title} - {category_title} - {site.name}</title>
+<meta name="keywords" content="{model.seo_keywords}" />
+<meta name="description" content="{model.seo_description}" />
+<link rel="stylesheet" type="text/css" href="<%templateskin%>/css/idangerous.swiper.css" />
+<link rel="stylesheet" type="text/css" href="<%templateskin%>/css/style.css" />
+<script type="text/javascript" charset="utf-8" src="<%templateskin%>/js/zepto.min.js"></script>
+<script type="text/javascript" charset="utf-8" src="<%templateskin%>/js/weui.min.js"></script>
+<script type="text/javascript" charset="utf-8" src="<%templateskin%>/js/idangerous.swiper-2.1.min.js"></script>
+<script type="text/javascript" charset="utf-8" src="<%templateskin%>/js/common.js"></script>
+<script type="text/javascript" charset="utf-8" src="<%templateskin%>/js/cart.js"></script>
+<script type="text/javascript">
+	$(document).ready(function(){
+		var mySwiper = new Swiper('.swiper-container',{
+			calculateHeight:true,
+			resizeReInit:true,
+			pagination:".pagination",
+			autoplay:5000,
+			paginationClickable:true
+		});
+        //初始化规格事件
+        initGoodsSpec('{config.webpath}tools/submit_ajax.ashx?action=get_article_goods_info&channel_id={model.channel_id}');
+	});
+</script>
+</head>
+
+<body ontouchstart>
+<div class="page">
+    <!--页面头部-->
+    <div class="header">
+        <a class="back" href="javascript:history.back();">
+            <i class="iconfont icon-arrow-left"></i>
+        </a>
+        <h3>购物商城</h3>
+        <div class="right"> 
+            <a class="weui-cell_access weui-cell_link" onclick="showDialogBox('#category-box');">
+                <i class="iconfont icon-nav"></i>
+            </a>
+        </div>
+    </div>
+    <!--/页面头部-->
+  
+    <!--页面内容-->
+    <div class="page__bd">
+        <!--商品幻灯片-->
+        <div id="slider" class="swiper-container">
+            <div class="swiper-wrapper">
+                <%if(model.albums!=null)%>
+                <%foreach(DTcms.Model.article_albums modelt in model.albums)%>
+                <div class="swiper-slide">
+                    <img src="{modelt.thumb_path}"/>
+                </div>
+                <%/foreach%>
+                <%/if%>
+            </div>
+            <div class="pagination"></div>
+        </div>
+        <!--/商品幻灯片-->
+        
+        <!--商品名称-->
+        <div class="weui-panel weui-panel_access" style="margin-top:0;">
+            <div class="weui-panel__bd">
+                <div class="goods-head">
+                    <h2>{model.title}</h2>
+                    <p><span class="price">¥{model.fields[sell_price]}</span>元</p>
+                </div>
+            </div>
+            
+        </div>
+        <!--/商品名称-->
+        
+        <!--参数选择-->
+        <div class="weui-panel weui-panel_access item-list">
+            <div class="weui-panel__bd">
+                <a id="selectSpecText" class="weui-cell weui-cell_access" href="javascript:;" onclick="showActionSheet();">
+                    <div class="weui-cell__bd">
+                        <p>选择规格、数量</p>
+                    </div>
+                    <div class="weui-cell__ft"></div>
+                </a>
+                 <a class="weui-cell weui-cell_access" href="#commentList">
+                    <div class="weui-cell__bd">
+                        <p>查看评论</p>
+                    </div>
+                    <div class="weui-cell__ft">共<script type="text/javascript" src="{config.webpath}tools/submit_ajax.ashx?action=view_comment_count&channel_id={model.channel_id}&id={model.id}"></script>条评论</div>
+                </a>
+               
+            </div>
+            
+        </div>
+        <!--/参数选择-->
+        
+        <!--商品参数-->
+        <div class="weui-panel weui-panel_access item-list">
+            <div class="weui-panel__hd">商品参数</div>
+            <div class="weui-panel__bd">
+                <div class="weui-cell weui-cell_access">
+                    <div class="weui-cell__bd">
+                        <p>货号：<span id="commodityGoodsNo">{model.fields[goods_no]}</span></p>
+                    </div>
+                </div>
+                <div class="weui-cell weui-cell_access">
+                    <div class="weui-cell__bd">
+                        <p>市场价：<s id="commodityMarketPrice">¥{model.fields[market_price]}</s></p>
+                    </div>
+                </div>
+                <div class="weui-cell weui-cell_access">
+                    <div class="weui-cell__bd">
+                        <p>上架时间：{model.add_time}</p>
+                    </div>
+                </div>
+               
+            </div>
+            
+        </div>
+        <!--/商品参数-->
+        
+        <!--商品介绍-->
+        <div class="weui-panel weui-panel_access">
+            <div class="weui-panel__hd">商品介绍</div>
+            <div class="weui-panel__bd">
+                <div class="entry">
+                    {model.content}
+                </div>
+            </div>
+        </div>
+        <!--/商品介绍-->
+        
+        <!--相关商品-->
+        <div class="weui-panel weui-panel_access">
+            <div class="weui-panel__hd">相关商品</div>
+            <div class="weui-panel__bd">
+                <div class="img-list">
+                    <ul>
+                        <%set DataTable relList=get_article_list(channel, model.category_id, 4, "is_red=1 and id<>"+model.id)%>
+                        <%foreach(DataRow dr in relList.Rows)%>
+                        <li>
+                            <div class="wrap">
+                                <a href="<%linkurl("goods_show",{dr[id]})%>">
+                                    <img src="{dr[img_url]}" />
+                                    <div class="note">
+                                        <h2>{dr[title]}</h2>
+                                        <p>
+                                            <i class="hot">库存 {dr[stock_quantity]}</i>
+                                            <i class="price">¥{dr[sell_price]}</i>元
+                                        </p>
+                                    </div>
+                                </a>
+                            </div>
+                        </li>
+                        <%/foreach%>
+                        <%if(relList.Rows.Count<1)%>
+                            <div class="nodata">暂无相关...</div>
+                        <%/if%>
+                    </ul>
+                </div>
+                
+            </div>
+        </div>
+        <!--/相关商品-->
+        
+        <!--网友评论-->
+        <%if(model.is_msg==1)%>
+        <%template src="_comment_box.html"%>
+        <%/if%>
+        <!--/网友评论-->
+    
+        <!--版权信息-->
+        <%template src="_copyright.html"%>
+        <!--/版权信息-->
+
+        <!--底部按钮-->
+        <div class="goods-btn-box">
+            <div class="wrap-box">
+                <a class="red" href="javascript:;" onclick="showActionSheet('cart','{config.webpath}','<%linkurl("shopping")%>');">
+                    <i class="iconfont icon-cart"></i>
+                    <span>加入购物车</span>
+                </a>
+                <a class="green" href="javascript:;" onclick="showActionSheet('buy','{config.webpath}','<%linkurl("shopping")%>');">
+                    <i class="iconfont icon-order"></i>
+                    <span>立即购买</span>
+                </a>
+            </div>
+        </div>
+        <!--/底部按钮-->
+        
+        <!--规格容器-->
+        <div>
+            <div class="weui-mask" id="specMask" style="display:none"></div>
+            <div class="weui-actionsheet spec-wrap" id="specActionsheet">
+                <div id="specActionsheetCancel" class="close">
+                    <i class="iconfont icon-close"></i>
+                </div>
+                <div id="goodsSpecBox" class="spec-box">
+                    <%set List<DTcms.Model.article_goods_spec> specList=get_article_goods_spec(model.channel_id, model.id, "parent_id=0")%>
+                    <%if(specList!=null)%>
+                    <%foreach(DTcms.Model.article_goods_spec modelt1 in specList)%>
+                    <dl>
+                        <dt>{modelt1.title}</dt>
+                        <dd>
+                            <!--规格选项-->
+                            <%set List<DTcms.Model.article_goods_spec> itemList=get_article_goods_spec(model.channel_id, model.id, "parent_id="+modelt1.spec_id)%>
+                            <%if(itemList!=null)%>
+                            <%foreach(DTcms.Model.article_goods_spec modelt2 in itemList)%>
+                            <a specid="{modelt2.spec_id}" title="{modelt2.title}" href="javascript:;">
+                                <span>{modelt2.title}</span>
+                            </a>
+                            <%/foreach%>
+                            <%/if%>
+                            <!--/规格选项-->
+                        </dd>
+                    </dl>
+                    <%/foreach%>
+                    <%/if%>
+                    <div class="btn-box">
+                        <dt>购物数量<span>(库存<b id="commodityStockNum">{model.fields[stock_quantity]}</b>件)</span></dt>
+                        <dd>
+                            <input id="commodityChannelId" type="hidden" value="{model.channel_id}" />
+                            <input id="commodityArticleId" type="hidden" value="{model.id}" />
+                            <input id="commodityGoodsId" type="hidden" value="0" />
+                            <a class="reduce" href="javascript:;" onclick="addCartNum(-1);">-</a>
+                            <input id="commoditySelectNum" class="input" type="text" value="1" maxValue="{model.fields[stock_quantity]}" onkeydown="return checkNumber(event);" />
+                            <a class="subjoin" href="javascript:;" onclick="addCartNum(1);">+</a>
+                        </dd>
+                    </div>
+                </div>
+                
+                <div class="weui-actionsheet__action">
+                    <button id="confirmButton" class="weui-actionsheet__cell over" disabled="disabled">确定</button>
+                </div>
+            </div>
+        </div>
+        <!--规格容器-->
+    </div>
+    <!--/页面内容-->
+</div>
+
+<!--类别容器-->
+<div id="category-box" class="dialog-wrap">
+    <div class="dialog-box">
+        <div class="header">
+            <a class="back" href="javascript:;" onclick="closeDialogBox('#category-box');">
+                <i class="iconfont icon-arrow-left"></i>
+            </a>
+            <h3>栏目类别</h3>
+        </div>
+        <ul class="navbar">
+            <%set DataTable categoryList1=get_category_child_list(channel, 0)%>
+            <%foreach(DataRow cdr1 in categoryList1.Rows)%>
+            <li>
+                <h3><a href="<%linkurl("news_list",{cdr1[id]})%>">{cdr1[title]}</a></h3> 
+                <p>
+                <%set DataTable categoryList2=get_category_child_list(channel, {strtoint({cdr1[id]})})%>
+                <%foreach(DataRow cdr2 in categoryList2.Rows)%>
+                    <%if({strtoint({cdr2[id]})}=={model.category_id})%>
+                    <a href="<%linkurl("news_list",{cdr2[id]})%>" class="selected">{cdr2[title]}</a>
+                    <%else%>
+                    <a href="<%linkurl("news_list",{cdr2[id]})%>">{cdr2[title]}</a>
+                    <%/if%>
+                <%/foreach%>
+                </p>
+            </li>
+            <%/foreach%>
+        </ul>
+    </div>
+</div>
+<!--类别容器-->
+
+</body>
+</html>

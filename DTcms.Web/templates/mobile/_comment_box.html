@@ -1,0 +1,50 @@
+﻿        <link rel="stylesheet" type="text/css" href="<%templateskin%>/css/validate.css" />
+        <script type="text/javascript" charset="utf-8" src="<%templateskin%>/js/mvalidate.js"></script>
+        <script type="text/javascript" charset="utf-8" src="<%templateskin%>/js/mvalidate-extend.js"></script>
+        <%set int comment_count=get_comment_count(model.channel_id, model.id, "is_lock=0")%><!--取得评论总数-->
+        <script type="text/javascript">
+        //初始化评论列表
+		function InitCommentList(){
+			CommentAjaxList('#btnLoadComment','#commentList',10,{comment_count},'{config.webpath}tools/submit_ajax.ashx?action=comment_list&channel_id={model.channel_id}&article_id={model.id}');
+		}
+		//页面加载完毕事件
+		$(document).ready(function(){
+			//初始化评论列表
+			InitCommentList(); //加载第一页评论列表
+			//初始化发表评论表单
+			AjaxInitForm('#commentForm', '#btnSubmit', 1);
+        });
+		
+      </script>
+        <div class="weui-panel weui-panel_access">
+            <div class="weui-panel__hd">网友评论</div>
+            <div class="weui-panel__bd">
+            
+                <div class="comment-box">
+                    
+                    <div class="comment-add">
+                        <form id="commentForm" name="commentForm" class="form-box" url="{config.webpath}tools/submit_ajax.ashx?action=comment_add&channel_id={model.channel_id}&article_id={model.id}">
+                            <div class="input-box">
+                                <textarea id="txtContent" name="txtContent" rows="3" placeholder="吐槽一下" class="input" data-validate="comment"></textarea>
+                            </div>
+                            <div class="input-box">
+                                <input id="btnSubmit" name="btnSubmit" type="submit" value="发表" class="weui-btn weui-btn_mini weui-btn_primary" />
+                                <input id="txtCode" name="txtCode" type="text" placeholder="验证码" class="input code" data-validate="code" />
+                                <a href="javascript:;" onclick="ToggleCode(this, '{config.webpath}tools/verify_code.ashx');return false;">
+                                    <img src="{config.webpath}tools/verify_code.ashx" width="80" height="25" style="vertical-align:middle;" />
+                                </a>
+                            </div>
+                        </form>
+                    </div>
+                    
+                    <ol id="commentList" class="comment-list">
+                        <div class="nodata">暂无评论...</div>
+                    </ol>
+                    
+                    <div class="comment-more">
+                        <input id="btnLoadComment" type="button" value="加载更多评论" class="weui-btn weui-btn_default" onclick="InitCommentList();" />
+                    </div>
+                </div>
+                
+            </div>
+        </div>

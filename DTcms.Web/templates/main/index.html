@@ -1,0 +1,1448 @@
+﻿<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>{site.seo_title}</title>
+<meta name="keywords" content="{site.seo_keyword}" />
+<meta name="description" content="{site.seo_description}" />
+<link rel="stylesheet" type="text/css" href="<%templateskin%>/css/style.css" />
+<script type="text/javascript" charset="utf-8" src="{config.webpath}scripts/jquery/jquery-1.11.2.min.js"></script>
+<script type="text/javascript" charset="utf-8" src="<%templateskin%>/js/jquery.flexslider-min.js"></script>
+<script type="text/javascript" charset="utf-8" src="<%templateskin%>/js/jqslider.js"></script>
+<script type="text/javascript" charset="utf-8" src="<%templateskin%>/js/common.js"></script>
+<script type="text/javascript" charset="utf-8" src="<%templateskin%>/js/jquery.tabso_yeso.js"></script>
+<script type="text/javascript">
+$(function(){    
+    $("#focus-box").flexslider({
+        directionNav: false,
+		pauseOnAction: false
+    });    
+    $("#move-animate-left").tabso({
+        cntSelect: "#leftcon",
+        tabEvent: "mouseover",
+        tabStyle: "move-animate",
+        direction: "left"
+    });
+    $("#move-animate-left2").tabso({
+        cntSelect: "#leftcon2",
+        tabEvent: "mouseover",
+        tabStyle: "move-animate",
+        direction: "left"
+    });
+});
+
+</script>
+</head>
+
+<body id="index">
+<!--页面头部-->
+<%template src="_header.html"%>
+<!--/页面头部-->
+<div class="section">    
+    <div class="line10"></div>
+    <div id="index-div1" class="index-div1">
+        <div class="index-link-div-1-1">
+            <a class="ild11_a" href="#">登录</a>
+        </div>
+        <div class="index-link-div-1-2">
+            <a class="ild12_a" href="/news/53.html" title="项目 申报">
+                <img alt="" src="/templates/main/img/ild_1.png" />
+            </a>
+            <a class="ild12_a" href="/news/54.html" title="我要 场地">
+                <img alt="" src="/templates/main/img/ild_2.png" />
+            </a>
+            <a class="ild12_a" href="/news/55.html" title="我要 补贴">
+                <img alt="" src="/templates/main/img/ild_3.png" />
+            </a>
+            <a class="ild12_a" href="/news/56.html" title="我要 贷款">
+                <img alt="" src="/templates/main/img/ild_4.png" />
+            </a>
+            <a class="ild12_a" href="/news/57.html" title="我要 风投">
+                <img alt="" src="/templates/main/img/ild_5.png" />
+            </a>
+            <a class="ild12_a" href="/news/58.html" title="我要 交易">
+                <img alt="" src="/templates/main/img/ild_6.png" />
+            </a>
+            <a class="ild12_a" href="/news/59.html" title="我要 评价">
+                <img alt="" src="/templates/main/img/ild_7.png" />
+            </a>
+            <a class="ild12_a" href="/news/60.html" title="我要 投保">
+                <img alt="" src="/templates/main/img/ild_8.png" />
+            </a>
+            <a class="ild12_a" href="#" title="生产 学院">
+                <img alt="" src="/templates/main/img/ild_9.png" />
+            </a>
+        </div>
+    </div>
+</div>
+<div class="section">    
+    <div class="line10"></div>
+    <div class="index-div2">
+        <div class="index-div2-1">
+            <table width="100%" border="0" cellspacing="0" cellpadding="0" class="id2_tab">
+              <tr>
+                <td class="id2_tab_td0">&nbsp;</td>
+                <td class="id2_tab_td1">
+                    <img alt="" src="/templates/main/img/cico_1.png" />
+                    <div class="lab0">双创服务机构</div>
+                    <div class="lab2" data-to="245" data-speed="1500"></div>
+                    <div class="lab0">家</div>
+                </td>
+                <td class="id2_tab_td2">
+                    <img alt="" src="/templates/main/img/cico_2.png" />
+                    <div class="lab0">双创服务产品</div>
+                    <div class="lab2" data-to="1021" data-speed="1500"></div>
+                    <div class="lab0">款</div>
+                </td>
+                <td class="id2_tab_td3">
+                    <img alt="" src="/templates/main/img/cico_3.png" />
+                    <div class="lab0">双创企业团队</div>
+                    <div class="lab2" data-to="1021" data-speed="1500"></div>
+                    <div class="lab0">家</div>
+                </td>
+                <td class="id2_tab_td4">
+                    <img alt="" src="/templates/main/img/cico_4.png" />
+                    <div class="lab0">科技成果</div>
+                    <div class="lab2" data-to="2015" data-speed="1500"></div>
+                    <div class="lab0">项</div>
+                </td>
+                <td class="id2_tab_td5">
+                    <img alt="" src="/templates/main/img/cico_5.png" />
+                    <div class="lab0">当月技术交易额</div>
+                    <div class="lab2" data-to="2100" data-speed="2500"></div>
+                    <div class="lab0">万</div>                    
+                </td>
+                <td class="id2_tab_td6">&nbsp;</td>
+              </tr>
+            </table>
+            <script type="text/javascript" charset="utf-8" src="<%templateskin%>/js/countTo.js"></script>
+        </div>
+    </div>
+</div>
+<div class="section">    
+    <div class="line10"></div>
+    <div class="wrapper clearfix">
+        <div class="wrap-box">
+            <div class="left-355" style="margin:0;height:335px;">
+                <div id="focus-box" class="focus-box" style="height:271px;">
+                    <ul class="slides">
+                    <%set DataTable focusNews=get_article_list("news", 0, 8, "status=0 and is_slide=1 and img_url<>''")%>
+                    <%foreach(DataRow dr in focusNews.Rows)%>
+                        <li>
+                            <a title="{dr[title]}" href="<%linkurl("news_show",{dr[id]})%>">
+                                <span class="note-bg"></span>
+                                <span class="note-txt">{dr[title]}</span>
+                                <img src="{dr[img_url]}" />
+                            </a>
+                        </li>
+                    <%/foreach%>
+                    </ul>
+                </div>
+                <div class="indexbox2">
+                    <div class="indexbox2-1">
+                        <a href=""><img alt="" src="/templates/main/img/cbt_1.png" /></a>
+                        <a href=""><img alt="" src="/templates/main/img/cbt_1.png" /></a>
+                    </div>
+                </div>
+            </div>
+            <div class="left-455 indextab">
+                <ul class="tabbtn" id="move-animate-left">
+		            <li class="current"><a href="#">创新活动</a></li>
+		            <li><a href="#">平台动态</a></li>
+		            <li><a href="#">活动预告</a></li>
+		            <li><a href="#">科技项目立项公示</a></li>
+	            </ul>
+	            <div class="tabcon" id="leftcon">
+		            <div class="subbox">
+			            <div class="sublist">
+                        <ul>
+                            <%set DataTable newsList9=get_article_list("news", 9, 4, "status=0")%>
+                            <%foreach(DataRow newdr9 in newsList9.Rows)%>
+                            <li>
+                                <span>▪</span>
+                                <a href="<%linkurl("news_show",{newdr9[id]})%>" target="_blank">{newdr9[title]}</a>
+                                <p><%cutstring({newdr9[zhaiyao]},140)%></p>
+                            </li>
+                            <%/foreach%>
+                        </ul>
+                        </div>
+                        <div class="sublist">
+                        <ul>
+                            <%set DataTable newsList6=get_article_list("news", 6, 4, "status=0")%>
+                            <%foreach(DataRow newdr6 in newsList6.Rows)%>
+                            <li>
+                                <span>▪</span>
+                                <a href="<%linkurl("news_show",{newdr6[id]})%>" target="_blank">{newdr6[title]}</a>
+                                <p><%cutstring({newdr6[zhaiyao]},140)%></p>
+                            </li>
+                            <%/foreach%>
+                        </ul>
+                        </div>
+                        <div class="sublist">
+                        <ul>                            
+                            <%set DataTable newsList7=get_article_list("news", 7, 4, "status=0")%>
+                            <%foreach(DataRow newdr7 in newsList7.Rows)%>
+                            <li>
+                                <span>▪</span>
+                                <a href="<%linkurl("news_show",{newdr7[id]})%>" target="_blank">{newdr7[title]}</a>
+                                <p><%cutstring({newdr7[zhaiyao]},140)%></p>
+                            </li>
+                            <%/foreach%>
+                        </ul>
+                        </div>
+                        <div class="sublist">
+                        <ul>                            
+                            <%set DataTable newsList8=get_article_list("news", 8, 4, "status=0")%>
+                            <%foreach(DataRow newdr8 in newsList8.Rows)%>
+                            <li>
+                                <span>▪</span>
+                                <a href="<%linkurl("news_show",{newdr8[id]})%>" target="_blank">{newdr8[title]}</a>
+                                <p><%cutstring({newdr8[zhaiyao]},140)%></p>
+                            </li>
+                            <%/foreach%>
+                        </ul>
+                        </div>
+                    </div>
+	            </div>        
+            </div>
+            <div class="left-320 sidebar-box2 div_cxhd">
+                <h4>创新活动</h4>
+                <ul class="txt-list">
+                <%set DataTable hotNews=get_article_list("news", 0, 4, "status=0", "click desc,id desc")%>
+                <%loop hotdr hotNews%>
+                    <li>
+                        <%if(hotdr__loop__id<2)%>
+                        <label class="hot"><%=hotdr__loop__id%></label>
+                        <%else%>
+                        <label><%=hotdr__loop__id%></label>
+                        <%/if%>
+                        <a href="<%linkurl("news_show",{hotdr[id]})%>">{hotdr[title]}</a>
+                        <p><%cutstring({hotdr[zhaiyao]},100)%></p>
+                    </li>
+                <%/loop%>
+                </ul>                
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="section">    
+    <div class="line10"></div>
+    <div class="index-div3">
+        <div class="index-div3-1">
+            <table width="100%" border="0" cellspacing="0" cellpadding="0">
+              <tr>
+                <td align="center">
+                    <a href=""><img alt="" src="/templates/main/img/add_01.png" /></a>
+                </td>
+                <td align="center">
+                    <a href=""><img alt="" src="/templates/main/img/add_02.png" /></a>
+                </td>
+                <td align="center">
+                    <a href=""><img alt="" src="/templates/main/img/add_03.png" /></a>
+                </td>
+                <td align="center">
+                    <a href=""><img alt="" src="/templates/main/img/add_04.png" /></a>
+                </td>
+                <td align="center">
+                    <a href=""><img alt="" src="/templates/main/img/add_05.png" /></a>
+                </td>                
+              </tr>
+            </table>
+        </div>
+    </div>
+</div>
+<div class="section">    
+    <div class="line10"></div>
+    <div class="index-div4">
+        <div class="index-div4-1">
+            <table width="100%" border="0" cellspacing="0" cellpadding="0" class="id4_tab">
+              <tr>
+                <td colspan="3" align="center" class="id4_tab_td_top">科技项目申报</td>
+              </tr>
+              <tr>
+                <td align="center" class="id4_tab_td0">
+                    
+                </td>
+                <td align="center" class="id4_tab_td1">
+                    <div class="lab0">正在申报项目</div>
+                    <div class="lab2" data-to="60" data-speed="2500"></div>
+                    <div class="lab0">项</div>
+                    <div class="lab0">累计申报项目</div>
+                    <div class="lab2" data-to="1260" data-speed="2500"></div>
+                    <div class="lab0">项</div>
+                </td>
+                <td align="center" class="id4_tab_td2">
+                    <a href="">进入科技项目申报平台>></a>
+                </td>                                
+              </tr>
+            </table>
+        </div>
+    </div>
+</div>
+<div class="section">    
+    <div class="line10"></div>
+    <div class="index-div5">
+    <img alt="" src="/templates/main/img/cx_topbg2.jpg" />
+    </div>    
+</div>
+<div class="section">    
+    <div class="line10"></div>
+    <div class="index-div6">
+        <div class="index-div6-1">
+            <table width="100%" border="0" cellspacing="0" cellpadding="0" class="id6_tab">
+              <tr>                
+                <td colspan="3" align="center" class="id6_tab_td_top1">
+                    <p>政府项目申报</p>
+                    <a href="">进入科技项目申报平台>></a>
+                </td>                
+              </tr>
+              <tr>
+                <td align="center" class="id6_tab_td0">                    
+                </td>
+                <td align="center" class="id6_tab_td1">
+                    <div class="lab0">截止2018年3月 已有科技企业</div>
+                    <div class="lab2" data-to="18278" data-speed="2500"></div>
+                    <div class="lab0">家</div>
+                    <div class="lab0">累计申报科技项目</div>
+                    <div class="lab2" data-to="1260" data-speed="2500"></div>
+                    <div class="lab0">项</div>
+                </td>                                               
+              </tr>
+            </table>
+        </div>
+    </div>
+</div>
+<div class="section">    
+    <div class="line10"></div>
+    <div class="index-div7">
+        <div class="index-div7-1">
+            <ul class="tabbtn" id="move-animate-left2">
+		        <li class="current"><a href="#">科技金融资助</a></li>
+		        <li><a href="#">双创载体资助</a></li>
+		        <li><a href="#">人才资助</a></li>
+		        <li><a href="#">技术交易资助</a></li>
+                <li><a href="#">专利资助</a></li>
+                <li><a href="#">国际科技合作资助</a></li>
+                <li><a href="#">创新创业活动资助</a></li>
+                <li><a href="#">创新创业活动资助</a></li>
+                <li><a href="#">攻略下载</a></li>                
+	        </ul>
+	        <div class="tabcon" id="leftcon2">
+		        <div class="subbox">
+			        <div class="sublist">
+                        <table class="mytabld one">
+					        <tr>
+						        <th width="25%">业务类型</th>
+						        <th width="34%">子项</th>
+						        <th width="18%">申报起止时间</th>
+						        <th width="7%">指南</th>
+						        <th width="8%">样本</th>
+						        <th width="8%">操作</th>
+					        </tr>
+					        <tr>
+                                <td align="center" rowspan="5">
+                                    <strong>科技金融资助</strong>
+                                </td>
+                                <td class="bgs">
+								    天使投资补助
+							    </td>
+							    <td align="center" class="bgs">
+								    2017-11-01~2017-12-20
+							    </td>
+							    <td align="center" class="bgs">
+								    <a title="申报指南" class="uibtn guide" href="#"></a>
+							    </td>
+							    <td align="center" class="bgs">
+								    <a title="word样本" class="uibtn word" href="#"></a>
+							    </td>
+							    <td align="center" class="bgs">
+								    <a href="#" target="_blank" title="进入申报"><strong>进入申报</strong></a>
+							    </td>
+						    </tr>
+						    <tr>
+							    <td>债权融资补助（信用评级）</td>
+							    <td align="center">
+                                    2017-11-01~2017-12-20
+							    </td>
+							    <td align="center">
+								    <a title="申报指南" class="uibtn guide" href="#"></a>
+							    </td>
+							    <td align="center">
+								    <a title="word样本" class="uibtn word" href="#"></a>
+							    </td>
+							    <td align="center">
+								    <a href="#" target="_blank" title="进入申报"><strong>进入申报</strong></a>
+							    </td>
+						    </tr>
+						    <tr class="bgs">
+							    <td class="bgs">
+								    债权融资补助（知识产权质押融资评估费）
+							    </td>
+							    <td align="center" class="bgs">
+								    2017-11-01~2017-12-20
+							    </td>
+							    <td align="center" class="bgs">
+								    <a title="申报指南" class="uibtn guide" href=""></a>
+							    </td>
+							    <td align="center" class="bgs">
+								    <a title="word样本" class="uibtn word" href="#">
+								    </a>
+							    </td>
+							    <td align="center">
+								    <a href="#" target="_blank" title="进入申报"><strong>进入申报</strong></a>
+							    </td>
+						    </tr>
+						    <tr>
+							    <td>
+								    债权融资补助（贷款担保费）
+							    </td>
+							    <td align="center">
+								    2017-11-01~2017-12-20
+							    </td>
+							    <td align="center">
+								    <a title="申报指南" class="uibtn guide" href="#"></a>
+							    </td>
+							    <td align="center">
+								    <a title="word样本" class="uibtn word" href="#"></a>
+							    </td>
+							    <td align="center">
+								    <a href="#" target="_blank" title="进入申报"><strong>进入申报</strong></a>
+							    </td>
+						    </tr>
+						    <tr class="bgs">
+							    <td class="bgs">
+								    债权融资补助（科技型企业贷款利息）
+							    </td>
+							    <td align="center" class="bgs">
+								    2017-11-01~2017-12-20
+							    </td>
+							    <td align="center" class="bgs">
+								    <a title="申报指南" class="uibtn guide" href="#"></a>
+							    </td>
+							    <td align="center" class="bgs">
+								    <a title="word样本" class="uibtn word" href=""></a>
+							    </td>
+							    <td align="center">
+								    <a href="#" target="_blank" title="进入申报"><strong>进入申报</strong></a>
+							    </td>
+						    </tr>
+				        </table>           
+                    </div>
+                    <div class="sublist">
+                        <table class="mytabld one">
+					        <tr>
+						        <th width="25%">业务类型</th>
+						        <th width="34%">子项</th>
+						        <th width="18%">申报起止时间</th>
+						        <th width="7%">指南</th>
+						        <th width="8%">样本</th>
+						        <th width="8%">操作</th>
+					        </tr>
+					        <tr>
+                                <td align="center" rowspan="5">
+                                    <strong>科技金融资助</strong>
+                                </td>
+                                <td class="bgs">
+								    天使投资补助
+							    </td>
+							    <td align="center" class="bgs">
+								    2017-11-01~2017-12-20
+							    </td>
+							    <td align="center" class="bgs">
+								    <a title="申报指南" class="uibtn guide" href="#"></a>
+							    </td>
+							    <td align="center" class="bgs">
+								    <a title="word样本" class="uibtn word" href="#"></a>
+							    </td>
+							    <td align="center" class="bgs">
+								    <a href="#" target="_blank" title="进入申报"><strong>进入申报</strong></a>
+							    </td>
+						    </tr>
+						    <tr>
+							    <td>债权融资补助（信用评级）</td>
+							    <td align="center">
+                                    2017-11-01~2017-12-20
+							    </td>
+							    <td align="center">
+								    <a title="申报指南" class="uibtn guide" href="#"></a>
+							    </td>
+							    <td align="center">
+								    <a title="word样本" class="uibtn word" href="#"></a>
+							    </td>
+							    <td align="center">
+								    <a href="#" target="_blank" title="进入申报"><strong>进入申报</strong></a>
+							    </td>
+						    </tr>
+						    <tr class="bgs">
+							    <td class="bgs">
+								    债权融资补助（知识产权质押融资评估费）
+							    </td>
+							    <td align="center" class="bgs">
+								    2017-11-01~2017-12-20
+							    </td>
+							    <td align="center" class="bgs">
+								    <a title="申报指南" class="uibtn guide" href=""></a>
+							    </td>
+							    <td align="center" class="bgs">
+								    <a title="word样本" class="uibtn word" href="#">
+								    </a>
+							    </td>
+							    <td align="center">
+								    <a href="#" target="_blank" title="进入申报"><strong>进入申报</strong></a>
+							    </td>
+						    </tr>
+						    <tr>
+							    <td>
+								    债权融资补助（贷款担保费）
+							    </td>
+							    <td align="center">
+								    2017-11-01~2017-12-20
+							    </td>
+							    <td align="center">
+								    <a title="申报指南" class="uibtn guide" href="#"></a>
+							    </td>
+							    <td align="center">
+								    <a title="word样本" class="uibtn word" href="#"></a>
+							    </td>
+							    <td align="center">
+								    <a href="#" target="_blank" title="进入申报"><strong>进入申报</strong></a>
+							    </td>
+						    </tr>
+						    <tr class="bgs">
+							    <td class="bgs">
+								    债权融资补助（科技型企业贷款利息）
+							    </td>
+							    <td align="center" class="bgs">
+								    2017-11-01~2017-12-20
+							    </td>
+							    <td align="center" class="bgs">
+								    <a title="申报指南" class="uibtn guide" href="#"></a>
+							    </td>
+							    <td align="center" class="bgs">
+								    <a title="word样本" class="uibtn word" href=""></a>
+							    </td>
+							    <td align="center">
+								    <a href="#" target="_blank" title="进入申报"><strong>进入申报</strong></a>
+							    </td>
+						    </tr>
+				        </table>
+                    </div>
+                    <div class="sublist">
+                        <table class="mytabld one">
+					        <tr>
+						        <th width="25%">业务类型</th>
+						        <th width="34%">子项</th>
+						        <th width="18%">申报起止时间</th>
+						        <th width="7%">指南</th>
+						        <th width="8%">样本</th>
+						        <th width="8%">操作</th>
+					        </tr>
+					        <tr>
+                                <td align="center" rowspan="5">
+                                    <strong>科技金融资助</strong>
+                                </td>
+                                <td class="bgs">
+								    天使投资补助
+							    </td>
+							    <td align="center" class="bgs">
+								    2017-11-01~2017-12-20
+							    </td>
+							    <td align="center" class="bgs">
+								    <a title="申报指南" class="uibtn guide" href="#"></a>
+							    </td>
+							    <td align="center" class="bgs">
+								    <a title="word样本" class="uibtn word" href="#"></a>
+							    </td>
+							    <td align="center" class="bgs">
+								    <a href="#" target="_blank" title="进入申报"><strong>进入申报</strong></a>
+							    </td>
+						    </tr>
+						    <tr>
+							    <td>债权融资补助（信用评级）</td>
+							    <td align="center">
+                                    2017-11-01~2017-12-20
+							    </td>
+							    <td align="center">
+								    <a title="申报指南" class="uibtn guide" href="#"></a>
+							    </td>
+							    <td align="center">
+								    <a title="word样本" class="uibtn word" href="#"></a>
+							    </td>
+							    <td align="center">
+								    <a href="#" target="_blank" title="进入申报"><strong>进入申报</strong></a>
+							    </td>
+						    </tr>
+						    <tr class="bgs">
+							    <td class="bgs">
+								    债权融资补助（知识产权质押融资评估费）
+							    </td>
+							    <td align="center" class="bgs">
+								    2017-11-01~2017-12-20
+							    </td>
+							    <td align="center" class="bgs">
+								    <a title="申报指南" class="uibtn guide" href=""></a>
+							    </td>
+							    <td align="center" class="bgs">
+								    <a title="word样本" class="uibtn word" href="#">
+								    </a>
+							    </td>
+							    <td align="center">
+								    <a href="#" target="_blank" title="进入申报"><strong>进入申报</strong></a>
+							    </td>
+						    </tr>
+						    <tr>
+							    <td>
+								    债权融资补助（贷款担保费）
+							    </td>
+							    <td align="center">
+								    2017-11-01~2017-12-20
+							    </td>
+							    <td align="center">
+								    <a title="申报指南" class="uibtn guide" href="#"></a>
+							    </td>
+							    <td align="center">
+								    <a title="word样本" class="uibtn word" href="#"></a>
+							    </td>
+							    <td align="center">
+								    <a href="#" target="_blank" title="进入申报"><strong>进入申报</strong></a>
+							    </td>
+						    </tr>
+						    <tr class="bgs">
+							    <td class="bgs">
+								    债权融资补助（科技型企业贷款利息）
+							    </td>
+							    <td align="center" class="bgs">
+								    2017-11-01~2017-12-20
+							    </td>
+							    <td align="center" class="bgs">
+								    <a title="申报指南" class="uibtn guide" href="#"></a>
+							    </td>
+							    <td align="center" class="bgs">
+								    <a title="word样本" class="uibtn word" href=""></a>
+							    </td>
+							    <td align="center">
+								    <a href="#" target="_blank" title="进入申报"><strong>进入申报</strong></a>
+							    </td>
+						    </tr>
+				        </table>
+                    </div>
+                    <div class="sublist">
+                        <table class="mytabld one">
+					        <tr>
+						        <th width="25%">业务类型</th>
+						        <th width="34%">子项</th>
+						        <th width="18%">申报起止时间</th>
+						        <th width="7%">指南</th>
+						        <th width="8%">样本</th>
+						        <th width="8%">操作</th>
+					        </tr>
+					        <tr>
+                                <td align="center" rowspan="5">
+                                    <strong>科技金融资助</strong>
+                                </td>
+                                <td class="bgs">
+								    天使投资补助
+							    </td>
+							    <td align="center" class="bgs">
+								    2017-11-01~2017-12-20
+							    </td>
+							    <td align="center" class="bgs">
+								    <a title="申报指南" class="uibtn guide" href="#"></a>
+							    </td>
+							    <td align="center" class="bgs">
+								    <a title="word样本" class="uibtn word" href="#"></a>
+							    </td>
+							    <td align="center" class="bgs">
+								    <a href="#" target="_blank" title="进入申报"><strong>进入申报</strong></a>
+							    </td>
+						    </tr>
+						    <tr>
+							    <td>债权融资补助（信用评级）</td>
+							    <td align="center">
+                                    2017-11-01~2017-12-20
+							    </td>
+							    <td align="center">
+								    <a title="申报指南" class="uibtn guide" href="#"></a>
+							    </td>
+							    <td align="center">
+								    <a title="word样本" class="uibtn word" href="#"></a>
+							    </td>
+							    <td align="center">
+								    <a href="#" target="_blank" title="进入申报"><strong>进入申报</strong></a>
+							    </td>
+						    </tr>
+						    <tr class="bgs">
+							    <td class="bgs">
+								    债权融资补助（知识产权质押融资评估费）
+							    </td>
+							    <td align="center" class="bgs">
+								    2017-11-01~2017-12-20
+							    </td>
+							    <td align="center" class="bgs">
+								    <a title="申报指南" class="uibtn guide" href=""></a>
+							    </td>
+							    <td align="center" class="bgs">
+								    <a title="word样本" class="uibtn word" href="#">
+								    </a>
+							    </td>
+							    <td align="center">
+								    <a href="#" target="_blank" title="进入申报"><strong>进入申报</strong></a>
+							    </td>
+						    </tr>
+						    <tr>
+							    <td>
+								    债权融资补助（贷款担保费）
+							    </td>
+							    <td align="center">
+								    2017-11-01~2017-12-20
+							    </td>
+							    <td align="center">
+								    <a title="申报指南" class="uibtn guide" href="#"></a>
+							    </td>
+							    <td align="center">
+								    <a title="word样本" class="uibtn word" href="#"></a>
+							    </td>
+							    <td align="center">
+								    <a href="#" target="_blank" title="进入申报"><strong>进入申报</strong></a>
+							    </td>
+						    </tr>
+						    <tr class="bgs">
+							    <td class="bgs">
+								    债权融资补助（科技型企业贷款利息）
+							    </td>
+							    <td align="center" class="bgs">
+								    2017-11-01~2017-12-20
+							    </td>
+							    <td align="center" class="bgs">
+								    <a title="申报指南" class="uibtn guide" href="#"></a>
+							    </td>
+							    <td align="center" class="bgs">
+								    <a title="word样本" class="uibtn word" href=""></a>
+							    </td>
+							    <td align="center">
+								    <a href="#" target="_blank" title="进入申报"><strong>进入申报</strong></a>
+							    </td>
+						    </tr>
+				        </table>               
+                    </div>
+                    <div class="sublist">
+                        <table class="mytabld one">
+					        <tr>
+						        <th width="25%">业务类型</th>
+						        <th width="34%">子项</th>
+						        <th width="18%">申报起止时间</th>
+						        <th width="7%">指南</th>
+						        <th width="8%">样本</th>
+						        <th width="8%">操作</th>
+					        </tr>
+					        <tr>
+                                <td align="center" rowspan="5">
+                                    <strong>科技金融资助</strong>
+                                </td>
+                                <td class="bgs">
+								    天使投资补助
+							    </td>
+							    <td align="center" class="bgs">
+								    2017-11-01~2017-12-20
+							    </td>
+							    <td align="center" class="bgs">
+								    <a title="申报指南" class="uibtn guide" href="#"></a>
+							    </td>
+							    <td align="center" class="bgs">
+								    <a title="word样本" class="uibtn word" href="#"></a>
+							    </td>
+							    <td align="center" class="bgs">
+								    <a href="#" target="_blank" title="进入申报"><strong>进入申报</strong></a>
+							    </td>
+						    </tr>
+						    <tr>
+							    <td>债权融资补助（信用评级）</td>
+							    <td align="center">
+                                    2017-11-01~2017-12-20
+							    </td>
+							    <td align="center">
+								    <a title="申报指南" class="uibtn guide" href="#"></a>
+							    </td>
+							    <td align="center">
+								    <a title="word样本" class="uibtn word" href="#"></a>
+							    </td>
+							    <td align="center">
+								    <a href="#" target="_blank" title="进入申报"><strong>进入申报</strong></a>
+							    </td>
+						    </tr>
+						    <tr class="bgs">
+							    <td class="bgs">
+								    债权融资补助（知识产权质押融资评估费）
+							    </td>
+							    <td align="center" class="bgs">
+								    2017-11-01~2017-12-20
+							    </td>
+							    <td align="center" class="bgs">
+								    <a title="申报指南" class="uibtn guide" href=""></a>
+							    </td>
+							    <td align="center" class="bgs">
+								    <a title="word样本" class="uibtn word" href="#">
+								    </a>
+							    </td>
+							    <td align="center">
+								    <a href="#" target="_blank" title="进入申报"><strong>进入申报</strong></a>
+							    </td>
+						    </tr>
+						    <tr>
+							    <td>
+								    债权融资补助（贷款担保费）
+							    </td>
+							    <td align="center">
+								    2017-11-01~2017-12-20
+							    </td>
+							    <td align="center">
+								    <a title="申报指南" class="uibtn guide" href="#"></a>
+							    </td>
+							    <td align="center">
+								    <a title="word样本" class="uibtn word" href="#"></a>
+							    </td>
+							    <td align="center">
+								    <a href="#" target="_blank" title="进入申报"><strong>进入申报</strong></a>
+							    </td>
+						    </tr>
+						    <tr class="bgs">
+							    <td class="bgs">
+								    债权融资补助（科技型企业贷款利息）
+							    </td>
+							    <td align="center" class="bgs">
+								    2017-11-01~2017-12-20
+							    </td>
+							    <td align="center" class="bgs">
+								    <a title="申报指南" class="uibtn guide" href="#"></a>
+							    </td>
+							    <td align="center" class="bgs">
+								    <a title="word样本" class="uibtn word" href=""></a>
+							    </td>
+							    <td align="center">
+								    <a href="#" target="_blank" title="进入申报"><strong>进入申报</strong></a>
+							    </td>
+						    </tr>
+				        </table>               
+                    </div>
+                    <div class="sublist">
+                        <table class="mytabld one">
+					        <tr>
+						        <th width="25%">业务类型</th>
+						        <th width="34%">子项</th>
+						        <th width="18%">申报起止时间</th>
+						        <th width="7%">指南</th>
+						        <th width="8%">样本</th>
+						        <th width="8%">操作</th>
+					        </tr>
+					        <tr>
+                                <td align="center" rowspan="5">
+                                    <strong>科技金融资助</strong>
+                                </td>
+                                <td class="bgs">
+								    天使投资补助
+							    </td>
+							    <td align="center" class="bgs">
+								    2017-11-01~2017-12-20
+							    </td>
+							    <td align="center" class="bgs">
+								    <a title="申报指南" class="uibtn guide" href="#"></a>
+							    </td>
+							    <td align="center" class="bgs">
+								    <a title="word样本" class="uibtn word" href="#"></a>
+							    </td>
+							    <td align="center" class="bgs">
+								    <a href="#" target="_blank" title="进入申报"><strong>进入申报</strong></a>
+							    </td>
+						    </tr>
+						    <tr>
+							    <td>债权融资补助（信用评级）</td>
+							    <td align="center">
+                                    2017-11-01~2017-12-20
+							    </td>
+							    <td align="center">
+								    <a title="申报指南" class="uibtn guide" href="#"></a>
+							    </td>
+							    <td align="center">
+								    <a title="word样本" class="uibtn word" href="#"></a>
+							    </td>
+							    <td align="center">
+								    <a href="#" target="_blank" title="进入申报"><strong>进入申报</strong></a>
+							    </td>
+						    </tr>
+						    <tr class="bgs">
+							    <td class="bgs">
+								    债权融资补助（知识产权质押融资评估费）
+							    </td>
+							    <td align="center" class="bgs">
+								    2017-11-01~2017-12-20
+							    </td>
+							    <td align="center" class="bgs">
+								    <a title="申报指南" class="uibtn guide" href=""></a>
+							    </td>
+							    <td align="center" class="bgs">
+								    <a title="word样本" class="uibtn word" href="#">
+								    </a>
+							    </td>
+							    <td align="center">
+								    <a href="#" target="_blank" title="进入申报"><strong>进入申报</strong></a>
+							    </td>
+						    </tr>
+						    <tr>
+							    <td>
+								    债权融资补助（贷款担保费）
+							    </td>
+							    <td align="center">
+								    2017-11-01~2017-12-20
+							    </td>
+							    <td align="center">
+								    <a title="申报指南" class="uibtn guide" href="#"></a>
+							    </td>
+							    <td align="center">
+								    <a title="word样本" class="uibtn word" href="#"></a>
+							    </td>
+							    <td align="center">
+								    <a href="#" target="_blank" title="进入申报"><strong>进入申报</strong></a>
+							    </td>
+						    </tr>
+						    <tr class="bgs">
+							    <td class="bgs">
+								    债权融资补助（科技型企业贷款利息）
+							    </td>
+							    <td align="center" class="bgs">
+								    2017-11-01~2017-12-20
+							    </td>
+							    <td align="center" class="bgs">
+								    <a title="申报指南" class="uibtn guide" href="#"></a>
+							    </td>
+							    <td align="center" class="bgs">
+								    <a title="word样本" class="uibtn word" href=""></a>
+							    </td>
+							    <td align="center">
+								    <a href="#" target="_blank" title="进入申报"><strong>进入申报</strong></a>
+							    </td>
+						    </tr>
+				        </table>               
+                    </div>
+                    <div class="sublist">
+                        <table class="mytabld one">
+					        <tr>
+						        <th width="25%">业务类型</th>
+						        <th width="34%">子项</th>
+						        <th width="18%">申报起止时间</th>
+						        <th width="7%">指南</th>
+						        <th width="8%">样本</th>
+						        <th width="8%">操作</th>
+					        </tr>
+					        <tr>
+                                <td align="center" rowspan="5">
+                                    <strong>科技金融资助</strong>
+                                </td>
+                                <td class="bgs">
+								    天使投资补助
+							    </td>
+							    <td align="center" class="bgs">
+								    2017-11-01~2017-12-20
+							    </td>
+							    <td align="center" class="bgs">
+								    <a title="申报指南" class="uibtn guide" href="#"></a>
+							    </td>
+							    <td align="center" class="bgs">
+								    <a title="word样本" class="uibtn word" href="#"></a>
+							    </td>
+							    <td align="center" class="bgs">
+								    <a href="#" target="_blank" title="进入申报"><strong>进入申报</strong></a>
+							    </td>
+						    </tr>
+						    <tr>
+							    <td>债权融资补助（信用评级）</td>
+							    <td align="center">
+                                    2017-11-01~2017-12-20
+							    </td>
+							    <td align="center">
+								    <a title="申报指南" class="uibtn guide" href="#"></a>
+							    </td>
+							    <td align="center">
+								    <a title="word样本" class="uibtn word" href="#"></a>
+							    </td>
+							    <td align="center">
+								    <a href="#" target="_blank" title="进入申报"><strong>进入申报</strong></a>
+							    </td>
+						    </tr>
+						    <tr class="bgs">
+							    <td class="bgs">
+								    债权融资补助（知识产权质押融资评估费）
+							    </td>
+							    <td align="center" class="bgs">
+								    2017-11-01~2017-12-20
+							    </td>
+							    <td align="center" class="bgs">
+								    <a title="申报指南" class="uibtn guide" href=""></a>
+							    </td>
+							    <td align="center" class="bgs">
+								    <a title="word样本" class="uibtn word" href="#">
+								    </a>
+							    </td>
+							    <td align="center">
+								    <a href="#" target="_blank" title="进入申报"><strong>进入申报</strong></a>
+							    </td>
+						    </tr>
+						    <tr>
+							    <td>
+								    债权融资补助（贷款担保费）
+							    </td>
+							    <td align="center">
+								    2017-11-01~2017-12-20
+							    </td>
+							    <td align="center">
+								    <a title="申报指南" class="uibtn guide" href="#"></a>
+							    </td>
+							    <td align="center">
+								    <a title="word样本" class="uibtn word" href="#"></a>
+							    </td>
+							    <td align="center">
+								    <a href="#" target="_blank" title="进入申报"><strong>进入申报</strong></a>
+							    </td>
+						    </tr>
+						    <tr class="bgs">
+							    <td class="bgs">
+								    债权融资补助（科技型企业贷款利息）
+							    </td>
+							    <td align="center" class="bgs">
+								    2017-11-01~2017-12-20
+							    </td>
+							    <td align="center" class="bgs">
+								    <a title="申报指南" class="uibtn guide" href="#"></a>
+							    </td>
+							    <td align="center" class="bgs">
+								    <a title="word样本" class="uibtn word" href=""></a>
+							    </td>
+							    <td align="center">
+								    <a href="#" target="_blank" title="进入申报"><strong>进入申报</strong></a>
+							    </td>
+						    </tr>
+				        </table>               
+                    </div>
+                    <div class="sublist">
+                        <table class="mytabld one">
+					        <tr>
+						        <th width="25%">业务类型</th>
+						        <th width="34%">子项</th>
+						        <th width="18%">申报起止时间</th>
+						        <th width="7%">指南</th>
+						        <th width="8%">样本</th>
+						        <th width="8%">操作</th>
+					        </tr>
+					        <tr>
+                                <td align="center" rowspan="5">
+                                    <strong>科技金融资助</strong>
+                                </td>
+                                <td class="bgs">
+								    天使投资补助
+							    </td>
+							    <td align="center" class="bgs">
+								    2017-11-01~2017-12-20
+							    </td>
+							    <td align="center" class="bgs">
+								    <a title="申报指南" class="uibtn guide" href="#"></a>
+							    </td>
+							    <td align="center" class="bgs">
+								    <a title="word样本" class="uibtn word" href="#"></a>
+							    </td>
+							    <td align="center" class="bgs">
+								    <a href="#" target="_blank" title="进入申报"><strong>进入申报</strong></a>
+							    </td>
+						    </tr>
+						    <tr>
+							    <td>债权融资补助（信用评级）</td>
+							    <td align="center">
+                                    2017-11-01~2017-12-20
+							    </td>
+							    <td align="center">
+								    <a title="申报指南" class="uibtn guide" href="#"></a>
+							    </td>
+							    <td align="center">
+								    <a title="word样本" class="uibtn word" href="#"></a>
+							    </td>
+							    <td align="center">
+								    <a href="#" target="_blank" title="进入申报"><strong>进入申报</strong></a>
+							    </td>
+						    </tr>
+						    <tr class="bgs">
+							    <td class="bgs">
+								    债权融资补助（知识产权质押融资评估费）
+							    </td>
+							    <td align="center" class="bgs">
+								    2017-11-01~2017-12-20
+							    </td>
+							    <td align="center" class="bgs">
+								    <a title="申报指南" class="uibtn guide" href=""></a>
+							    </td>
+							    <td align="center" class="bgs">
+								    <a title="word样本" class="uibtn word" href="#">
+								    </a>
+							    </td>
+							    <td align="center">
+								    <a href="#" target="_blank" title="进入申报"><strong>进入申报</strong></a>
+							    </td>
+						    </tr>
+						    <tr>
+							    <td>
+								    债权融资补助（贷款担保费）
+							    </td>
+							    <td align="center">
+								    2017-11-01~2017-12-20
+							    </td>
+							    <td align="center">
+								    <a title="申报指南" class="uibtn guide" href="#"></a>
+							    </td>
+							    <td align="center">
+								    <a title="word样本" class="uibtn word" href="#"></a>
+							    </td>
+							    <td align="center">
+								    <a href="#" target="_blank" title="进入申报"><strong>进入申报</strong></a>
+							    </td>
+						    </tr>
+						    <tr class="bgs">
+							    <td class="bgs">
+								    债权融资补助（科技型企业贷款利息）
+							    </td>
+							    <td align="center" class="bgs">
+								    2017-11-01~2017-12-20
+							    </td>
+							    <td align="center" class="bgs">
+								    <a title="申报指南" class="uibtn guide" href="#"></a>
+							    </td>
+							    <td align="center" class="bgs">
+								    <a title="word样本" class="uibtn word" href=""></a>
+							    </td>
+							    <td align="center">
+								    <a href="#" target="_blank" title="进入申报"><strong>进入申报</strong></a>
+							    </td>
+						    </tr>
+				        </table>               
+                    </div>
+                    <div class="sublist">
+                        <table class="mytabld one">
+					        <tr>
+						        <th width="25%">业务类型</th>
+						        <th width="34%">子项</th>
+						        <th width="18%">申报起止时间</th>
+						        <th width="7%">指南</th>
+						        <th width="8%">样本</th>
+						        <th width="8%">操作</th>
+					        </tr>
+					        <tr>
+                                <td align="center" rowspan="5">
+                                    <strong>科技金融资助</strong>
+                                </td>
+                                <td class="bgs">
+								    天使投资补助
+							    </td>
+							    <td align="center" class="bgs">
+								    2017-11-01~2017-12-20
+							    </td>
+							    <td align="center" class="bgs">
+								    <a title="申报指南" class="uibtn guide" href="#"></a>
+							    </td>
+							    <td align="center" class="bgs">
+								    <a title="word样本" class="uibtn word" href="#"></a>
+							    </td>
+							    <td align="center" class="bgs">
+								    <a href="#" target="_blank" title="进入申报"><strong>进入申报</strong></a>
+							    </td>
+						    </tr>
+						    <tr>
+							    <td>债权融资补助（信用评级）</td>
+							    <td align="center">
+                                    2017-11-01~2017-12-20
+							    </td>
+							    <td align="center">
+								    <a title="申报指南" class="uibtn guide" href="#"></a>
+							    </td>
+							    <td align="center">
+								    <a title="word样本" class="uibtn word" href="#"></a>
+							    </td>
+							    <td align="center">
+								    <a href="#" target="_blank" title="进入申报"><strong>进入申报</strong></a>
+							    </td>
+						    </tr>
+						    <tr class="bgs">
+							    <td class="bgs">
+								    债权融资补助（知识产权质押融资评估费）
+							    </td>
+							    <td align="center" class="bgs">
+								    2017-11-01~2017-12-20
+							    </td>
+							    <td align="center" class="bgs">
+								    <a title="申报指南" class="uibtn guide" href=""></a>
+							    </td>
+							    <td align="center" class="bgs">
+								    <a title="word样本" class="uibtn word" href="#">
+								    </a>
+							    </td>
+							    <td align="center">
+								    <a href="#" target="_blank" title="进入申报"><strong>进入申报</strong></a>
+							    </td>
+						    </tr>
+						    <tr>
+							    <td>
+								    债权融资补助（贷款担保费）
+							    </td>
+							    <td align="center">
+								    2017-11-01~2017-12-20
+							    </td>
+							    <td align="center">
+								    <a title="申报指南" class="uibtn guide" href="#"></a>
+							    </td>
+							    <td align="center">
+								    <a title="word样本" class="uibtn word" href="#"></a>
+							    </td>
+							    <td align="center">
+								    <a href="#" target="_blank" title="进入申报"><strong>进入申报</strong></a>
+							    </td>
+						    </tr>
+						    <tr class="bgs">
+							    <td class="bgs">
+								    债权融资补助（科技型企业贷款利息）
+							    </td>
+							    <td align="center" class="bgs">
+								    2017-11-01~2017-12-20
+							    </td>
+							    <td align="center" class="bgs">
+								    <a title="申报指南" class="uibtn guide" href="#"></a>
+							    </td>
+							    <td align="center" class="bgs">
+								    <a title="word样本" class="uibtn word" href=""></a>
+							    </td>
+							    <td align="center">
+								    <a href="#" target="_blank" title="进入申报"><strong>进入申报</strong></a>
+							    </td>
+						    </tr>
+				        </table>               
+                    </div>
+                </div>
+	        </div>
+        </div>
+    </div>
+    <div class="line10"></div>
+</div>
+<div class="sectionful div_ys">
+    <div class="section">    
+        <div class="line10"></div>
+        <div class="index-div8">
+            <div class="index-div8-1">
+                创客驿站
+            </div>
+            <div class="index-div8-2">
+                <div class="subimglist">
+                <ul>
+                    <%set DataTable newsList4=get_article_list("news", 4, 8, "status=0 And img_url<>''")%>
+                    <%set int js=0 %>
+                    <%foreach(DataRow newdr4 in newsList4.Rows)%>
+                    <%set js=js+1%>
+                    <%set int ys = js%4%>
+                    <li class="subimglist_li_{ys}">
+                        <div class="infopanle">
+                            <div class="div_img"><img src="{newdr4[img_url]}" /></div>
+                            <div class="div_tit">
+                            <a href="<%linkurl("news_show",{newdr4[id]})%>" target="_blank"><%cutstring({newdr4[title]},26)%></a>
+                            </div>
+                            <div class="div_zhaiyao">
+                            <%cutstring({newdr4[zhaiyao]},140)%>
+                            </div>
+                            <div class="div_xq">
+                            <a href="<%linkurl("news_show",{newdr4[id]})%>" target="_blank">查看详情</a>
+                            </div>
+                        </div>
+                    </li>
+                    <%/foreach%>
+                </ul>
+                <div class="line10"></div>
+                </div>
+                <div class="line10"></div>
+            </div>
+            <div class="line10"></div>
+        </div>
+        <div class="line10"></div>
+    </div>
+    <div class="line10"></div>
+</div>
+
+<div class="section">    
+    <div class="line10"></div>
+    <div class="index-div9">
+        <div class="index-div9-1">
+            <table width="100%" border="0" cellspacing="0" cellpadding="0" class="id9_tab">
+              <tr>
+                <td colspan="3" align="center" class="id9_tab_td_top">智能制造管理平台</td>
+              </tr>
+              <tr>
+                <td colspan="3" align="center" class="id9_tab_td_top1">为科技创新企业、团队提供专业化计算机智能方针设计咨询服务</td>
+              </tr>
+              <tr>
+                <td align="center" class="id9_tab_td0">
+                    
+                </td>
+                <td align="center" class="id9_tab_td1">
+                    <div class="lab0">服务项目</div>
+                    <div class="lab2" data-to="60" data-speed="2500"></div>
+                    <div class="lab0">项</div>
+                    <div class="lab0">服务商</div>
+                    <div class="lab2" data-to="60" data-speed="2500"></div>
+                    <div class="lab0">家</div>
+                    <div class="lab0">已服务企业</div>
+                    <div class="lab2" data-to="120" data-speed="2500"></div>
+                    <div class="lab0">家</div>
+                </td>
+                <td align="center" class="id9_tab_td2">
+                    <a href="">进入智能制造管理平台>></a>
+                </td>                                
+              </tr>
+            </table>
+        </div>
+    </div>
+</div>
+<div class="section">    
+    <div class="index-div10">
+    <img alt="" src="/templates/main/img/cx_topbg3.jpg" />
+    </div>
+</div>
+<div class="section">    
+    <div class="index-div11">
+        <div class="index-div11-0">
+            <table width="100%" border="0" cellspacing="0" cellpadding="0" class="id11_tab">
+              <tr>
+                <td colspan="4" align="center" class="id11_tab_td_top">
+                    <img alt="" src="/templates/main/img/cx_tit01.jpg" />
+                </td>
+              </tr>
+            </table>
+        </div>
+        <div class="index-div11-1">
+            <table width="100%" border="0" cellspacing="0" cellpadding="0" class="id11_tab">                          
+              <tr>
+                <td align="center" class="id11_tab_td">
+                    <a href=""><img alt="" src="/templates/main/img/cbt_3.png" /></a>
+                </td>
+                <td align="center" class="id11_tab_td">
+                    <a href=""><img alt="" src="/templates/main/img/cbt_4.png" /></a>                  
+                </td>
+                <td align="center" class="id11_tab_td">
+                    <a href=""><img alt="" src="/templates/main/img/cbt_5.png" /></a>
+                </td>
+                <td align="center" class="id11_tab_td">
+                    <a href=""><img alt="" src="/templates/main/img/cbt_6.png" /></a>
+                </td>                                
+              </tr>
+            </table>
+        </div> 
+    </div>
+</div>
+
+<div class="sectionful div_xy">    
+    <div class="section">
+        <div class="line10"></div>
+        <div class="index-div12">
+           <div class="line10"></div>
+            <div class="index-div12-0">
+                <table width="100%" border="0" cellspacing="0" cellpadding="0" class="id12_tab">
+                  <tr>
+                    <td colspan="2" align="center" class="id12_tab_td_top0">
+                        创新创业学院
+                    </td>
+                  </tr>
+                  <tr>
+                    <td colspan="2" align="center" class="id12_tab_td_top1">
+                        截止到2017年4月
+                    </td>
+                  </tr>
+                  <tr>
+                    <td align="center" class="id12_tab_td_top3">
+                    </td>
+                    <td align="center" class="id12_tab_td_top4">
+                        <div class="lab0">创新创业学院视频</div>
+                        <div class="lab2" data-to="60" data-speed="2500"></div>
+                        <div class="lab0">个</div>
+                        <div class="lab0">创新创业导师</div>
+                        <div class="lab2" data-to="251" data-speed="2500"></div>
+                        <div class="lab0">个</div>
+                    </td>
+                  </tr>
+                </table>
+            </div>
+            <div class="index-div12-1">
+                <div class="index-div12-1-l">
+                    <div class="subimglist1">
+                    <ul>
+                        <%set DataTable newsList5=get_article_list("news", 5, 3, "status=0 And img_url<>''")%>
+                        <%foreach(DataRow newdr5 in newsList5.Rows)%>
+                        <li>
+                            <div class="infopanle">
+                                <div class="div_img"><img src="{newdr5[img_url]}" /></div>
+                                <div class="div_tit">
+                                <a href="<%linkurl("news_show",{newdr5[id]})%>" target="_blank"><%cutstring({newdr5[title]},26)%></a>
+                                </div>                            
+                            </div>
+                        </li>
+                        <%/foreach%>
+                    </ul>
+                    </div>
+                    <div class="line10"></div>
+                </div>
+                <div class="index-div12-1-r">
+                    <div class="indelink12">
+                        <a href="#"><img src="/templates/main/img/cbt_7.png" /></a>
+                        <a href="#"><img src="/templates/main/img/cbt_8.png" /></a>
+                        <a href="#"><img src="/templates/main/img/cbt_9.png" /></a>
+                    </div>
+                </div>
+            </div> 
+        </div>
+    </div>
+</div>
+
+<div class="section">    
+    <div class="index-div13">
+        <div class="index-div13-0">
+            <div class="index-div13-0-l">
+                <table width="100%" border="0" cellspacing="0" cellpadding="0" class="id13_tab">
+                    <tr>
+                        <td align="center" valign="middle" class="id13_tab_td">
+                            <a href="#"><img alt="" src="/templates/main/img/cico_6.png" /><span>科技企业孵化器协会</span></a>
+                        </td>
+                        <td align="center" valign="middle" class="id13_tab_td">
+                            <a href="#"><img alt="" src="/templates/main/img/cico_7.png" /><span>孵化器从业人员管理系统</span></a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td align="center" valign="middle" class="id13_tab_td">
+                            <a href="#"><img alt="" src="/templates/main/img/cico_8.png" /><span>载体信息报送系统</span></a>
+                        </td>
+                        <td align="center" valign="middle" class="id13_tab_td">
+                            <a href="#"><img alt="" src="/templates/main/img/cico_9.png" /><span>载体日常运营管理系统</span></a>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div class="index-div13-0-r">
+                <table width="100%" border="0" cellspacing="0" cellpadding="0" class="id13_tab2">
+                    <tr>
+                        <td align="center" valign="middle" class="id13_tab2_td">
+                            <a href="#"><img alt="" src="/templates/main/img/cico_9.jpg" /></a>
+                        </td>
+                        <td align="center" valign="middle" class="id13_tab2_td">
+                            <a href="#"><img alt="" src="/templates/main/img/cico_10.jpg" /></a>
+                        </td>
+                    </tr>                    
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--页面底部-->
+<%template src="_footer.html"%>
+<!--/页面底部-->
+</body>
+</html>

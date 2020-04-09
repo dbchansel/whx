@@ -1,0 +1,518 @@
+﻿<!DOCTYPE html>
+<!--HTML5 doctype-->
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+<title>会员中心 - {site.name}</title>
+<meta name="keywords" content="{site.seo_keyword}" />
+<meta name="description" content="{site.seo_description}" />
+<link rel="stylesheet" type="text/css" href="<%templateskin%>/css/style.css" />
+<script type="text/javascript" charset="utf-8" src="<%templateskin%>/js/zepto.min.js"></script>
+<script type="text/javascript" charset="utf-8" src="<%templateskin%>/js/weui.min.js"></script>
+<script type="text/javascript" charset="utf-8" src="<%templateskin%>/js/common.js"></script>
+</head>
+
+<body ontouchstart>
+<div class="page">
+    
+    <%if(action=="index")%>
+    <script type="text/javascript">
+        $(function(){
+            //选中TAB样式
+            $(".weui-tabbar a").eq(3).addClass("weui-bar__item_on");
+        });
+    </script>
+    <!--会员中心-->
+    <div class="page__bd">
+        <!--页面头部-->
+        <div class="head-box">
+            <div class="img-box">
+                <%if(userModel.avatar!="")%>
+                    <img src="{userModel.avatar}" />
+                <%else%>
+                    <i class="iconfont icon-user-full"></i>
+                <%/if%>
+            </div>
+            <div class="tit-box">
+                <h3>{userModel.user_name}</h3>
+                <p>会员等级：{groupModel.title}</p>
+                <p>个人成长值：{userModel.exp}点</p>
+            </div>
+        </div>
+        <!--/页面头部-->
+        <!--菜单选项-->
+        <div class="weui-cells icon-list">
+            <a class="weui-cell weui-cell_access" href="<%linkurl("userorder","list")%>">
+                <div class="weui-cell__hd">
+                    <i class="iconfont icon-order"></i>
+                </div>
+                <div class="weui-cell__bd">
+                    <p>我的订单</p>
+                </div>
+                <div class="weui-cell__ft"><%=get_user_order_count("status<3 and user_id="+userModel.id)%> 笔</div>
+            </a>
+            <a class="weui-cell weui-cell_access" href="<%linkurl("useraddress")%>">
+                <div class="weui-cell__hd">
+                    <i class="iconfont icon-address"></i>
+                </div>
+                <div class="weui-cell__bd">
+                    <p>收货地址</p>
+                </div>
+                <div class="weui-cell__ft"></div>
+            </a>
+        </div>
+        
+        <div class="weui-cells icon-list">
+            <a class="weui-cell weui-cell_access" href="<%linkurl("useramount","recharge")%>">
+                <div class="weui-cell__hd">
+                    <i class="iconfont icon-amount"></i>
+                </div>
+                <div class="weui-cell__bd">
+                    <p>账户余额</p>
+                </div>
+                <div class="weui-cell__ft">￥{userModel.amount} 元</div>
+            </a>
+            <a class="weui-cell weui-cell_access" href="<%linkurl("userpoint","convert")%>">
+                <div class="weui-cell__hd">
+                    <i class="iconfont icon-point"></i>
+                </div>
+                <div class="weui-cell__bd">
+                    <p>我的积分</p>
+                </div>
+                <div class="weui-cell__ft">{userModel.point} 分</div>
+            </a>
+            <a class="weui-cell weui-cell_access" href="<%linkurl("usermessage","accept")%>">
+                <div class="weui-cell__hd">
+                    <i class="iconfont icon-msg"></i>
+                </div>
+                <div class="weui-cell__bd">
+                    <p>站内短信</p>
+                </div>
+                <div class="weui-cell__ft"><%=get_user_message_count("accept_user_name='"+userModel.user_name+"' and is_read=0")%> 条</div>
+            </a>
+        </div>
+        
+        <div class="weui-cells icon-list">
+            <a class="weui-cell weui-cell_access" href="<%linkurl("usercenter","proinfo")%>">
+                <div class="weui-cell__hd">
+                    <i class="iconfont icon-info"></i>
+                </div>
+                <div class="weui-cell__bd">
+                    <p>个人资料</p>
+                </div>
+                <div class="weui-cell__ft"></div>
+            </a>
+            <a class="weui-cell weui-cell_access" href="<%linkurl("usercenter","password")%>">
+                <div class="weui-cell__hd">
+                    <i class="iconfont icon-pwd"></i>
+                </div>
+                <div class="weui-cell__bd">
+                    <p>修改密码</p>
+                </div>
+                <div class="weui-cell__ft"></div>
+            </a>
+            <a class="weui-cell weui-cell_access" href="<%linkurl("usercenter","exit")%>">
+                <div class="weui-cell__hd">
+                    <i class="iconfont icon-exit"></i>
+                </div>
+                <div class="weui-cell__bd">
+                    <p>退出登录</p>
+                </div>
+                <div class="weui-cell__ft"></div>
+            </a>
+        </div>
+        <!--/菜单选项-->
+    </div>
+    <!--版权信息-->
+    <%template src="_copyright.html"%>
+    <!--/版权信息-->
+
+    <!--底部导航-->
+    <%template src="_footer.html"%>
+    <!--/底部导航-->
+    <!--会员中心-->
+    
+    <%else if(action=="password")%>
+    <!--修改密码-->
+    <link rel="stylesheet" type="text/css" href="<%templateskin%>/css/validate.css" />
+    <script type="text/javascript" charset="utf-8" src="<%templateskin%>/js/mvalidate.js"></script>
+    <script type="text/javascript" charset="utf-8" src="<%templateskin%>/js/mvalidate-extend.js"></script>
+    <script type="text/javascript">
+        $(function(){
+            //初始化表单
+            AjaxInitForm('#pwdForm', '#btnSubmit', 1);
+            //选中TAB样式
+            $(".weui-tabbar a").eq(2).addClass("weui-bar__item_on");
+        });
+    </script>
+    <div class="page__bd">
+        <!--页面头部-->
+        <div class="header">
+            <a class="back" href="javascript:history.back();">
+                <i class="iconfont icon-arrow-left"></i>
+            </a>
+            <h3>修改密码</h3>
+            <div class="right"> 
+                <a class="weui-cell_access weui-cell_link" href="<%linkurl("usercenter","index")%>">
+                    <i class="iconfont icon-user"></i>
+                </a>
+            </div>
+        </div>
+        <!--/页面头部-->
+        
+        <form name="pwdForm" id="pwdForm" class="form-box" url="{config.webpath}tools/submit_ajax.ashx?action=user_password_edit">
+        <div class="weui-panel weui-panel_access" style="margin-top:10px;">
+            <div class="weui-panel__hd">修改密码</div>
+            <div class="weui-panel__bd">
+                <div class="weui-cells_form form-box">
+                    <div class="weui-cell">
+                        <div class="weui-cell__hd">
+                            <label class="weui-label">旧密码</label>
+                        </div>
+                        <div class="weui-cell__bd">
+                            <input id="txtOldPassword" name="txtOldPassword" type="password" class="weui-input" placeholder="请输入旧密码" data-validate="password" />
+                        </div>
+                    </div>
+                    
+                    <div class="weui-cell">
+                        <div class="weui-cell__hd">
+                            <label class="weui-label">新密码</label>
+                        </div>
+                        <div class="weui-cell__bd">
+                            <input id="txtPassword" name="txtPassword" type="password" class="weui-input" placeholder="请输入新密码" data-validate="password" />
+                        </div>
+                    </div>
+                    
+                    <div class="weui-cell">
+                        <div class="weui-cell__hd">
+                            <label class="weui-label">确认密码</label>
+                        </div>
+                        <div class="weui-cell__bd">
+                            <input id="txtPassword1" name="txtPassword1" type="password" class="weui-input" placeholder="请再输入一次新密码" data-required="true" data-descriptions="confirmpassword" data-conditional="confirmpwd" />
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+        <div class="weui-btn-area">
+            <input id="btnSubmit" name="btnSubmit" type="submit" class="weui-btn weui-btn_primary" value="确认修改" />
+        </div>
+        </form>
+    </div>
+    <!--版权信息-->
+    <%template src="_copyright.html"%>
+    <!--/版权信息-->
+
+    <!--底部导航-->
+    <div class="weui-tab foot-nav">
+        <div class="weui-tab__panel">
+
+        </div>
+        <div class="weui-tabbar">
+            <a href="<%linkurl("index")%>" class="weui-tabbar__item">
+                <i class="iconfont icon-home weui-tabbar__icon"></i>
+                <p class="weui-tabbar__label">首页</p>
+            </a>
+            <a href="<%linkurl("usercenter","proinfo")%>" class="weui-tabbar__item">
+                <i class="iconfont icon-info weui-tabbar__icon"></i>
+                <p class="weui-tabbar__label">个人资料</p>
+            </a>
+            <a href="<%linkurl("usercenter","password")%>" class="weui-tabbar__item">
+                <i class="iconfont icon-pwd weui-tabbar__icon"></i>
+                <p class="weui-tabbar__label">修改密码</p>
+            </a>
+            <a href="<%linkurl("usercenter","invite")%>" class="weui-tabbar__item">
+                <i class="iconfont icon-invite weui-tabbar__icon"></i>
+                <p class="weui-tabbar__label">邀请注册</p>
+            </a>
+        </div>
+    </div>
+    <!--/底部导航-->
+    <!--/修改密码-->
+        
+    <%else if(action=="proinfo")%>
+    <!--修改资料-->
+    <link rel="stylesheet" type="text/css" href="<%templateskin%>/css/validate.css" />
+    <script type="text/javascript" charset="utf-8" src="<%templateskin%>/js/mvalidate.js"></script>
+    <script type="text/javascript" charset="utf-8" src="<%templateskin%>/js/mvalidate-extend.js"></script>
+    <script type="text/javascript" charset="utf-8" src="{config.webpath}scripts/jquery/PCASClass.js"></script>
+    <script type="text/javascript">
+        $(function(){
+            //初始化表单
+            AjaxInitForm('#infoForm', '#btnSubmit', 1);
+            //初始化地区
+            var mypcas = new PCAS("txtProvince,所属省份", "txtCity,所属城市", "txtArea,所属地区");
+            var areaArr = ("{userModel.area}").split(",");
+            if (areaArr.length == 3) {
+              mypcas.SetValue(areaArr[0], areaArr[1], areaArr[2]);
+            }
+            //初始化日期
+            $("#txtBirthday").on('focus', function(){
+                weui.datePicker({
+                    start: 1920,
+                    end: 2080,
+                    defaultValue: [1980,1,1],
+                    onChange: function(result){
+                    },
+                    onConfirm: function(result){
+                        $("#txtBirthday").val(result);
+                    },
+                    id: 'datePicker'
+                });
+            });
+            //选中TAB样式
+            $(".weui-tabbar a").eq(1).addClass("weui-bar__item_on");
+        });
+    </script>
+    <div class="page__bd">
+        <!--页面头部-->
+        <div class="header">
+            <a class="back" href="javascript:history.back();">
+                <i class="iconfont icon-arrow-left"></i>
+            </a>
+            <h3>账户资料</h3>
+            <div class="right"> 
+                <a class="weui-cell_access weui-cell_link" href="<%linkurl("usercenter","index")%>">
+                    <i class="iconfont icon-user"></i>
+                </a>
+            </div>
+        </div>
+        <!--/页面头部-->
+        
+        <form name="infoForm" id="infoForm" class="form-box" url="{config.webpath}tools/submit_ajax.ashx?action=user_info_edit">
+        <div class="weui-panel weui-panel_access" style="margin-top:10px;">
+            <div class="weui-panel__hd">个人资料</div>
+            <div class="weui-panel__bd">
+                <div class="weui-cells_form form-box">
+                    <div class="weui-cell">
+                        <div class="weui-cell__hd">
+                            <label class="weui-label">用户昵称</label>
+                        </div>
+                        <div class="weui-cell__bd">
+                            <input id="txtNickName" name="txtNickName" class="weui-input" type="text" value="{userModel.nick_name}" placeholder="用户昵称" data-validate="s" />
+                        </div>
+                    </div>
+                    
+                    <div class="weui-cell">
+                        <div class="weui-cell__hd">
+                            <label class="weui-label">性别</label>
+                        </div>
+                        <div class="weui-cell__bd">
+                            <%if({userModel.sex}=="男")%>
+                            <label style="margin-right:10px;"><input name="rblSex" type="radio" value="男" checked="checked" />男</label>
+                            <label style="margin-right:10px;"><input name="rblSex" type="radio" value="女" />女</label>
+                            <label><input id="sex-3" name="rblSex" type="radio" value="保密" />保密</label>
+                            <%else if({userModel.sex}=="女")%>
+                            <label style="margin-right:10px;"><input name="rblSex" type="radio" value="男" />男</label>
+                            <label style="margin-right:10px;"><input name="rblSex" type="radio" value="女" checked="checked" />女</label>
+                            <label><input id="sex-3" name="rblSex" type="radio" value="保密" />保密</label>
+                            <%else%>
+                            <label style="margin-right:10px;"><input name="rblSex" type="radio" value="男" />男</label>
+                            <label style="margin-right:10px;"><input name="rblSex" type="radio" value="女" />女</label>
+                            <label><input id="sex-3" name="rblSex" type="radio" value="保密" checked="checked" />保密</label>
+                            <%/if%>
+                        </div>
+                    </div>
+                    
+                    <div class="weui-cell">
+                        <div class="weui-cell__hd">
+                            <label class="weui-label">生日</label>
+                        </div>
+                        <div class="weui-cell__bd">
+                            <%if({userModel.birthday}==null)%>
+                                <input name="txtBirthday" id="txtBirthday" type="text" class="weui-input" placeholder="请选择日期" />
+                            <%else%>
+                                <input name="txtBirthday" id="txtBirthday" type="text" class="weui-input" value="<%datetostr({userModel.birthday},yyyy-M-d)%>" placeholder="请选择日期" />
+                            <%/if%>
+                        </div>
+                    </div>
+                    
+                    <div class="weui-cell">
+                        <div class="weui-cell__hd">
+                            <label class="weui-label">邮箱</label>
+                        </div>
+                        <div class="weui-cell__bd">
+                            <input id="txtEmail" name="txtEmail" type="text" value="{userModel.email}" class="weui-input" placeholder="电子邮箱地址" data-validate="e" />
+                        </div>
+                    </div>
+                    
+                    <div class="weui-cell">
+                        <div class="weui-cell__hd">
+                            <label class="weui-label">手机号</label>
+                        </div>
+                        <div class="weui-cell__bd">
+                            <input id="txtMobile" name="txtMobile" type="tel" value="{userModel.mobile}" class="weui-input" placeholder="请输入手机号" data-validate="m" />
+                        </div>
+                    </div>
+                    
+                    <div class="weui-cell">
+                        <div class="weui-cell__hd">
+                            <label class="weui-label">电话</label>
+                        </div>
+                        <div class="weui-cell__bd">
+                            <input id="txtTelphone" name="txtTelphone" type="text" value="{userModel.telphone}" class="weui-input" placeholder="固定电话号码" />
+                        </div>
+                    </div>
+                    
+                    <div class="weui-cell">
+                        <div class="weui-cell__hd">
+                            <label class="weui-label">所属地区</label>
+                        </div>
+                        <div class="weui-cell__bd">
+                            <select id="txtProvince" name="txtProvince" class="select"></select>
+                            <select id="txtCity" name="txtCity" class="select"></select>
+                            <select id="txtArea" name="txtArea" class="select"></select>
+                        </div>
+                    </div>
+                    
+                    <div class="weui-cell">
+                        <div class="weui-cell__hd">
+                            <label class="weui-label">详细地址</label>
+                        </div>
+                        <div class="weui-cell__bd">
+                            <input id="txtAddress" name="txtAddress" class="weui-input" type="text" placeholder="详细地址" value="{userModel.address}" />
+                        </div>
+                    </div>
+                    
+                    <div class="weui-cell">
+                        <div class="weui-cell__hd">
+                            <label class="weui-label">QQ号码</label>
+                        </div>
+                        <div class="weui-cell__bd">
+                            <input id="txtQQ" name="txtQQ" class="weui-input" type="text" placeholder="腾讯QQ号码" value="{userModel.qq}" />
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+        <div class="weui-btn-area">
+            <input id="btnSubmit" name="btnSubmit" type="submit" class="weui-btn weui-btn_primary" value="确认修改" />
+        </div>
+        </form>
+    </div>
+    <!--版权信息-->
+    <%template src="_copyright.html"%>
+    <!--/版权信息-->
+
+    <!--底部导航-->
+    <div class="weui-tab foot-nav">
+        <div class="weui-tab__panel">
+
+        </div>
+        <div class="weui-tabbar">
+            <a href="<%linkurl("index")%>" class="weui-tabbar__item">
+                <i class="iconfont icon-home weui-tabbar__icon"></i>
+                <p class="weui-tabbar__label">首页</p>
+            </a>
+            <a href="<%linkurl("usercenter","proinfo")%>" class="weui-tabbar__item">
+                <i class="iconfont icon-info weui-tabbar__icon"></i>
+                <p class="weui-tabbar__label">个人资料</p>
+            </a>
+            <a href="<%linkurl("usercenter","password")%>" class="weui-tabbar__item">
+                <i class="iconfont icon-pwd weui-tabbar__icon"></i>
+                <p class="weui-tabbar__label">修改密码</p>
+            </a>
+            <a href="<%linkurl("usercenter","invite")%>" class="weui-tabbar__item">
+                <i class="iconfont icon-invite weui-tabbar__icon"></i>
+                <p class="weui-tabbar__label">邀请注册</p>
+            </a>
+        </div>
+    </div>
+    <!--/底部导航-->
+    <!--/修改资料-->
+    
+    <%else if(action=="invite")%>
+    <!--邀请码-->
+    <script type="text/javascript">
+        $(function(){
+            //选中TAB样式
+            $(".weui-tabbar a").eq(3).addClass("weui-bar__item_on");
+        });
+    </script>
+    <div class="page__bd">
+        <!--页面头部-->
+        <div class="header">
+            <a class="back" href="javascript:history.back();">
+                <i class="iconfont icon-arrow-left"></i>
+            </a>
+            <h3>邀请码</h3>
+            <div class="right"> 
+                <a class="weui-cell_access weui-cell_link" href="javascript:;" onclick="clickSubmit('{config.webpath}tools/submit_ajax.ashx?action=user_invite_code');">
+                    <i class="iconfont icon-edit"></i>
+                </a>
+            </div>
+        </div>
+        <!--/页面头部-->
+        
+        <div class="detail-list">
+            <ul>
+                <%set DataTable inviteList=get_user_invite_list(0, "user_name='"+userModel.user_name+"'")%>
+                <%foreach(DataRow dr in inviteList.Rows)%>
+                <li>
+                    <div class="detail-hd">
+                        <span class="fr">
+                            <%if(get_invite_status({dr[str_code]}))%>
+                                有效
+                            <%else%>
+                                已失效
+                            <%/if%>
+                        </span>
+                        <span>已使用 {dr[count]} 次</span>
+                    </div>
+                    <div class="detail-bd">
+                        <div class="list-box">
+                            <div class="txt-box">
+                                <h2>邀请码：{dr[str_code]}</h2>
+                                <p>有效期：{dr[add_time]} - {dr[eff_time]}</p>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                <%/foreach%>
+                <%if(inviteList.Rows.Count==0)%>
+                <div class="nodata">暂无邀请码...</div>
+                <%/if%>
+            </ul>
+        </div>
+        
+    </div>
+    <!--版权信息-->
+    <%template src="_copyright.html"%>
+    <!--/版权信息-->
+
+    <!--底部导航-->
+    <div class="weui-tab foot-nav">
+        <div class="weui-tab__panel">
+
+        </div>
+        <div class="weui-tabbar">
+            <a href="<%linkurl("index")%>" class="weui-tabbar__item">
+                <i class="iconfont icon-home weui-tabbar__icon"></i>
+                <p class="weui-tabbar__label">首页</p>
+            </a>
+            <a href="<%linkurl("usercenter","proinfo")%>" class="weui-tabbar__item">
+                <i class="iconfont icon-info weui-tabbar__icon"></i>
+                <p class="weui-tabbar__label">个人资料</p>
+            </a>
+            <a href="<%linkurl("usercenter","password")%>" class="weui-tabbar__item">
+                <i class="iconfont icon-pwd weui-tabbar__icon"></i>
+                <p class="weui-tabbar__label">修改密码</p>
+            </a>
+            <a href="<%linkurl("usercenter","invite")%>" class="weui-tabbar__item">
+                <i class="iconfont icon-invite weui-tabbar__icon"></i>
+                <p class="weui-tabbar__label">邀请注册</p>
+            </a>
+        </div>
+    </div>
+    <!--/底部导航-->
+    <!--/邀请码-->
+    <%/if%>
+    
+    
+    
+</div>
+</body>
+</html>

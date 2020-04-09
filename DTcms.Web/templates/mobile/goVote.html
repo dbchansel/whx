@@ -1,0 +1,56 @@
+﻿<!DOCTYPE html>
+<!--HTML5 doctype-->
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+    <title>投票登录</title>
+    <meta name="keywords" content="{site.seo_keyword}" />
+    <meta name="description" content="{site.seo_description}" />
+    <link rel="stylesheet" type="text/css" href="<%templateskin%>/css/validate.css" />
+    <link rel="stylesheet" type="text/css" href="<%templateskin%>/css/style.css" />
+    <script type="text/javascript" charset="utf-8" src="<%templateskin%>/js/zepto.min.js"></script>
+    <script type="text/javascript" charset="utf-8" src="<%templateskin%>/js/weui.min.js"></script>
+    <script type="text/javascript" charset="utf-8" src="<%templateskin%>/js/common.js"></script>
+    <script type="text/javascript" charset="utf-8" src="<%templateskin%>/js/mvalidate.js"></script>
+    <script type="text/javascript" charset="utf-8" src="<%templateskin%>/js/mvalidate-extend.js"></script>
+    <script type="text/javascript">
+        var openid; // 用户openid
+        var nickname; // 用户昵称
+        var headimgurl; //用户头像
+        $(document).ready(function () {
+            checkCookie();      
+        });
+
+        function checkCookie() {
+            openid = getCookie('openid')
+            if (openid != null && openid != "")
+            {
+                window.location.href = "{config.webpath}aspx/mobile/Vote.aspx?openid=" + openid + "&VoteId={voteID}";
+            }
+            else
+            {
+                window.location.href = "{config.webpath}api/oauth/index.aspx?id=4&vote={voteID}";
+            }
+        }
+        function getCookie(c_name) {
+            if (document.cookie.length > 0) {
+                c_start = document.cookie.indexOf(c_name + "=")
+                if (c_start != -1) {
+                    c_start = c_start + c_name.length + 1
+                    c_end = document.cookie.indexOf(";", c_start)
+                    if (c_end == -1) c_end = document.cookie.length
+                    return unescape(document.cookie.substring(c_start, c_end))
+                }
+            }
+            return ""
+        }
+
+
+    </script>
+</head>
+
+<body ontouchstart>
+  
+</body>
+</html>

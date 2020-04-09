@@ -1,0 +1,464 @@
+﻿<!DOCTYPE html>
+<!--HTML5 doctype-->
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+    <title>投票啦！ - {model.JoinName}</title>
+    <meta name="keywords" content="{site.seo_keyword}" />
+    <meta name="description" content="{site.seo_description}" />
+    <link rel="stylesheet" type="text/css" href="<%templateskin%>/css/idangerous.swiper.css" />
+    <link rel="stylesheet" type="text/css" href="<%templateskin%>/css/style.css" />
+    <script type="text/javascript" charset="utf-8" src="<%templateskin%>/js/zepto.min.js"></script>
+    <script type="text/javascript" charset="utf-8" src="<%templateskin%>/js/weui.min.js"></script>
+    <script type="text/javascript" charset="utf-8" src="<%templateskin%>/js/common.js"></script>
+    <script type="text/javascript" charset="utf-8" src="<%templateskin%>/js/idangerous.swiper-2.1.min.js"></script>
+    <style type="text/css">
+        .textLine {
+            padding: 14px 15px 10px;
+            color: #999;
+            font-size: 12px;
+            position: relative;
+        }
+        .payItem {
+            color:#FF0000;
+            border: 1px solid #e5e5e5;
+            width:80px;
+            height: 35px;
+        }
+        .payItemEx {
+            color:#FFFFFF;
+            border: 1px solid #e5e5e5;
+            width:80px;
+            height: 35px;
+            background-color:red;
+        }
+        .payItemlabel {
+            font-size:20px;
+        }
+        #contentCss img {
+	                width: 100%;    height: 100%;
+        }
+    </style>
+    <script type="text/javascript">
+        var curVoteNum = 0;
+        var curGiftNum = 0;
+        var openid = "";
+        $(document).ready(function () {
+            var curopenid = "{curopenid}";
+            if (curopenid != "")
+            {
+                openid = curopenid;
+                setCookie('openid', openid, 365);
+            }
+            else
+                openid = getCookie("openid");
+
+            if (openid == null || openid == "")
+                loginWX();
+            //获取access_token
+            //20_PylHUf3w7U3olk48jG2lr9f-FlKMQI9RHXk02PHU3zmABETr6dELSDyx2Mef8vjf4gn5niNGBLM6vvDalaOXDjd0yrZh_zXaZtx3q9qB_LjmglS2-5X7sNZTMEQ4iNLZxY339zN9LcTzsJZGCXLjABAWRF
+		var mySwiper = new Swiper('.swiper-container',{
+			calculateHeight:true,
+			resizeReInit:true,
+			pagination:".pagination",
+			autoplay:5000,
+			paginationClickable:true
+		});
+
+        });
+        // 创建cookie
+        function setCookie(c_name, value, expiredays) {
+            var exdate = new Date();
+            exdate.setDate(exdate.getDate() + expiredays);
+            document.cookie = c_name + "=" + escape(value) +
+            ((expiredays == null) ? "" : "; expires=" + exdate.toGMTString());
+        }
+        function loginWX()
+        {
+            window.location.href = "{config.webpath}api/oauth/index.aspx?id=4&votememberid={id}&type=1";
+        }
+        function getCookie(c_name) {
+            if (document.cookie.length > 0) {
+                c_start = document.cookie.indexOf(c_name + "=")
+                if (c_start != -1) {
+                    c_start = c_start + c_name.length + 1
+                    c_end = document.cookie.indexOf(";", c_start)
+                    if (c_end == -1) c_end = document.cookie.length
+                    return unescape(document.cookie.substring(c_start, c_end))
+                }
+            }
+            return ""
+        }
+	function VoteFun()
+        {
+	    if (getCookie("openid") == "")
+	    {
+	        alert("请同意之后投票！");
+	        loginWX();
+	        return;
+	    }
+	    if ("{isVote}" == "false")
+	    {
+	        alert("投票活动已结束！");
+	        return;
+	    }
+	    var aj = $.ajax({
+	        url: '{config.webpath}tools/submit_ajax.ashx?action=Vote&id={model.id}&openid='+openid,// 投票
+	        type: 'get',
+	        cache: false,
+	        dataType: 'json',
+	        success: function (data) {
+	            if (data.status == "1") {
+	                openSucced();
+	                //  window.location.href = "{config.webpath}api/payment/wxapipay/index_vote.aspx?pay_order_no=" + data.order_no + "&pay_order_amount=" + data.order_amount;
+	        //        window.location.href = "{config.webpath}api/payment/wxapipay/index_vote.aspx?pay_order_no=" + data.order_no + "&pay_order_amount=0.01";
+	            } else if (data.status == "2") {
+
+	                alert("您当前助力次数已达上线，请明天再次助力该好友吧！");
+	            } else if (data.status == "3") {
+
+	                alert("您已超过当日最多投票数，明天再来助力该好友吧！");
+	            } else if (data.status == "4") {
+
+	                alert("助力时间间隔太短，请稍后再试！");
+	            } else{
+
+	                alert("异常,请重新刷新！");
+	            }
+	        },
+	        error: function () {
+	            // view("异常！");    
+	            alert("异常！");
+	        }
+	    });
+	 //   clickSubmit('{config.webpath}tools/submit_ajax.ashx?action=Vote&id={model.id}');
+	}
+	function openSucced()
+	{
+	    $("#infoPage").hide();
+	    $("#gopayPage").show();
+	}
+
+	function GiftFun() {
+
+	    if (getCookie("openid") == "") {
+	        alert("请同意之后投票！");
+	        return;
+	    }
+	    if ("{isVote}" == "false")
+	    {
+            alert("投票活动已结束！");
+            return;
+	    }
+	    $("#infoPage").hide();
+	    $("#payPage").show();
+	//    $("#paypageimg").hide();
+	}
+	function GiftNum(obj)
+	{
+	    if (obj != 0)
+	    {
+	        curGiftNum = obj;
+	        curVoteNum = obj * 3;
+	        $("#NumStr").html("为 {model.JoinName} 送" + obj + "钻 = " + obj * 3 + "票");
+	        $("#setVoteValuepa").hide();
+	    }
+	    else
+	    {
+	        $("#setVoteValuepa").show();
+	    }
+
+	    $("#div10").attr("class", "payItem");
+	    $("#div50").attr("class", "payItem");
+	    $("#div100").attr("class", "payItem");
+	    $("#div300").attr("class", "payItem");
+	    $("#div500").attr("class", "payItem");
+	    $("#div0").attr("class", "payItem");
+
+
+	    $("#div" + obj).attr("class", "payItemEx");
+	//    alert(obj);
+	}
+	function editVoteFun()
+	{
+	    var str = $("#setVoteValue").val();
+	    if (str == null || str == "")
+	        return;
+
+	    try{
+	        curGiftNum =  parseInt(str);
+	        curVoteNum = curGiftNum * 3;
+	        if (curGiftNum <= 0)
+	            alert("输入金额有误，请重新输入！");
+	        $("#NumStr").html("为 {model.JoinName} 送" + curGiftNum + "钻 = " + curGiftNum * 3 + "票");
+	    }
+	    catch(ex)
+	    {
+	        alert("输入金额有误，请重新输入！");
+	    }
+	}
+	function payFun()
+	{
+	    //1.$.ajax带json数据的异步请求  
+	    var aj = $.ajax({
+	        url: '{config.webpath}tools/submit_ajax.ashx?action=order_save_vote&site_id=2&openid=' + openid + '&gift=' + curGiftNum + '&voteid={id}',// 跳转到 action    
+	        //	        url: '{config.webpath}tools/submit_ajax.ashx?action=order_save_vote&site_id=2&openid=' + openid + '&gift=' + curGiftNum,// 跳转到 action 
+	        type: 'get',
+	        cache: false,
+	        dataType: 'json',
+	        success: function (data) {
+	            if (data.status == "1") {
+	            //    alert("打赏成功");
+	           //     var t = setTimeout("reloadVotemember()", 1000);
+	                  window.location.href = "{config.webpath}api/payment/wxapipay/index_vote.aspx?pay_order_no=" + data.order_no + "&pay_order_amount=" + data.order_amount;
+	            } else {
+	                view(data.msg);
+	            }
+	        },
+	        error: function () {
+	            // view("异常！");    
+	            alert("异常！");
+	        }
+	    });
+	}
+	function reloadVotemember()
+	{
+	    window.location.href = "{config.webpath}aspx/mobile/VoteMember.aspx?id={id}";
+	}
+	function reloadFun()
+	{
+	    location.reload();  
+	}
+    </script>
+</head>
+
+<body style="background-color:#ffffff" id="news" ontouchstart>
+    <div class="page" id="payPage" style="background-color:white;width:100%;height:100%;position:relative;z-index:2;display: none;">
+        <!--页面头部-->
+        <div class="header">
+            <marquee direction="left" behavior="scroll" scrollamount="5" scrolldelay="10" loop="99" height="30" bgcolor="#0a0a0a6e">
+                <font face="隶书" color="white" size="3">{model2.Activity_Title} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {model2.JRZXName}</font>
+            </marquee>
+        </div>
+        <!--/页面头部-->
+        <!--页面内容-->
+        <div class="page__bd">
+            <br />
+            <div style="width:100%;height:120px" >
+                <center>
+                    <div id="paypageimg" style="width:100px;height:100px;border-radius: 50%;overflow:hidden;border: 2px solid #ffffff;" onclick="">
+                        <a>
+                            <img src="{model.JoinImg1}" style="width:110px" />
+                        </a>
+                    </div>
+                </center>
+            </div>
+            <div style="width:100%;height:50px;text-align:center" id="NumStr">
+                为 {model.JoinName} 送10钻 = 30票
+            </div>
+                <!--时间信息-->
+                <div class="weui-panel_access" style="margin-top:0;height:300px">
+                    <center>
+                        <table width="250">
+                            <tr>
+                                <td><center><div id="div10" class="payItem" onclick="GiftNum('10')"><center><label class="payItemlabel">10</label>钻</center></div></center></td>
+                                <td><center><div id="div50" class="payItem" onclick="GiftNum('50')"><center><label class="payItemlabel">50</label>钻</center></div></center></td>
+                                <td><center><div id="div100" class="payItem" onclick="GiftNum('100')"><center><label class="payItemlabel">100</label>钻</center></div></center></td>
+                            </tr>
+                            <tr>
+                                <td><center><div id="div300" class="payItem" onclick="GiftNum('300')"><center><label class="payItemlabel">300</label>钻</center></div></center></td>
+                                <td><center><div id="div500" class="payItem" onclick="GiftNum('500')"><center><label class="payItemlabel">500</label>钻</center></div></center></td>
+                                <td><center><div id="div0" class="payItem" onclick="GiftNum('0')"><center><label class="payItemlabel">自定义</label></center></div></center></td>
+                            </tr>
+                        </table>
+                        <div class="weui-cell__bd" style="display:none" id="setVoteValuepa">
+                            <input id="setVoteValue" name="setVoteValue" type="text" class="weui-input" placeholder="请输入打赏的金额，不能超过5000元" style="width: 250px;height: 2.47058824em;border-radius: 4px;    border: 1px solid #e5e5e5;" onchange="editVoteFun()" />
+                        </div>
+                        <br />
+                        <div style="width:250px;height:35px;background-color:limegreen;text-align:center;color:white;font-size:20px;border-radius: 6px;" onclick="payFun()">
+                            确认打赏
+                        </div>
+                    </center>
+
+                </div>
+
+                <!--时间信息-->
+                <div class="weui-tab foot-nav">
+                    <div class="weui-tab__panel">
+
+                    </div>
+
+                </div>
+            </div>
+        <!--/页面内容-->
+    </div>
+    <div class="page" id="gopayPage" style="background-color:white;width:100%;height:100%;position:relative;z-index:2;display: none;">
+        <!--页面头部-->
+        <div class="header">
+            <marquee direction="left" behavior="scroll" scrollamount="5" scrolldelay="10" loop="99" height="30" bgcolor="#0a0a0a6e">
+                <font face="隶书" color="white" size="3">{model2.Activity_Title} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {model2.JRZXName}</font>
+            </marquee>
+        </div>
+        <!--/页面头部-->
+        <!--页面内容-->
+        <div class="page__bd">
+            <br />
+            <div style="width:100%;height:50px;text-align:center;font-size: 30px;">
+                成功为{model.JoinName}投票!
+            </div>
+            <div style="width:100%;height:120px">
+                <center>
+                    <div id="paypageimg" style="width:100px;height:100px;border-radius: 50%;overflow:hidden;border: 2px solid #ffffff;" onclick="">
+                        <a>
+                            <img src="../../templates/mobile/images/zs.png" style="width:110px" />
+                        </a>
+                    </div>
+                </center>
+                <center style="font-size: 23px;">再打赏钟意的Ta吧！</center>
+            </div>
+            <br />
+            <!--时间信息-->
+            <div class="weui-panel_access" style="margin-top:0;height:300px">
+                    <br />
+                <center>
+                    <div style="width:200px;height:35px;background-color:orange;text-align:center;color:white;font-size:20px;border-radius: 6px;" onclick="GiftFun()">
+                        打赏
+                    </div>
+                    <br />
+                    <div style="width:200px;height:35px;background-color:blanchedalmond;text-align:center;color:white;font-size:20px;border-radius: 6px;" onclick="reloadFun()">
+                        返回
+                    </div>
+                    <br />
+                    <br />
+                    <a>
+                        <img src="{JRZXURLStr}" style="width: 200px;height: 200px;" />
+                    </a>
+                </center>
+            </div>
+            <div style="width:100%;height:120px">
+                <center>
+                    <div id="paypageimg" style="width:100px;height:100px;border-radius: 50%;overflow:hidden;border: 2px solid #ffffff;" onclick="">
+                        <a>
+                            <img src="{model.JoinImg2}" style="width:110px" />
+                        </a>
+                    </div>
+                </center>
+            </div>
+        </div>
+        <!--/页面内容-->
+    </div>
+    <div class="page" id="infoPage">
+        <!--页面头部-->
+        <div class="header">
+            <marquee direction="left" behavior="scroll" scrollamount="5" scrolldelay="10" loop="99" height="30" bgcolor="#0a0a0a6e" style="height: 50px;">
+                <font face="隶书" color="white" size="3">{model2.Activity_Title} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {model2.JRZXName}</font>
+            </marquee>
+        </div>
+        <!--/页面头部-->
+        <!--页面内容-->
+        <div class="page__bd">
+            <!--首页幻灯片-->
+            <div id="slider" class="swiper-container">
+                <div class="swiper-wrapper">
+                    <%set DataTable focusList=get_VoteInfo()%>
+                    <%foreach(DataRow dr in focusList.Rows)%>
+                    <div class="swiper-slide">
+                        <a>
+                            <img src="{dr[img_url]}" style="width: 375px;height: 375px;"/>
+                        </a>
+                    </div>
+                    <%/foreach%>
+                </div>
+                <div class="pagination"></div>
+            </div>
+            <!--/首页幻灯片-->
+            <!--当前参数-->
+            <div class="weui-panel weui-panel_access" style="margin-top:0;height:80px;">
+                <div style="height:65px">
+                    <center>
+                        <div style="width: 30%;position:absolute;left:5%;font-size:18px">
+                            <div class="weui-panel__hd" style="font-size: 14px;">当前排名<br /><center><label>{RankNum}</label></center></div>
+                        </div>
+                        <div style="width: 30%;position:absolute;left:35%;font-size:18px">
+                            <div class="weui-panel__hd" style="font-size: 14px;">累积票数<br /><center><label>{model.VoteNum}</label></center></div>
+                        </div>
+                        <div style="width: 30%;position:absolute;left:65%;font-size:18px">
+                            <div class="weui-panel__hd" style="font-size: 14px;">差上名票数<br /><center><label>{LastVoteNum}</label></center></div>
+                        </div>
+                    </center>
+                </div>
+            </div>
+            <!--时间信息-->
+            <div class="weui-panel_access" style="margin-top:0;height:200px">
+                <div class="weui-panel__hd" style="background-color: #1E90FF;font-size: 17px;color: white;border-radius: 10px 10px 0 0;">选手信息：</div>
+                <div style="height:150px">
+                    <div class="textLine">
+                        <div style="position:relative;font-size: 17px;">名称:<label>{model.JoinName}</label></div>
+                        <div style="position:relative;font-size: 17px;">
+                            编号:<label>{model.JoinNumber}</label>
+                        </div>
+                        <div style="position:relative;font-size: 17px;">
+                            商家地址:<label>{model.JoinAddress}</label>
+                        </div>
+
+                </div>
+            </div>
+            <!--时间信息-->
+            <!--活动信息-->
+            <div class="weui-panel weui-panel_access" style="margin-top:0;">
+                <div class="weui-panel__hd" style="background-color: #1E90FF;font-size: 17px;color: white;border-radius: 10px 10px 0 0;">选手说明：</div>
+                <center>
+                    <div id="contentCss" style="box-shadow: 2px 2px 2px #cccccc;width: 100%;">
+                        <%set DataTable focusListPic=get_VoteInfoPic()%>
+                        <%foreach(DataRow drpic in focusListPic.Rows)%>
+                            <a>
+                                <img src="{drpic[img_url]}" style="width: 100%;height: 375px;" />
+                            </a>
+                        <%/foreach%>
+                    </div>
+                </center>
+
+            </div>
+            <!--活动信息-->
+            <!--版权信息-->
+            <%template src="_copyright_Vote.html"%>
+            <!--/版权信息-->
+            <div class="weui-tab foot-nav">
+                <div class="weui-tab__panel">
+
+                </div>
+                <div class="weui-tabbar">
+                    <div class="weui-tabbar" style="position: absolute;top: -90px;">
+                        <a onclick="VoteFun()" class="weui-tabbar__item" style="background-color:red">
+                            <p class="weui-tabbar__label" style="color:white;font-size:16px">给Ta投票</p>
+                        </a>
+                        <a onclick="GiftFun()" class="weui-tabbar__item" style="background-color:blue">
+                            <p class="weui-tabbar__label" style="color:white;font-size:16px">打赏Ta</p>
+                        </a>
+                    </div>
+                    <div class="weui-tabbar">
+                        <a href="goVote.aspx?id={model2.id}" class="weui-tabbar__item">
+                            <i class="iconfont icon-home weui-tabbar__icon"></i>
+                            <p class="weui-tabbar__label">首页</p>
+                        </a>
+                        <a href="VoteRank.aspx?VoteId={model2.id}" class="weui-tabbar__item">
+                            <i class="iconfont icon-view weui-tabbar__icon"></i>
+                            <p class="weui-tabbar__label">排名</p>
+                        </a>
+                        <a href="VoteGift.aspx?VoteId={model2.id}" class="weui-tabbar__item">
+                            <i class="iconfont icon-order weui-tabbar__icon"></i>
+                            <p class="weui-tabbar__label">奖品</p>
+                        </a>
+                        <a href="VoteJoin.aspx?VoteId={model2.id}" class="weui-tabbar__item">
+                            <i class="iconfont icon-user weui-tabbar__icon"></i>
+                            <p class="weui-tabbar__label">报名</p>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--/页面内容-->
+    </div>
+</body>
+</html>

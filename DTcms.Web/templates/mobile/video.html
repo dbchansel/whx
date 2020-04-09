@@ -1,0 +1,137 @@
+﻿<!DOCTYPE html>
+<!--HTML5 doctype-->
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+<title>视频专区 - {site.name}</title>
+<meta name="keywords" content="{site.seo_keyword}" />
+<meta name="description" content="{site.seo_description}" />
+<link rel="stylesheet" type="text/css" href="<%templateskin%>/css/style.css" />
+<script type="text/javascript" charset="utf-8" src="<%templateskin%>/js/zepto.min.js"></script>
+<script type="text/javascript" charset="utf-8" src="<%templateskin%>/js/weui.min.js"></script>
+<script type="text/javascript" charset="utf-8" src="<%templateskin%>/js/common.js"></script>
+</head>
+
+<body ontouchstart>
+<div class="page">
+    <!--页面头部-->
+    <div class="header">
+        <a class="back" href="javascript:history.back();">
+            <i class="iconfont icon-arrow-left"></i>
+        </a>
+        <h3>视频专区</h3>
+        <div class="right"> 
+            <a class="weui-cell_access weui-cell_link" href="javascript:;" onclick="showDialogBox('#category-box');">
+                <i class="iconfont icon-nav"></i>
+            </a>
+        </div>
+    </div>
+    <!--/页面头部-->
+  
+    <!--页面内容-->
+    <div class="page__bd">
+        <!--最新视频-->
+        <div class="weui-panel weui-panel_access" style="margin-top:10px;">
+            <div class="weui-panel__hd">最新视频</div>
+            <div class="weui-panel__bd">
+                <div class="photo-list">
+                    <ul>
+                        <%set DataTable newList=get_article_list(channel, 0, 6, "status=0")%>
+                        <%foreach(DataRow dr in newList.Rows)%>
+                        <li>
+                            <a href="<%linkurl("video_show",{dr[id]})%>">
+                                <img src="{dr[img_url]}" />
+                                <h2>{dr[title]}</h2>
+                            </a>
+                        </li>
+                        <%/foreach%>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <!--/最新视频-->
+        
+        <!--推荐视频-->
+        <div class="weui-panel weui-panel_access" style="margin-top:10px;">
+            <div class="weui-panel__hd">推荐视频</div>
+            <div class="weui-panel__bd">
+                <div class="photo-list high">
+                    <ul>
+                        <%set DataTable redList=get_article_list(channel, 0, 9, "status=0 and is_red=1")%>
+                        <%foreach(DataRow dr in redList.Rows)%>
+                        <li>
+                            <a href="<%linkurl("video_show",{dr[id]})%>">
+                                <img src="{dr[img_url]}" />
+                                <h2>{dr[title]}</h2>
+                            </a>
+                        </li>
+                        <%/foreach%>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <!--/推荐视频-->
+        
+        <!--人气排行-->
+        <div class="weui-panel weui-panel_access">
+            <div class="weui-panel__hd">人气排行</div>
+            <div class="weui-panel__bd">
+                <div class="txt-list">
+                    <ul>
+                        <%set DataTable hotList=get_article_list(channel, 0, 10, "status=0", "click desc,id desc")%>
+                        <%loop hotdr hotList%>
+                        <li>
+                            <a href="<%linkurl("video_show",{hotdr[id]})%>">
+                                <i class="date">{hotdr[click]}次</i>
+                                <i class="number">{hotdr__loop__id}</i>
+                                <span class="text">{hotdr[title]}</span>
+                            </a>
+                        </li>
+                        <%/loop%>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <!--/人气排行-->
+    
+        <!--版权信息-->
+        <%template src="_copyright.html"%>
+        <!--/版权信息-->
+
+        <!--底部导航-->
+        <%template src="_footer.html"%>
+        <!--/底部导航-->
+    </div>
+    <!--/页面内容-->
+</div>
+
+<!--类别容器-->
+<div id="category-box" class="dialog-wrap">
+    <div class="dialog-box">
+        <div class="header">
+            <a class="back" href="javascript:;" onclick="closeDialogBox('#category-box');">
+                <i class="iconfont icon-arrow-left"></i>
+            </a>
+            <h3>栏目类别</h3>
+        </div>
+        <ul class="navbar">
+            <%set DataTable categoryList1=get_category_child_list(channel, 0)%>
+            <%foreach(DataRow cdr1 in categoryList1.Rows)%>
+            <li>
+                <h3><a href="<%linkurl("video_list",{cdr1[id]})%>">{cdr1[title]}</a></h3> 
+                <p>
+                <%set DataTable categoryList2=get_category_child_list(channel, {strtoint({cdr1[id]})})%>
+                <%foreach(DataRow cdr2 in categoryList2.Rows)%>
+                    <a href="<%linkurl("video_list",{cdr2[id]})%>">{cdr2[title]}</a>
+                <%/foreach%>
+                </p>
+            </li>
+            <%/foreach%>
+        </ul>
+    </div>
+</div>
+<!--类别容器--
+
+</body>
+</html>

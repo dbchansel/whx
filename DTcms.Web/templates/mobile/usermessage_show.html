@@ -1,0 +1,90 @@
+﻿<!DOCTYPE html>
+<!--HTML5 doctype-->
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+<title>站内短信息 - {site.name}</title>
+<meta name="keywords" content="{site.seo_keyword}" />
+<meta name="description" content="{site.seo_description}" />
+<link rel="stylesheet" type="text/css" href="<%templateskin%>/css/style.css" />
+<script type="text/javascript" charset="utf-8" src="<%templateskin%>/js/zepto.min.js"></script>
+<script type="text/javascript" charset="utf-8" src="<%templateskin%>/js/weui.min.js"></script>
+<script type="text/javascript" charset="utf-8" src="<%templateskin%>/js/common.js"></script>
+</head>
+
+<body ontouchstart>
+<div class="page">
+    <!--页面头部-->
+    <div class="header">
+        <a class="back" href="javascript:history.back();">
+            <i class="iconfont icon-arrow-left"></i>
+        </a>
+        <h3>站内短消息</h3>
+        <div class="right"> 
+            <a class="weui-cell_access weui-cell_link" href="<%linkurl("usercenter","index")%>">
+                <i class="iconfont icon-user"></i>
+            </a>
+        </div>
+    </div>
+    <!--/页面头部-->
+  
+    <!--页面内容-->
+    <div class="page__bd">
+        <!--内容介绍-->
+        <div class="weui-panel weui-panel_access" style="margin-top:10px;">
+            <div class="weui-panel__bd">
+                <div class="meta">
+                    <h1 class="meta-tit">{model.title}</h1>
+                    <p class="meta-info">
+                        <span><i class="iconfont icon-date"></i>{model.post_time}</span>
+                        <%if(model.type==2)%>
+                            <span><i class="iconfont icon-user"></i>发件人：{model.post_user_name}</span>
+                        <%else if(model.type==3)%>
+                            <span><i class="iconfont icon-user"></i>收件人：{model.accept_user_name}</span>
+                        <%/if%>
+                    </p>
+                </div>
+                <div class="entry" style="padding-bottom:20px;">
+                    {model.content}
+                </div>
+            </div>
+        </div>
+        <!--/内容介绍-->
+    
+        <!--版权信息-->
+        <%template src="_copyright.html"%>
+        <!--/版权信息-->
+
+        <!--底部导航-->
+        <div class="weui-tab foot-nav">
+            <div class="weui-tab__panel">
+    
+            </div>
+            <div class="weui-tabbar">
+                <a href="<%linkurl("usermessage","add")%>" class="weui-tabbar__item">
+                    <i class="iconfont icon-edit weui-tabbar__icon"></i>
+                    <p class="weui-tabbar__label">发送消息</p>
+                </a>
+                <a href="<%linkurl("usermessage","system")%>" class="weui-tabbar__item">
+                    <i class="iconfont icon-notice weui-tabbar__icon"></i>
+                    <p class="weui-tabbar__label">系统消息</p>
+                </a>
+                <a href="<%linkurl("usermessage","accept")%>" class="weui-tabbar__item">
+                    <i class="iconfont icon-folder weui-tabbar__icon"></i>
+                    <p class="weui-tabbar__label">收件箱</p>
+                </a>
+                <a href="<%linkurl("usermessage","send")%>" class="weui-tabbar__item">
+                    <i class="iconfont icon-log weui-tabbar__icon"></i>
+                    <p class="weui-tabbar__label">发件箱</p>
+                </a>
+            </div>
+        </div>
+        <!--/底部导航-->
+    
+  </div>
+  <!--/页面内容-->
+
+</div>
+</body>
+</html>
